@@ -28,6 +28,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var editBioField: UITextView!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var messageButton: UIButton!
     
     static var uidToLoad: String = "self"
     static var ownUsername: String = "defaultusr"
@@ -53,10 +54,15 @@ class ProfileViewController: UIViewController {
             logoutButton.layer.borderColor = UIColor.darkGray.cgColor
             logoutButton.layer.cornerRadius = 7
         }
+        if messageButton != nil {
+            messageButton.layer.borderWidth = 1
+            messageButton.layer.borderColor = UIColor.darkGray.cgColor
+            messageButton.layer.cornerRadius = 7
+        }
         
         navigationItem.title = ""
         
-        let image2: UIImage = #imageLiteral(resourceName: "saveIcon")
+        let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
         button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)

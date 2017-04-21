@@ -18,7 +18,7 @@ class ViewController: UIViewController, TapDelegate3 {
         // Do any additional setup after loading the view, typically from a nib.
         self.navigationController?.navigationBar.isTranslucent = false
         
-        let image2: UIImage = #imageLiteral(resourceName: "saveIcon")
+        let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
         button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)

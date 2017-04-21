@@ -22,7 +22,7 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate {
         UITabBar.appearance().alpha = 1
         UITabBar.appearance().backgroundColor = UIColor(red: 41/255, green: 37/255, blue: 47/255, alpha: 1)
         
-        let image2: UIImage = UIImage.init(named: "saveIcon")!
+        let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
         

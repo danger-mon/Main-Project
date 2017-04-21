@@ -35,7 +35,7 @@ class MultipleDressScreenViewController: UIViewController {
         profileName.text = "Loading..."
         print(1)
         navigationItem.title = ""
-        let image2: UIImage = #imageLiteral(resourceName: "saveIcon")
+        let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
         button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)

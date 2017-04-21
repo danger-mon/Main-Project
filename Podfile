@@ -9,7 +9,7 @@ pod 'Firebase/Storage'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
 pod 'FacebookLogin'
-pod ‘Firebase/Crash’
+pod 'Firebase/Crash'
 pod 'JSQMessagesViewController'
 pod 'OneSignal', '>= 2.5.2', '< 3.0'
 

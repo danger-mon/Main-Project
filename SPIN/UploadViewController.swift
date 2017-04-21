@@ -74,7 +74,7 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         actionButton.superview?.bringSubview(toFront: actionButton)
         self.view.bringSubview(toFront: actionButton)
         
-        let image2: UIImage = #imageLiteral(resourceName: "saveIcon")
+        let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
         

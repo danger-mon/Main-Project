@@ -1240,6 +1240,7 @@ hahaha</string>
                         <outlet property="listingsLabel" destination="zIV-AG-Z9R" id="YWY-dh-plv"/>
                         <outlet property="locationLabel" destination="XIv-2L-cro" id="OTH-Ko-z0w"/>
                         <outlet property="locationPin" destination="Cl4-yg-tZc" id="x3L-zx-mK1"/>
+                        <outlet property="messageButton" destination="shj-Oh-xqh" id="Spe-1r-y91"/>
                         <outlet property="numberOfExchanges" destination="xIy-gP-ILs" id="t3e-kC-WaE"/>
                         <outlet property="numberOfListings" destination="rF6-q3-e9j" id="WEc-c1-SzS"/>
                         <outlet property="photosCollectionViewController" destination="wN0-IB-Vy6" id="VgF-Z6-zIq"/>

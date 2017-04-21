@@ -22,13 +22,20 @@ class genericControllerViewController: UINavigationController {
         logoView.frame = CGRect(x: (Int(UIScreen.main.bounds.width/2) - 35), y: Int(0.75 * (self.navigationBar.bounds.height - 35)), width: 70, height: 35)
         logoView.contentMode = .scaleAspectFit
         self.navigationBar.addSubview(logoView)
-        navigationBar.backIndicatorImage = #imageLiteral(resourceName: "Back-50")
-        navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "Back-50")
+        
+        /*
+        var backButtonImage = UIImage(named: "left-arrow")
+        //backButtonImage = backButtonImage?.stretchableImage(withLeftCapWidth: 15, topCapHeight: 30)
+        UIBarButtonItem.appearance().setBackButtonBackgroundImage(backButtonImage, for: .normal, barMetrics: .default) */
+        
+        
+        navigationBar.backIndicatorImage = #imageLiteral(resourceName: "left-arrow")
+        navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "left-arrow")
         navigationBar.backItem?.title = ""
-        navigationBar.tintColor = UIColor.white
+        navigationBar.tintColor = UIColor.black
         
         
-        let image2: UIImage = #imageLiteral(resourceName: "saveIcon")
+        let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
         button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)

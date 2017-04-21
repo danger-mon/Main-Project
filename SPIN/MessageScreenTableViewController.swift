@@ -37,7 +37,7 @@ class MessageScreenTableViewController: UITableViewController {
         navigationItem.titleView = logoView
         
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        button2.setImage( #imageLiteral(resourceName: "Back-50"), for: .normal)
+        button2.setImage( #imageLiteral(resourceName: "left-arrow"), for: .normal)
         button2.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         
         let barButton2 = UIBarButtonItem(customView: button2)
