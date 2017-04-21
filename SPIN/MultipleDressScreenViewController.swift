@@ -43,9 +43,11 @@ class MultipleDressScreenViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = barButton2
         print(2)
         
-        requestTradeButton.layer.borderWidth = 1
-        requestTradeButton.layer.borderColor = UIColor.lightGray.cgColor
-        requestTradeButton.layer.cornerRadius = 7
+        if requestTradeButton != nil {
+            requestTradeButton.layer.borderWidth = 1
+            requestTradeButton.layer.borderColor = UIColor.lightGray.cgColor
+            requestTradeButton.layer.cornerRadius = 7
+        }
         
         profileName.text = "Loading..."
         locationLabel.text = "Loading..."

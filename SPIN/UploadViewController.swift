@@ -45,7 +45,7 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
                                             "value": "OSjB7DRmkvQpeLCXXGc4AaEn2h12"]])
         
         OneSignal.postNotification(["contents": ["en": "TestMessage"],
-                                    "include_player_ids": "a88fed3c-5e9b-4a99-88e7-86412509cbde"])
+                                    "include_player_ids": "d6f5c199-e0d9-43bf-a886-d71562795654"])
         
     }
     

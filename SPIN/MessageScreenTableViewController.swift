@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import OneSignal
 
 class MessageScreenTableViewController: UITableViewController {
 
@@ -25,10 +26,9 @@ class MessageScreenTableViewController: UITableViewController {
     var ownUsername: String = ""
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        observeChannels()
         
+        observeChannels()
         var logoView: UIImageView = UIImageView()
         let logo = UIImage(named: "SPIN")
         logoView = UIImageView(image: logo)
@@ -43,8 +43,10 @@ class MessageScreenTableViewController: UITableViewController {
         let barButton2 = UIBarButtonItem(customView: button2)
         self.navigationItem.leftBarButtonItem = barButton2
         
+        
         databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as! [String: String]
+            
             self.ownUsername = dict["username"]!
         })
         
@@ -71,7 +73,6 @@ class MessageScreenTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(conversations.count)
         return conversations.count
     }
     
@@ -90,6 +91,7 @@ class MessageScreenTableViewController: UITableViewController {
         cell.recipientImageView.layer.cornerRadius = cell.recipientImageView.frame.height / 2
         cell.ref = conversations[indexPath.row].id
         cell.photoURL = conversations[indexPath.row].url
+        cell.uid = conversations[indexPath.row].uid
         
         return cell
     }
@@ -115,6 +117,7 @@ class MessageScreenTableViewController: UITableViewController {
             svc.refToLoad = cellSender.ref
             svc.photoURL = cellSender.photoURL
             svc.name = cellSender.name.text!
+            svc.uid = cellSender.uid
         }
     }
 }

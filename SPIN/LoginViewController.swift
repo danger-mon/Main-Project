@@ -42,6 +42,7 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
                         
                         var fanoutObject: [String: AnyObject] = [:]
                         fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/userData/oneSignalKey"] = userID as AnyObject
+                        fanoutObject["/OneSignalIDs/\((FIRAuth.auth()?.currentUser?.uid)!)"] = userID as AnyObject
                         databaseRef.updateChildValues(fanoutObject)
                         
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)

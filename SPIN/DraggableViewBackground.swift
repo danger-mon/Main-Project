@@ -448,7 +448,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         let userIdentifier = user?.uid
         
         var fanoutObject: [String: AnyObject] = [:]
-        fanoutObject["/Users/savedDresses/\(dressReel[0].ref!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
+        fanoutObject["/Users/\(userIdentifier!)/savedDresses/\(dressReel[0].ref!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
         fanoutObject["/PostData/\(dressReel[0].ref!)/swipedRight/\(userIdentifier!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
         fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/lower"] = dressReel[0].timestamp as AnyObject
         fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/upper"] = currentTimeSegment.0 as AnyObject

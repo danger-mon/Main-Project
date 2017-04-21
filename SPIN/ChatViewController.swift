@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import JSQMessagesViewController
 import Photos
+import OneSignal
 
 private let reuseIdentifier = "cell"
 
@@ -19,6 +20,14 @@ class ChatViewController: JSQMessagesViewController {
     var name: String = ""
     var photoURL: String = ""
     var messages = [JSQMessage]()
+    var uid: String = "" {
+        didSet {
+            print("Set to \(uid)")
+            getNotificationID()
+        }
+    }
+    var notificationKey: String = ""
+    
     lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
     lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
     private let imageURLNotSetKey = "NOTSET"
@@ -26,7 +35,6 @@ class ChatViewController: JSQMessagesViewController {
     private var photoMessageMap = [String: JSQPhotoMediaItem]()
     private var updatedMessageRefHandle: FIRDatabaseHandle?
     private var newMessageRefHandle: FIRDatabaseHandle?
-    
     private var userIsTypingRef: FIRDatabaseReference = FIRDatabase.database().reference()
     
     private var localTyping = false // 2
@@ -45,9 +53,10 @@ class ChatViewController: JSQMessagesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(refToLoad)
+        
         messageRef = FIRDatabase.database().reference().child("Conversations").child(refToLoad)
         userIsTypingRef = FIRDatabase.database().reference().child("Conversations").child(refToLoad).child("typingIndicator").child(self.senderId)
+        
         
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -74,6 +83,17 @@ class ChatViewController: JSQMessagesViewController {
         observeTyping()
     }
     
+    func getNotificationID() {
+        FIRDatabase.database().reference().child("OneSignalIDs").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.value is NSNull {
+                //No notification key found
+                print("The person can't receive notifications")
+            } else {
+                self.notificationKey = snapshot.value! as! String
+            }
+        })
+    }
+    
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
         let itemRef = messageRef.child("messages").childByAutoId()
@@ -85,6 +105,37 @@ class ChatViewController: JSQMessagesViewController {
         
         itemRef.setValue(messageItem)
         messageRef.child("timestamp").setValue((NSDate().timeIntervalSince1970) as NSNumber)
+        
+        print(notificationKey)
+        /*OneSignal.postNotification(["contents": ["en": text!],
+                                    "headings": ["en": senderDisplayName!],
+                                    "include_player_ids": notificationKey]) */
+        
+        
+        
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        let pushToken = status.subscriptionStatus.pushToken
+        let userId = status.subscriptionStatus.userId
+        
+        if pushToken != nil {
+            let message = text!
+            let notificationContent = [
+                "include_player_ids": [userId],
+                "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
+                "headings": ["en": "\(senderDisplayName!)"],
+                // If want to open a url with in-app browser
+                //"url": "https://google.com",
+                // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                "ios_badgeType": "Increase",
+                "ios_badgeCount": 1
+                ] as [String : Any]
+            
+            OneSignal.postNotification(notificationContent)
+        }
+        
+        
+        
+        
         
         JSQSystemSoundPlayer.jsq_playMessageSentSound() // 4
         

@@ -18,13 +18,14 @@ class ViewController: UIViewController, TapDelegate3 {
         // Do any additional setup after loading the view, typically from a nib.
         self.navigationController?.navigationBar.isTranslucent = false
         
-        let image2: UIImage = #imageLiteral(resourceName: "envelope")
+        /*let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
         button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)
         
         let barButton2 = UIBarButtonItem(customView: button2)
-        self.navigationItem.rightBarButtonItem = barButton2
+        barButton2.addBadge(text: "1")
+        self.navigationItem.rightBarButtonItem = barButton2 */
 
         
         draggableBackground = DraggableViewBackground(frame: self.view.frame) //frame: CGRect(x: 0.0, y: 70.0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width )

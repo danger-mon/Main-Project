@@ -33,6 +33,7 @@ class ProfileViewController: UIViewController {
     static var uidToLoad: String = "self"
     static var ownUsername: String = "defaultusr"
     
+    
     var doNotDownload = false
     
     var profileToLoad: String! = "Pelayo Martinez"
@@ -58,6 +59,10 @@ class ProfileViewController: UIViewController {
             messageButton.layer.borderWidth = 1
             messageButton.layer.borderColor = UIColor.darkGray.cgColor
             messageButton.layer.cornerRadius = 7
+        }
+        if ProfileViewController.uidToLoad == (FIRAuth.auth()?.currentUser?.uid)! {
+            messageButton.isHidden = true
+            messageButton.isEnabled = false
         }
         
         navigationItem.title = ""
@@ -229,7 +234,7 @@ class ProfileViewController: UIViewController {
             }
             
             if alreadyThere == true {
-                
+                print("there")
                 let destinationNavigationController = self.storyboard?.instantiateViewController(withIdentifier: "conversations") as! ChatNavigationController
                 
                 let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "chat") as! ChatViewController
@@ -254,35 +259,45 @@ class ProfileViewController: UIViewController {
                 //Create Conversation
                 
                 print("creatingConversation")
-                let id = FIRDatabase.database().reference().child("Conversations").childByAutoId()
-                id.child("timestamp").setValue(Int32(NSDate.timeIntervalSinceReferenceDate))
                 
-                var post = ["id": id.key,
+                let id = FIRDatabase.database().reference().child("Conversations").childByAutoId()
+                
+                let postOwn = ["id": id.key,
                             "uid": ProfileViewController.uidToLoad,
                             "name": self.profileUsername.text!,
                             "photoURL": "https://www.circuitlab.com/assets/images/gravatar_empty_50.png",
                             "timestamp": Int32(NSDate.timeIntervalSinceReferenceDate)] as [String : Any]
                 
-                //Add to senders conversations
-                FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(id.key).setValue(post)
+                var postOther = postOwn
+                postOther["name"] = Profile.ownUsername
+                let fanoutObject = ["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)": postOwn,
+                                    "/Users/\(ProfileViewController.uidToLoad)/conversations/\(id.key)": postOther,
+                                    "/Conversations/\(id.key)/timestamp": Int32(NSDate.timeIntervalSinceReferenceDate)] as [String : Any]
                 
-                //Change the 'opposite name' and add to the receivers conversation
-                post["name"] = Profile.ownUsername
-                
-                FIRDatabase.database().reference().child("Users").child(ProfileViewController.uidToLoad).child("conversations").child(id.key).setValue(post)
+                FIRDatabase.database().reference().updateChildValues(fanoutObject)
                 
                 let destinationNavigationController = self.storyboard?.instantiateViewController(withIdentifier: "conversations") as! ChatNavigationController
-            
                 let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "chat") as! ChatViewController
+                //let _ = destinationViewController.view.description
             
+                print("1")
                 destinationViewController.senderDisplayName = Profile.ownUsername
                 destinationViewController.senderId = (FIRAuth.auth()?.currentUser?.uid)!
                 destinationViewController.refToLoad = id.key
                 //TODO: Add URL image download
                 destinationViewController.photoURL = "https://www.circuitlab.com/assets/images/gravatar_empty_50.png"
                 destinationViewController.name = self.profileUsername.text!
-            
+                print("final1")
+                
                 destinationNavigationController.pushViewController( destinationViewController, animated: true)
+                let transition = CATransition()
+                transition.duration = 0.3
+                transition.type = kCATransitionPush
+                transition.subtype = kCATransitionFromRight
+                self.view.window!.layer.add(transition, forKey: kCATransition)
+                
+                print("final3")
+                
                 self.present(destinationNavigationController, animated: true, completion: nil)
             }
         })

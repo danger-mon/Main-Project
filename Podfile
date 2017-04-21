@@ -12,6 +12,7 @@ pod 'FacebookLogin'
 pod 'Firebase/Crash'
 pod 'JSQMessagesViewController'
 pod 'OneSignal', '>= 2.5.2', '< 3.0'
+pod "MIBadgeButton-Swift", :git => 'https://github.com/mustafaibrahim989/MIBadgeButton-Swift.git', :branch => 'master'
 
 end
 

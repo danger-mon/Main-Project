@@ -14,7 +14,7 @@ import FacebookLogin
 import OneSignal
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSSubscriptionObserver {
     
     var window: UIWindow?
     
@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Launching Now!")
         
         let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
-            print("Received Notification: \(notification!.payload.notificationID)")
+            print("Received Notification: \(notification!.payload.body)")
         }
         
         let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
@@ -59,13 +59,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                         settings: onesignalInitSettings)
         
                 
-        OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
-        //OneSignal.sendTag("userID", value: (FIRAuth.auth()?.currentUser?.uid)!)
+        OneSignal.inFocusDisplayType = OSNotificationDisplayType.none
+        
+        OneSignal.add(self as! OSPermissionObserver)
+        
+        OneSignal.add(self as! OSSubscriptionObserver)
+
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     
         return true
     }
+    
+    func onOSPermissionChanged(_ stateChanges: OSPermissionStateChanges!) {
+        
+        // Example of detecting answering the permission prompt
+        if stateChanges.from.status == OSNotificationPermission.notDetermined {
+            if stateChanges.to.status == OSNotificationPermission.authorized {
+                print("Thanks for accepting notifications!")
+            } else if stateChanges.to.status == OSNotificationPermission.denied {
+                print("Notifications not accepted. You can turn them on later under your iOS settings.")
+            }
+        }
+        // prints out all properties
+        print("PermissionStateChanges: \n\(stateChanges)")
+    }
+    
+    // Output:
+    /*
+     Thanks for accepting notifications!
+     PermissionStateChanges:
+     Optional(<OSSubscriptionStateChanges:
+     from: <OSPermissionState: hasPrompted: 0, status: NotDetermined>,
+     to:   <OSPermissionState: hasPrompted: 1, status: Authorized>
+     >
+     */
+    
+    // TODO: update docs to change method name
+    // Add this new method
+    func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
+        if !stateChanges.from.subscribed && stateChanges.to.subscribed {
+            print("Subscribed for OneSignal push notifications!")
+        }
+        print("SubscriptionStateChange: \n\(stateChanges)")
+    }
+    
+    // Output:
+    
+    /*
+     Subscribed for OneSignal push notifications!
+     PermissionStateChanges:
+     Optional(<OSSubscriptionStateChanges:
+     from: <OSSubscriptionState: userId: (null), pushToken: 0000000000000000000000000000000000000000000000000000000000000000 userSubscriptionSetting: 1, subscribed: 0>,
+     to:   <OSSubscriptionState: userId: 11111111-222-333-444-555555555555, pushToken: 0000000000000000000000000000000000000000000000000000000000000000, userSubscriptionSetting: 1, subscribed: 1>
+     >
+     */
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
