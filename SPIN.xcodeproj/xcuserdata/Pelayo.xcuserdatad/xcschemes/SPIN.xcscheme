@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C956085916737567BA23137E1B64822D"
+               BlueprintIdentifier = "13A8D09BA12D57D457D6863D16653F01"
                BuildableName = "Pods_SPIN.framework"
                BlueprintName = "Pods-SPIN"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">

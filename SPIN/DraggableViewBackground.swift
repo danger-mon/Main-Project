@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 import FirebaseDatabase
+import OneSignal
 
 class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognizerDelegate {
     
@@ -110,6 +111,26 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
             
             self.currentTimeSegmentKey = databaseRef.child("timeSegments").child((FIRAuth.auth()?.currentUser?.uid)!).childByAutoId().key
             self.catchNextDress(count: 3)
+        })
+        
+        FIRDatabase.database().reference().child("Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if snapshot.value is NSNull { } else {
+                let dictionary: [String: [String: Any]] = snapshot.value as! [String: [String: Any]]
+                var conversationUnseens: [String: Int] = [:]
+                for (_, value) in dictionary {
+                    print("\(String(describing: value["unseen"])) for \(value["uid"] as! String)")
+                    conversationUnseens[value["uid"] as! String] = (value["unseen"])! as? Int
+                }
+                BadgeHandler.messages = conversationUnseens
+            }
+        })
+        
+        FIRDatabase.database().reference().child("Users/\((FIRAuth.auth()?.currentUser?.uid)!)/incomingRequests").observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.value is NSNull { } else {
+                let counter = snapshot.value as! NSDictionary
+                BadgeHandler.requestsNumber = counter.count
+            }
         })
         
         loadingLabel = UILabel(frame: CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2 - 20, width: 100, height: 40))

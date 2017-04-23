@@ -890,7 +890,7 @@ hahaha</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F5c-Qy-d79" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1780" y="1713.1934032983509"/>
+            <point key="canvasLocation" x="-802" y="2481"/>
         </scene>
         <!--Message Screen Table View Controller-->
         <scene sceneID="IdY-Rp-wvK">
@@ -908,8 +908,8 @@ hahaha</string>
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Claire Zhong" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iH-75-kvM">
-                                            <rect key="frame" x="60" y="18" width="307" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iH-75-kvM">
+                                            <rect key="frame" x="60" y="18.5" width="71.5" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="j6z-bC-4HX"/>
                                             </constraints>
@@ -924,10 +924,23 @@ hahaha</string>
                                                 <constraint firstAttribute="width" secondItem="Lnk-1z-oBT" secondAttribute="height" multiplier="1:1" id="HPX-YV-9dn"/>
                                             </constraints>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xgh-25-S0c">
+                                            <rect key="frame" x="334" y="16" width="26" height="26"/>
+                                            <color key="backgroundColor" red="1" green="0.31808949939999998" blue="0.15926051829999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="xgh-25-S0c" secondAttribute="height" multiplier="1:1" id="DVT-XD-LxY"/>
+                                                <constraint firstAttribute="width" constant="26" id="la5-3g-Fau"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="16"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="4iH-75-kvM" firstAttribute="leading" secondItem="Lnk-1z-oBT" secondAttribute="trailing" constant="8" id="8Bs-m0-a3F"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="xgh-25-S0c" secondAttribute="trailing" constant="7" id="9RX-sw-16k"/>
                                         <constraint firstItem="4iH-75-kvM" firstAttribute="centerY" secondItem="eOa-lo-xYi" secondAttribute="centerY" id="Fu0-1M-OQy"/>
+                                        <constraint firstItem="xgh-25-S0c" firstAttribute="centerY" secondItem="eOa-lo-xYi" secondAttribute="centerY" id="LGD-cz-Yuj"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Lnk-1z-oBT" secondAttribute="bottom" constant="-2" id="SEk-EO-6Ta"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="Lnk-1z-oBT" secondAttribute="leading" id="ZYH-B7-KEK"/>
                                         <constraint firstItem="Lnk-1z-oBT" firstAttribute="top" secondItem="eOa-lo-xYi" secondAttribute="topMargin" constant="-2" id="Zv3-l7-wUH"/>
@@ -937,6 +950,7 @@ hahaha</string>
                                 <connections>
                                     <outlet property="name" destination="4iH-75-kvM" id="P68-Ct-E4b"/>
                                     <outlet property="recipientImageView" destination="Lnk-1z-oBT" id="FZd-80-EJ0"/>
+                                    <outlet property="unseenLabel" destination="xgh-25-S0c" id="8PF-yW-lJo"/>
                                     <segue destination="nYN-zr-icc" kind="show" identifier="loadConversation" id="LxS-U6-cnj"/>
                                 </connections>
                             </tableViewCell>
@@ -1429,7 +1443,7 @@ hahaha</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rqN-ia-mGG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-802" y="1755"/>
+            <point key="canvasLocation" x="-1673" y="2481"/>
         </scene>
         <!--Requests Table View Controller-->
         <scene sceneID="58a-jM-bY0">

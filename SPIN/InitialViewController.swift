@@ -13,6 +13,8 @@ import FirebaseAuth
 import FacebookLogin
 
 class InitialViewController: UIViewController {
+    
+    var tabViewController: TabViewController? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +31,11 @@ class InitialViewController: UIViewController {
             if (registered.string(forKey: (FIRAuth.auth()?.currentUser?.uid)!) != nil) {
                 
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting")
+                let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting") as! TaskBarViewController
+
                 nextViewController.modalTransitionStyle = .crossDissolve
-                
+                //self.tabViewController = nextViewController.topViewController as? TabViewController
+
                 
                 FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("photoURL").setValue(FIRAuth.auth()?.currentUser?.photoURL?.absoluteString)
                 
@@ -51,11 +55,11 @@ class InitialViewController: UIViewController {
                     } //Take to the entering details screen
                     else {
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting")
+                        let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting") as! TaskBarViewController
                         registered.set("Registered", forKey: (FIRAuth.auth()?.currentUser?.uid)!)
                         registered.synchronize()
                         nextViewController.modalTransitionStyle = .crossDissolve
-                        
+                       //self.tabViewController = nextViewController.topViewController as? TabViewController
                         self.present(nextViewController, animated: true, completion: nil)
                     } //Register Key for user and present main screen
                 })

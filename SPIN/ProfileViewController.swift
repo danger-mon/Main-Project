@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FacebookCore
 import FacebookLogin
+import OneSignal
 
 class ProfileViewController: UIViewController {
     
@@ -73,6 +74,7 @@ class ProfileViewController: UIViewController {
         button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)
         
         let barButton2 = UIBarButtonItem(customView: button2)
+        //barButton2.addBadge(text: "\(BadgeHandler.messageBadgeNumber)")
         self.navigationItem.rightBarButtonItem = barButton2
         if photosCollectionViewController != nil {
             photosCollectionViewController.delegate2 = self
@@ -92,6 +94,7 @@ class ProfileViewController: UIViewController {
     
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         profilePhoto?.alpha = 0 //
         numberOfListings.alpha = 0 //
         numberOfExchanges.alpha = 0 //
@@ -108,9 +111,15 @@ class ProfileViewController: UIViewController {
             profileUsername.alpha = 0 //
         }
         locationPin.alpha = 0
+        if BadgeHandler.messageBadgeNumber != 0 {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+        } else {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "")
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         downloadTextData()
         /*
         bioTextView.center.x -= view.bounds.width
@@ -190,12 +199,19 @@ class ProfileViewController: UIViewController {
     
     @IBAction func logOut(_ sender: Any) {
         
+        var fanoutObject: [String: Any] = [:]
+        fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/userData/oneSignalKey"] = NSNull()
+        fanoutObject["/OneSignalIDs/\((FIRAuth.auth()?.currentUser?.uid)!)"] = NSNull()
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let nextViewController = storyboard.instantiateViewController(withIdentifier: "login")
         self.present(nextViewController, animated: true, completion: nil)
         
         let loginManager = LoginManager()
         loginManager.logOut()
+        OneSignal.deleteTag("userID")
+        
+        FIRDatabase.database().reference().updateChildValues(fanoutObject)
         
     }
     
@@ -265,12 +281,14 @@ class ProfileViewController: UIViewController {
                 let postOwn = ["id": id.key,
                             "uid": ProfileViewController.uidToLoad,
                             "name": self.profileUsername.text!,
-                            "photoURL": "https://www.circuitlab.com/assets/images/gravatar_empty_50.png",
-                            "timestamp": Int32(NSDate.timeIntervalSinceReferenceDate)] as [String : Any]
+                            "timestamp": Int32(NSDate.timeIntervalSinceReferenceDate),
+                            "unseen": 0] as [String : Any]
                 
                 var postOther = postOwn
                 postOther["name"] = Profile.ownUsername
-                let fanoutObject = ["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)": postOwn,
+                postOther["uid"] = (FIRAuth.auth()?.currentUser?.uid)!
+                
+               let fanoutObject = ["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)": postOwn,
                                     "/Users/\(ProfileViewController.uidToLoad)/conversations/\(id.key)": postOther,
                                     "/Conversations/\(id.key)/timestamp": Int32(NSDate.timeIntervalSinceReferenceDate)] as [String : Any]
                 
@@ -278,16 +296,12 @@ class ProfileViewController: UIViewController {
                 
                 let destinationNavigationController = self.storyboard?.instantiateViewController(withIdentifier: "conversations") as! ChatNavigationController
                 let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "chat") as! ChatViewController
-                //let _ = destinationViewController.view.description
             
-                print("1")
                 destinationViewController.senderDisplayName = Profile.ownUsername
                 destinationViewController.senderId = (FIRAuth.auth()?.currentUser?.uid)!
                 destinationViewController.refToLoad = id.key
-                //TODO: Add URL image download
-                destinationViewController.photoURL = "https://www.circuitlab.com/assets/images/gravatar_empty_50.png"
                 destinationViewController.name = self.profileUsername.text!
-                print("final1")
+                destinationViewController.uid = ProfileViewController.uidToLoad
                 
                 destinationNavigationController.pushViewController( destinationViewController, animated: true)
                 let transition = CATransition()
@@ -296,7 +310,6 @@ class ProfileViewController: UIViewController {
                 transition.subtype = kCATransitionFromRight
                 self.view.window!.layer.add(transition, forKey: kCATransition)
                 
-                print("final3")
                 
                 self.present(destinationNavigationController, animated: true, completion: nil)
             }
@@ -333,7 +346,12 @@ class ProfileViewController: UIViewController {
     
     func messageScreen() {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "conversations")
-        self.present(vc!, animated: true, completion: nil)
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+        self.present(vc!, animated: false, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {

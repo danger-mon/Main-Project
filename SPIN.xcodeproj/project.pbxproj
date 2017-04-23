@@ -23,6 +23,7 @@
 		3E37583B1E37B92500905F49 /* DressScreenEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E37583A1E37B92500905F49 /* DressScreenEditViewController.swift */; };
 		3E440FC01E9BDC9A002F67DE /* MultipleDressScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E440FBF1E9BDC9A002F67DE /* MultipleDressScreenViewController.swift */; };
 		3E440FC41E9BE12F002F67DE /* MultipleDressCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E440FC31E9BE12F002F67DE /* MultipleDressCollectionView.swift */; };
+		3E4FB8EE1EABB2520071989B /* GetTopMostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4FB8ED1EABB2520071989B /* GetTopMostView.swift */; };
 		3E50AD2E1DD38172000E767C /* DressScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E50AD2D1DD38172000E767C /* DressScreenViewController.swift */; };
 		3E58E07B1E089D6D006D020D /* MessageScreenTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58E07A1E089D6D006D020D /* MessageScreenTableViewController.swift */; };
 		3E58E07E1E089E5B006D020D /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58E07D1E089E5B006D020D /* ConversationTableViewCell.swift */; };
@@ -48,6 +49,7 @@
 		3E9F70A21DFF5C63006DCA1D /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9F70A11DFF5C63006DCA1D /* InitialViewController.swift */; };
 		3ECC3B4B1DFF410A008A69B5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECC3B4A1DFF410A008A69B5 /* LoginViewController.swift */; };
 		3ED24FF71EAAA7C300B31815 /* UIBarButtonItemBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED24FF61EAAA7C300B31815 /* UIBarButtonItemBadge.swift */; };
+		3ED24FF91EAAA98600B31815 /* BadgeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED24FF81EAAA98600B31815 /* BadgeHandler.swift */; };
 		3ED952B11DE50B92002E6EA9 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED952B01DE50B92002E6EA9 /* UploadViewController.swift */; };
 		3EE9E9901E0C3AF8006BE762 /* ChatNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE9E98F1E0C3AF8006BE762 /* ChatNavigationController.swift */; };
 		3EEF473F1EA97BD80073C56F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEF473E1EA97BD80073C56F /* NotificationService.swift */; };
@@ -120,6 +122,7 @@
 		3E440FBF1E9BDC9A002F67DE /* MultipleDressScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleDressScreenViewController.swift; sourceTree = "<group>"; };
 		3E440FC31E9BE12F002F67DE /* MultipleDressCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleDressCollectionView.swift; sourceTree = "<group>"; };
 		3E4BFE1C1EA97CF0003E505F /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		3E4FB8ED1EABB2520071989B /* GetTopMostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTopMostView.swift; sourceTree = "<group>"; };
 		3E50AD2D1DD38172000E767C /* DressScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DressScreenViewController.swift; sourceTree = "<group>"; };
 		3E58E07A1E089D6D006D020D /* MessageScreenTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageScreenTableViewController.swift; sourceTree = "<group>"; };
 		3E58E07D1E089E5B006D020D /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
@@ -146,6 +149,7 @@
 		3EA6C26D1DFF090A007B9EDC /* SPIN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SPIN.entitlements; sourceTree = "<group>"; };
 		3ECC3B4A1DFF410A008A69B5 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3ED24FF61EAAA7C300B31815 /* UIBarButtonItemBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemBadge.swift; sourceTree = "<group>"; };
+		3ED24FF81EAAA98600B31815 /* BadgeHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeHandler.swift; sourceTree = "<group>"; };
 		3ED952B01DE50B92002E6EA9 /* UploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		3EE9E98F1E0C3AF8006BE762 /* ChatNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatNavigationController.swift; sourceTree = "<group>"; };
 		3EEF473C1EA97BD80073C56F /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,6 +234,7 @@
 		3E33A94B1DCBC96700313319 = {
 			isa = PBXGroup;
 			children = (
+				3E4FB8ED1EABB2520071989B /* GetTopMostView.swift */,
 				3E33A9561DCBC96700313319 /* SPIN */,
 				3E33A96E1DCBC96700313319 /* SPINTests */,
 				3E33A9791DCBC96700313319 /* SPINUITests */,
@@ -364,6 +369,7 @@
 			children = (
 				3E88F0891DCBE32B001856EB /* TaskBarViewController.swift */,
 				3E9515931DCBFC7D00450867 /* MiniProfile.swift */,
+				3ED24FF81EAAA98600B31815 /* BadgeHandler.swift */,
 				3E9515991DCC0FB400450867 /* TabViewController.swift */,
 				3EF0613D1DCCCC110005FE47 /* DescriptionArea.swift */,
 			);
@@ -710,11 +716,13 @@
 				3E9F70A21DFF5C63006DCA1D /* InitialViewController.swift in Sources */,
 				3E94D1221DD12D31006E3D9E /* SavedCollectionViewController.swift in Sources */,
 				3E6C8E361E4904EA006A0CFF /* RequestsTableViewCell.swift in Sources */,
+				3E4FB8EE1EABB2520071989B /* GetTopMostView.swift in Sources */,
 				3E6C8E311E48F82A006A0CFF /* StartTradeViewController.swift in Sources */,
 				3E33A95A1DCBC96700313319 /* ViewController.swift in Sources */,
 				3E50AD2E1DD38172000E767C /* DressScreenViewController.swift in Sources */,
 				3E33A9601DCBC96700313319 /* SPIN.xcdatamodeld in Sources */,
 				3E88F08C1DCBE32B001856EB /* OverlayView.swift in Sources */,
+				3ED24FF91EAAA98600B31815 /* BadgeHandler.swift in Sources */,
 				3E95159A1DCC0FB400450867 /* TabViewController.swift in Sources */,
 				3E3247EB1DDA690700BC06F5 /* OwnDressesCollectionViewCell.swift in Sources */,
 				3E58E07E1E089E5B006D020D /* ConversationTableViewCell.swift in Sources */,

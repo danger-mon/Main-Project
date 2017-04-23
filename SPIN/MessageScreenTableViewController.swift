@@ -21,6 +21,7 @@ class MessageScreenTableViewController: UITableViewController {
         var name: String
         var url: String
         var uid: String
+        var unseen: Int
     }
     var conversations: [conversation] = []
     var ownUsername: String = ""
@@ -92,6 +93,10 @@ class MessageScreenTableViewController: UITableViewController {
         cell.ref = conversations[indexPath.row].id
         cell.photoURL = conversations[indexPath.row].url
         cell.uid = conversations[indexPath.row].uid
+        if conversations[indexPath.row].unseen != 0 {
+            cell.unseenLabel.text = String(conversations[indexPath.row].unseen)
+            cell.unseenLabel.isHidden = false
+        }
         
         return cell
     }
@@ -100,8 +105,15 @@ class MessageScreenTableViewController: UITableViewController {
         
         databaseRef.child("Users").child( (FIRAuth.auth()?.currentUser?.uid)! ).child("conversations").observe(.childAdded, with: { (snapshot) in
             
-            let downloadedDict = snapshot.value as! [String: AnyObject]
-            self.conversations.append(conversation(id: downloadedDict["id"] as! String, timestamp: downloadedDict["timestamp"] as! NSNumber, name: downloadedDict["name"] as! String, url: downloadedDict["photoURL"] as! String, uid: downloadedDict["uid"] as! String))
+            var downloadedDict = snapshot.value as! [String: AnyObject]
+            var photoURL: String = ""
+            if downloadedDict["photoURL"] == nil {
+                photoURL = "http://www.socialmediasearch.co.uk/wp-content/uploads/2014/12/s5.jpg"
+            } else {
+                photoURL = downloadedDict["photoURL"] as! String
+            }
+            self.conversations.append(conversation(id: downloadedDict["id"] as! String, timestamp: downloadedDict["timestamp"] as! NSNumber, name: downloadedDict["name"] as! String, url: photoURL, uid: downloadedDict["uid"] as! String, unseen: downloadedDict["unseen"] as! Int))
+            
             self.tableView.reloadData()
         })
     }
@@ -118,6 +130,8 @@ class MessageScreenTableViewController: UITableViewController {
             svc.photoURL = cellSender.photoURL
             svc.name = cellSender.name.text!
             svc.uid = cellSender.uid
+            cellSender.unseenLabel.text = "0"
+            cellSender.unseenLabel.isHidden = true
         }
     }
 }

@@ -87,8 +87,14 @@ class DetailsViewController: UIViewController {
             profileImage = UIImage(data: data as Data)!
         }
         
-        let imageData = UIImageJPEGRepresentation(profileImage, 0.5)
-        uploadImageToDatabase(data: imageData!)
+        var imageData = UIImageJPEGRepresentation(profileImage, 0.5)
+        
+        if imageData != nil {
+            uploadImageToDatabase(data: imageData!)
+        } else {
+            imageData = UIImageJPEGRepresentation(#imageLiteral(resourceName: "loading"), 0.5)
+            uploadImageToDatabase(data: imageData!)
+        }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting")
@@ -97,10 +103,10 @@ class DetailsViewController: UIViewController {
     
     func uploadImageToDatabase(data: Data)
     {
+        print("uploading")
         let username = (FIRAuth.auth()?.currentUser?.uid)!
         let storageRef = FIRStorage.storage().reference().child("profileImages/\(username).jpg")
         let databaseRef = FIRDatabase.database().reference()// Bio, exchanges, location, photoURL, posts, username
-
         
         let uploadMetadata = FIRStorageMetadata()
         uploadMetadata.contentType = "image/jpeg"

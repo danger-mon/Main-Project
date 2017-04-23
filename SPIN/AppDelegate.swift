@@ -18,15 +18,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
     
     var window: UIWindow?
     
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FIRApp.configure()
         
-        print("Launching Now!")
+        /*if UserDefaults.standard.string(forKey: "messageBadgeNumber") != nil {
+            BadgeHandler.messageBadgeNumber = Int(UserDefaults.standard.string(forKey: "messageBadgeNumber")!)!
+        }*/
         
         let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
             print("Received Notification: \(notification!.payload.body)")
+            
+            if notification?.payload.additionalData != nil {
+                if notification?.payload.additionalData["type"] != nil {
+                    if notification?.payload.additionalData["type"] as! String == "request" {
+                        
+                    }
+                } else {
+                    //Message Notification
+                    if notification?.payload.additionalData["userID"] != nil {
+                        let incomingKey = notification?.payload.additionalData["userID"] as! String
+                        if BadgeHandler.messages[incomingKey] == nil {
+                            BadgeHandler.messages[incomingKey] = 1
+                        } else {
+                            BadgeHandler.messages[incomingKey]! += 1
+                        }
+                    }
+                }
+                
+            }
+            //BadgeHandler.messageBadgeNumber += 1
+            
+            /*
+            let topController = UIApplication.shared.keyWindow!.rootViewController!.topMostViewController()
+            
+            if BadgeHandler.messageBadgeNumber == 0 {
+                topController.navigationItem.rightBarButtonItem?.setBadge(text: "")
+            } else {
+                topController.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+            } */
+            /*
+            if topController is ViewController {
+                (topController as! ViewController).changeBadge()
+            } else if topController is ProfileViewController {
+                (topController as! ProfileViewController).navigationItem.rightBarButtonItem?.setBadge(text:  "\(BadgeHandler.messageBadgeNumber)")
+            } else if topController is SavedCollectionViewController {
+                (topController as! SavedCollectionViewController).navigationItem.rightBarButtonItem?.setBadge(text:  "\(BadgeHandler.messageBadgeNumber)")
+            } else if topController is UploadViewController {
+                (topController as! UploadViewController).navigationItem.rightBarButtonItem?.setBadge(text:  "\(BadgeHandler.messageBadgeNumber)")
+            } else if topController is RequestsTableViewController {
+                (topController as! RequestsTableViewController).navigationItem.rightBarButtonItem?.setBadge(text:  "\(BadgeHandler.messageBadgeNumber)")
+            } else if topController is MultipleDressScreenViewController {
+                (topController as! MultipleDressScreenViewController).navigationItem.rightBarButtonItem?.setBadge(text:  "\(BadgeHandler.messageBadgeNumber)")
+            } */
         }
+        
         
         let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
             
@@ -35,6 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
             
             var fullMessage = payload.body
             print("Message = \(String(describing: fullMessage!))")
+            print(payload.debugDescription)
             
             if payload.additionalData != nil {
                 if payload.title != nil {
@@ -61,9 +107,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
                 
         OneSignal.inFocusDisplayType = OSNotificationDisplayType.none
         
-        OneSignal.add(self as! OSPermissionObserver)
+        OneSignal.add(self as OSPermissionObserver)
         
-        OneSignal.add(self as! OSSubscriptionObserver)
+        OneSignal.add(self as OSSubscriptionObserver)
 
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -131,11 +177,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
+        let _: OSHandleNotificationReceivedBlock = { notification in
             print("Received Notification: \(notification!.payload.notificationID)")
         }
         
-        let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
+        let _: OSHandleNotificationActionBlock = { result in
             
             // This block gets called when the user reacts to a notification received
             let payload: OSNotificationPayload = result!.notification.payload

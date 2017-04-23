@@ -60,11 +60,21 @@ class SavedCollectionViewController: UICollectionViewController {
     
     func messageScreen() {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "conversations")
-        self.present(vc!, animated: true, completion: nil)
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+        self.present(vc!, animated: false, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        if BadgeHandler.messageBadgeNumber != 0 {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+        } else {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "")
+        }
         loadDresses()
     }
 

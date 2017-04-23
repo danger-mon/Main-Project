@@ -22,6 +22,11 @@ class StartTradeViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

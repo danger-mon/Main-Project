@@ -29,22 +29,30 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
                 
                 let databaseRef = FIRDatabase.database().reference()
             
+                OneSignal.sendTag("userID", value: (FIRAuth.auth()?.currentUser?.uid)!)
+                
+                
+                OneSignal.promptLocation()
                 let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
                 let userID = (status.subscriptionStatus.userId)!
-            
+                
+                var fanoutObject: [String: AnyObject] = [:]
+                fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/userData/oneSignalKey"] = userID as AnyObject
+                fanoutObject["/OneSignalIDs/\((FIRAuth.auth()?.currentUser?.uid)!)"] = userID as AnyObject
+                OneSignal.sendTag("userID", value: (FIRAuth.auth()?.currentUser?.uid)!)
+                databaseRef.updateChildValues(fanoutObject)
+
+                print("Logging in as \(userID)")
+                
                 databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").observeSingleEvent(of: .value, with: { snapshot in
                 
                     if snapshot.value is NSNull {
+                        
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let nextViewController = storyboard.instantiateViewController(withIdentifier: "details")
                         self.present(nextViewController, animated: true, completion: nil)
+                        
                     } else {
-                        
-                        var fanoutObject: [String: AnyObject] = [:]
-                        fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/userData/oneSignalKey"] = userID as AnyObject
-                        fanoutObject["/OneSignalIDs/\((FIRAuth.auth()?.currentUser?.uid)!)"] = userID as AnyObject
-                        databaseRef.updateChildValues(fanoutObject)
-                        
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting")
                         self.present(nextViewController, animated: true, completion: nil)

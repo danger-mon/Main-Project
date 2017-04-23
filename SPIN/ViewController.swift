@@ -18,15 +18,14 @@ class ViewController: UIViewController, TapDelegate3 {
         // Do any additional setup after loading the view, typically from a nib.
         self.navigationController?.navigationBar.isTranslucent = false
         
-        /*let image2: UIImage = #imageLiteral(resourceName: "envelope")
+        let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
         button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)
         
         let barButton2 = UIBarButtonItem(customView: button2)
-        barButton2.addBadge(text: "1")
-        self.navigationItem.rightBarButtonItem = barButton2 */
-
+        barButton2.addBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+        self.navigationItem.rightBarButtonItem = barButton2
         
         draggableBackground = DraggableViewBackground(frame: self.view.frame) //frame: CGRect(x: 0.0, y: 70.0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width )
         draggableBackground.heightOfArea = Int(view.bounds.height - (navigationController?.navigationBar.frame.height)! - (tabBarController?.tabBar.frame.height)!)
@@ -34,23 +33,41 @@ class ViewController: UIViewController, TapDelegate3 {
         draggableBackground.delegate3 = self
         self.view.addSubview(draggableBackground)
         
-        OneSignal.postNotification(["contents": ["en": "Test Message"], "include_player_ids": ["a88fed3c-5e9b-4a99-88e7-86412509cbde"]])
-
+        
+    }
+    
+    func changeBadge() {
+        if BadgeHandler.messageBadgeNumber != 0 {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+        } else {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "")
+        }
     }
     
     func messageScreen() {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "conversations")
-        self.present(vc!, animated: true, completion: nil)
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+        self.present(vc!, animated: false, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        super.viewWillAppear(animated)
         /*
         if draggableBackground.loadOnView == true {
             draggableBackground.catchDressesFromServer()
         } else if draggableBackground.loadOnView == false {
             draggableBackground.loadOnView = true
         }*/
+        changeBadge()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        changeBadge()
     }
     
     override func setNeedsFocusUpdate() {

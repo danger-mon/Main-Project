@@ -77,9 +77,11 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( image2, for: .normal)
+        button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)
         
         let barButton2 = UIBarButtonItem(customView: button2)
         self.navigationItem.rightBarButtonItem = barButton2
+
         
         uploadCollectionView.currentPictures = [#imageLiteral(resourceName: "placeholderImage"), #imageLiteral(resourceName: "placeholderImage"), #imageLiteral(resourceName: "placeholderImage"), #imageLiteral(resourceName: "placeholderImage")]
         uploadCollectionView.isItUpload = true
@@ -98,8 +100,19 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
+    func messageScreen() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "conversations")
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+        self.present(vc!, animated: false, completion: nil)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
         /*
         nameTitle.isHidden = true
         dressNameField.isHidden = true
@@ -172,7 +185,7 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewDidLayoutSubviews() {
         
         var recognisers: [UITapGestureRecognizer] = []
-        for i in 0..<4 {
+        for _ in 0..<4 {
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(UploadViewController.imageTapped(sender:)))
             tapGestureRecognizer.delegate = self
             recognisers.append(tapGestureRecognizer)

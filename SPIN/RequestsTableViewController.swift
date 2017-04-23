@@ -27,6 +27,16 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let image2: UIImage = #imageLiteral(resourceName: "envelope")
+        let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        button2.setImage( image2, for: .normal)
+        button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)
+        
+        let barButton2 = UIBarButtonItem(customView: button2)
+        barButton2.addBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+        self.navigationItem.rightBarButtonItem = barButton2
+
         self.navigationController?.navigationBar.isTranslucent = false
         self.tableView.separatorColor = UIColor.white
         
@@ -34,6 +44,26 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
         catchOutgoingRequests()
 
         }
+    
+    func messageScreen() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "conversations")
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+        self.present(vc!, animated: false, completion: nil)
+    }
+
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if BadgeHandler.messageBadgeNumber != 0 {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+        } else {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "")
+        }
+    }
 
     func catchIncomingRequests() {
         let databaseRef = FIRDatabase.database().reference()
@@ -84,36 +114,6 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
 
     }
     
-    /* func catchImages() {
-        let storageRef = FIRStorage.storage().reference()
-        for i in 0..<incomingRequests.count {
-            if incomingRequests[i].image == #imageLiteral(resourceName: "loading") {
-                print("incomingLoad")
-                storageRef.child("dressImages").child("\(incomingRequests[i].reference).jpg").data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
-                    
-                    if error != nil {
-                        print(error as Any)
-                    } else {
-                        self.incomingRequests[i].image = UIImage(data: data!)!
-                    }
-                })
-            }
-        }
-        for i in 0..<outgoingRequests.count {
-            if outgoingRequests[i].image == #imageLiteral(resourceName: "loading") {
-                print("outgoingLoad")
-                storageRef.child("dressImages").child("\(outgoingRequests[i].reference).jpg").data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
-                    
-                    if error != nil {
-                        print(error as Any)
-                    } else {
-                        self.outgoingRequests[i].image = UIImage(data: data!)!
-                    }
-                })
-            }
-        }
-    } */
-    
     func getSectionsFromData() {
         allRequests = [incomingRequests, outgoingRequests]
         tableView.reloadData()
@@ -152,15 +152,7 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        /*
-        var numberToReturn = 0
-        if section == 0 {
-            numberToReturn = incomingRequests.count
-            
-        } else if section == 1 {
-             numberToReturn = outgoingRequests.count
-        }
-        return numberToReturn */
+      
         if section == 0 || section == incomingRequests.count + 1 {
             return 0
         } else {
@@ -272,6 +264,7 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
         self.navigationController?.pushViewController(nextViewController, animated: true) */
  
     }
+    
     @IBAction func tapOnRequest(_ sender: Any) {
         let tapped = sender as! UITapGestureRecognizer
         let tappedView = tapped.view as! RequestsTableViewCell
@@ -342,20 +335,22 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 let id = FIRDatabase.database().reference().child("Conversations").childByAutoId()
                 id.child("timestamp").setValue(Int32(NSDate.timeIntervalSinceReferenceDate))
                 
-                var post = ["id": id.key,
+                let postOwn = ["id": id.key,
                             "uid": uid,
                             "name": name,
                             "timestamp": Int32(NSDate.timeIntervalSinceReferenceDate)] as [String : Any]
                 
-                //Add to senders conversations
-                FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(id.key).setValue(post)
+                var postOther = postOwn
+                postOther["name"] = Profile.ownUsername
+                postOther["uid"] = (FIRAuth.auth()?.currentUser?.uid)!
                 
-                //Change the 'opposite name' and add to the receivers conversation
-                //TODO: Change to names or usernames for consistency
-                post["name"] = Profile.ownUsername
-                post["uid"] = (FIRAuth.auth()?.currentUser?.uid)!
+                let fanoutObject = ["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)": postOwn,
+                                    "/Users/\(uid)/conversations/\(id.key)": postOther,
+                                    "/Conversations/\(id.key)/timestamp": Int32(NSDate.timeIntervalSinceReferenceDate),
+                                    "/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)/unseen": 0,
+                                    "/Users/\(ProfileViewController.uidToLoad)/conversations/\(id.key)/unseen": 0] as [String : Any]
                 
-                FIRDatabase.database().reference().child("Users").child(uid).child("conversations").child(id.key).setValue(post)
+                FIRDatabase.database().reference().updateChildValues(fanoutObject)
                 
                 let destinationNavigationController = self.storyboard?.instantiateViewController(withIdentifier: "conversations") as! ChatNavigationController
                 
@@ -364,23 +359,18 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 destinationViewController.senderDisplayName = Profile.ownUsername
                 destinationViewController.senderId = (FIRAuth.auth()?.currentUser?.uid)!
                 destinationViewController.refToLoad = id.key
-                //TODO: Add URL image download
                 destinationViewController.name = name
-                
                 destinationNavigationController.pushViewController( destinationViewController, animated: true)
+                
+                let transition = CATransition()
+                transition.duration = 0.3
+                transition.type = kCATransitionPush
+                transition.subtype = kCATransitionFromRight
+                self.view.window!.layer.add(transition, forKey: kCATransition)
+                
                 self.present(destinationNavigationController, animated: true, completion: nil)
             }
         })
-
-        
-        /*
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let nextViewController = storyboard.instantiateViewController(withIdentifier: "profileViewer") as! ProfileViewController
-        
-        ProfileViewController.uidToLoad = uid
-        
-        self.navigationController?.pushViewController(nextViewController, animated: true) */
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -389,7 +379,6 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
             print(sender.debugDescription)
             
             _ = segue.destination as! ProfileViewController
-            //ProfileViewController.uidToLoad =
-    }
+        }
     }
 }

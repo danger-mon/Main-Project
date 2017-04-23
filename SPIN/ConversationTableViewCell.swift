@@ -15,12 +15,16 @@ class ConversationTableViewCell: UITableViewCell {
     var ref: String = ""
     var photoURL: String = ""
     var uid: String = ""
+    @IBOutlet weak var unseenLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         recipientImageView.clipsToBounds = true
         recipientImageView.contentMode = .scaleAspectFill
+        unseenLabel.layer.cornerRadius = 11
+        unseenLabel.clipsToBounds = true
+        unseenLabel.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

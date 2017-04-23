@@ -94,35 +94,60 @@ class ChatViewController: JSQMessagesViewController {
         })
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let unseenRef = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(messageRef.key).child("unseen")
+        unseenRef.setValue(0)
+        BadgeHandler.messages[uid] = 0
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let unseenRef = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(messageRef.key).child("unseen")
+        unseenRef.setValue(0)
+        BadgeHandler.messages[uid] = 0
+    }
+    
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
         let itemRef = messageRef.child("messages").childByAutoId()
         let messageItem = [
             "senderId": senderId!,
             "senderName": senderDisplayName!,
-            "text": text!,
-            ]
+            "text": text!]
         
+        print(1)
         itemRef.setValue(messageItem)
+        print(2)
         messageRef.child("timestamp").setValue((NSDate().timeIntervalSince1970) as NSNumber)
+        print(3)
+        print(uid)
+        print(messageRef.key)
+        let unseenRef = FIRDatabase.database().reference().child("Users").child(uid).child("conversations").child(messageRef.key).child("unseen")
+        print(4)
+        unseenRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.value is NSNull { print(5)} else {
+                print(6)
+                var counter = (snapshot.value)! as! Int
+                counter += 1
+                unseenRef.setValue(counter)
+            }
+        })
         
         print(notificationKey)
-        /*OneSignal.postNotification(["contents": ["en": text!],
-                                    "headings": ["en": senderDisplayName!],
-                                    "include_player_ids": notificationKey]) */
-        
-        
         
         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
         let pushToken = status.subscriptionStatus.pushToken
-        let userId = status.subscriptionStatus.userId
+        _ = status.subscriptionStatus.userId
         
         if pushToken != nil {
             let message = text!
             let notificationContent = [
-                "include_player_ids": [userId],
+                "include_player_ids": [notificationKey],
                 "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
                 "headings": ["en": "\(senderDisplayName!)"],
+                "data": ["senderUid": (senderId)],
                 // If want to open a url with in-app browser
                 //"url": "https://google.com",
                 // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
@@ -370,10 +395,10 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                     newRef.put(imageData!, metadata: uploadMetadata, completion: {
                     (metadata, error) in
                     if(error != nil) {
-                        print("I received an error! \(error?.localizedDescription)")
+                        print("I received an error! \(String(describing: error?.localizedDescription))")
                     }
                     else{
-                        print("Upload Complete! Here's some metadata \(metadata)")
+                        print("Upload Complete! Here's some metadata \(String(describing: metadata))")
                         self.setImageURL(newRef.description, forPhotoMessageWithKey: key)
                     }
                 })
@@ -393,10 +418,10 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                     newRef.put(imageData!, metadata: uploadMetadata, completion: {
                         (metadata, error) in
                         if(error != nil) {
-                            print("I received an error! \(error?.localizedDescription)")
+                            print("I received an error! \(String(describing: error?.localizedDescription))")
                         }
                         else{
-                            print("Upload Complete! Here's some metadata \(metadata)")
+                            print("Upload Complete! Here's some metadata \(String(describing: metadata))")
                             self.setImageURL(newRef.description, forPhotoMessageWithKey: key)
                         }
                     })
