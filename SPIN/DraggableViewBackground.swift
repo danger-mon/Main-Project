@@ -119,7 +119,6 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
                 let dictionary: [String: [String: Any]] = snapshot.value as! [String: [String: Any]]
                 var conversationUnseens: [String: Int] = [:]
                 for (_, value) in dictionary {
-                    print("\(String(describing: value["unseen"])) for \(value["uid"] as! String)")
                     conversationUnseens[value["uid"] as! String] = (value["unseen"])! as? Int
                 }
                 BadgeHandler.messages = conversationUnseens
@@ -190,13 +189,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         //Creates the profile display
         profileView = MiniProfile()
         
-        //Display all the new views
-        //self.addSubview(profileView)
-        //self.addSubview(xButton)
-        //self.addSubview(checkButton)
-        //self.addSubview(dressName)
-        //self.addSubview(dressDescription)
-    } //Lays out all the subviews
+    }
 
     
     
@@ -204,11 +197,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
     func createDraggableViewWithDataAtIndex(_ index: NSInteger) -> DraggableView {
         
         let draggableView = DraggableView(frame: CGRect(x: (self.frame.size.width - CARD_WIDTH)/2 , y: (CGFloat(heightOfArea) - CARD_HEIGHT - 15)/2, width: CARD_WIDTH, height: CARD_HEIGHT))
-        draggableView.information.text = ""  //exampleCardLabels[index]
-        
-        //draggableView.addSubview(dressName)
-        //draggableView.addSubview(dressDescription)
-        //draggableView.addSubview(profileView)
+        draggableView.information.text = ""
         
         draggableView.delegate = self
         return draggableView
@@ -259,7 +248,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         return shapeLayer
     }
     
-    //Gets 'count' dresses from the server (from old to new)
+    
     func catchNextDress(count: Int) {
         
         // If the current time is between the time of launch and the time of first segment (newest unseen dresses)
@@ -274,13 +263,12 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
             
                 if snapshot.value is NSNull {
                     if self.nextTimeSegment.0 == 0 {
-                        /*
-                        self.loadingLabel.isEnabled = true
-                        self.loadingLabel.isHidden = false
-                        self.sendSubview(toBack: self.loadingLabel) */
+                        
                     } else {
-                        self.updateSegments(joining: false)
+                        print("updateSegments joining: false")
+                        self.updateSegments(joining: true)
                     }
+                    
                 } else {
                     
                     let item = snapshot
@@ -319,7 +307,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
             })
         } else {
             endOfSegment = true
-            print("yo")
+            print("endOfSegment = true")
             /*
              */
         }
@@ -350,6 +338,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
                 var firstSnapshot: FIRDataSnapshot = FIRDataSnapshot()
                 while let rest = enumerator.nextObject() as? FIRDataSnapshot {
                     reading = rest.value as! NSDictionary
+                    print("reading: \(reading)")
                     firstSnapshot = rest
                 }
                 
@@ -359,7 +348,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
                     
                     if snapshot2.value is NSNull {
                         //"Only one bucket, reached the end"
-                        print("elloo")
+                        print("No second segment")
                     } else {
                         let enumerator2 = snapshot2.children
                         var readingLower: NSDictionary = [:]
@@ -368,10 +357,14 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
                             readingLower = rest2.value as! NSDictionary
                             secondSnapshot = rest2
                         }
-                        if reading["upper"] as! Double == 0 {
+                        
+                        print("readingLower: \(readingLower)")
+                        print("rest2: \(secondSnapshot)")
+                        
+                        /*if readingLower["upper"] as! Double == 0 {
                             //No more dresses
                             self.loadingLabel.text = "No More Items"
-                        } else {
+                        } else { */
                             //Make these are new segments
                             self.currentTimeSegment = (reading["upper"] as! Double, reading["lower"] as! Double)
                             self.currentTimeSegmentKey = firstSnapshot.key
@@ -380,7 +373,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
                             print("Getting New Segments!")
                             self.endOfSegment = false
                             self.catchNextDress(count: 3)
-                        }
+                        //}
                     }
                 })
             }
@@ -471,7 +464,9 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         var fanoutObject: [String: AnyObject] = [:]
         fanoutObject["/Users/\(userIdentifier!)/savedDresses/\(dressReel[0].ref!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
         fanoutObject["/PostData/\(dressReel[0].ref!)/swipedRight/\(userIdentifier!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
-        fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/lower"] = dressReel[0].timestamp as AnyObject
+        if dressReel[0].timestamp < currentTimeSegment.1 {
+            fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/lower"] = dressReel[0].timestamp as AnyObject
+        }
         fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/upper"] = currentTimeSegment.0 as AnyObject
         
         databaseRef.updateChildValues(fanoutObject)
@@ -484,7 +479,9 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         
         var fanoutObject: [String: AnyObject] = [:]
         fanoutObject["/PostData/\(dressReel[0].ref!)/swipedLeft/\(userIdentifier!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
-        fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/lower"] = dressReel[0].timestamp as AnyObject
+        if dressReel[0].timestamp < currentTimeSegment.1 {
+            fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/lower"] = dressReel[0].timestamp as AnyObject
+        }
         fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/upper"] = currentTimeSegment.0 as AnyObject
         
         databaseRef.updateChildValues(fanoutObject)

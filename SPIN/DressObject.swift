@@ -55,8 +55,7 @@ class DressObject: NSObject, NSCoding {
         let snapshotValue = (snapshot.value as! NSDictionary).allValues.first as! NSDictionary
         
         //let snapshotValue = snapshotVal[0] as! NSDictionary
-        //name = snapshotValue["title"] as! String
-        name = key
+        name = snapshotValue["title"] as! String
         dressDescription = snapshotValue["description"] as! String
         image = #imageLiteral(resourceName: "claire")
         profile = snapshotValue["username"] as! String

@@ -7,9 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20914FE1F5F739F05F074E9B /* Pods_SPIN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 385659904A19294D2E40BD65 /* Pods_SPIN.framework */; };
 		3E08D6FB1E0C1F3300F46731 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E08D6FA1E0C1F3300F46731 /* ChatViewController.swift */; };
 		3E0DE2251EA50893002AC7E5 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DE2241EA50893002AC7E5 /* IntroViewController.swift */; };
 		3E0DE2281EA5183A002AC7E5 /* IntroSubScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DE2271EA5183A002AC7E5 /* IntroSubScreenViewController.swift */; };
+		3E17DD9D1EAD545000EC4F26 /* HeroAnimatorViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD741EAD545000EC4F26 /* HeroAnimatorViewContext.swift */; };
+		3E17DD9E1EAD545000EC4F26 /* HeroCoreAnimationViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD751EAD545000EC4F26 /* HeroCoreAnimationViewContext.swift */; };
+		3E17DD9F1EAD545000EC4F26 /* HeroDefaultAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD761EAD545000EC4F26 /* HeroDefaultAnimator.swift */; };
+		3E17DDA01EAD545000EC4F26 /* HeroViewPropertyViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD771EAD545000EC4F26 /* HeroViewPropertyViewContext.swift */; };
+		3E17DDA11EAD545000EC4F26 /* HeroDebugPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD791EAD545000EC4F26 /* HeroDebugPlugin.swift */; };
+		3E17DDA21EAD545000EC4F26 /* HeroDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD7A1EAD545000EC4F26 /* HeroDebugView.swift */; };
+		3E17DDA31EAD545000EC4F26 /* DefaultAnimationPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD7B1EAD545000EC4F26 /* DefaultAnimationPreprocessor.swift */; };
+		3E17DDA41EAD545000EC4F26 /* Array+HeroModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD7D1EAD545000EC4F26 /* Array+HeroModifier.swift */; };
+		3E17DDA51EAD545000EC4F26 /* CALayer+Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD7E1EAD545000EC4F26 /* CALayer+Hero.swift */; };
+		3E17DDA61EAD545000EC4F26 /* CAMediaTimingFunction+Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD7F1EAD545000EC4F26 /* CAMediaTimingFunction+Hero.swift */; };
+		3E17DDA71EAD545000EC4F26 /* CG+Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD801EAD545000EC4F26 /* CG+Hero.swift */; };
+		3E17DDA81EAD545000EC4F26 /* DispatchQueue+Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD811EAD545000EC4F26 /* DispatchQueue+Hero.swift */; };
+		3E17DDA91EAD545000EC4F26 /* UIKit+Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD821EAD545000EC4F26 /* UIKit+Hero.swift */; };
+		3E17DDAA1EAD545000EC4F26 /* UIView+Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD831EAD545000EC4F26 /* UIView+Hero.swift */; };
+		3E17DDAB1EAD545000EC4F26 /* UIViewController+Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD841EAD545000EC4F26 /* UIViewController+Hero.swift */; };
+		3E17DDAC1EAD545000EC4F26 /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD861EAD545000EC4F26 /* Hero.swift */; };
+		3E17DDAD1EAD545000EC4F26 /* HeroBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD871EAD545000EC4F26 /* HeroBaseController.swift */; };
+		3E17DDAE1EAD545000EC4F26 /* HeroContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD881EAD545000EC4F26 /* HeroContext.swift */; };
+		3E17DDAF1EAD545000EC4F26 /* HeroIndependentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD891EAD545000EC4F26 /* HeroIndependentController.swift */; };
+		3E17DDB01EAD545000EC4F26 /* HeroModifier+HeroStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD8A1EAD545000EC4F26 /* HeroModifier+HeroStringConvertible.swift */; };
+		3E17DDB11EAD545000EC4F26 /* HeroModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD8B1EAD545000EC4F26 /* HeroModifier.swift */; };
+		3E17DDB21EAD545000EC4F26 /* HeroPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD8C1EAD545000EC4F26 /* HeroPlugin.swift */; };
+		3E17DDB31EAD545000EC4F26 /* HeroStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD8D1EAD545000EC4F26 /* HeroStringConvertible.swift */; };
+		3E17DDB41EAD545000EC4F26 /* HeroTargetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD8E1EAD545000EC4F26 /* HeroTargetState.swift */; };
+		3E17DDB51EAD545000EC4F26 /* HeroTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD8F1EAD545000EC4F26 /* HeroTypes.swift */; };
+		3E17DDB61EAD545000EC4F26 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E17DD901EAD545000EC4F26 /* Info.plist */; };
+		3E17DDB71EAD545000EC4F26 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD921EAD545000EC4F26 /* Lexer.swift */; };
+		3E17DDB81EAD545000EC4F26 /* Nodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD931EAD545000EC4F26 /* Nodes.swift */; };
+		3E17DDB91EAD545000EC4F26 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD941EAD545000EC4F26 /* Parser.swift */; };
+		3E17DDBA1EAD545000EC4F26 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD951EAD545000EC4F26 /* Regex.swift */; };
+		3E17DDBB1EAD545000EC4F26 /* BasePreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD971EAD545000EC4F26 /* BasePreprocessor.swift */; };
+		3E17DDBC1EAD545000EC4F26 /* CascadePreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD981EAD545000EC4F26 /* CascadePreprocessor.swift */; };
+		3E17DDBD1EAD545000EC4F26 /* DurationPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD991EAD545000EC4F26 /* DurationPreprocessor.swift */; };
+		3E17DDBE1EAD545000EC4F26 /* IgnoreSubviewModifiersPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD9A1EAD545000EC4F26 /* IgnoreSubviewModifiersPreprocessor.swift */; };
+		3E17DDBF1EAD545000EC4F26 /* MatchPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD9B1EAD545000EC4F26 /* MatchPreprocessor.swift */; };
+		3E17DDC01EAD545000EC4F26 /* SourcePreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17DD9C1EAD545000EC4F26 /* SourcePreprocessor.swift */; };
 		3E3247E91DDA5FC500BC06F5 /* ProfileDressesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3247E81DDA5FC500BC06F5 /* ProfileDressesCollectionView.swift */; };
 		3E3247EB1DDA690700BC06F5 /* OwnDressesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3247EA1DDA690700BC06F5 /* OwnDressesCollectionViewCell.swift */; };
 		3E33A9581DCBC96700313319 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E33A9571DCBC96700313319 /* AppDelegate.swift */; };
@@ -21,6 +58,7 @@
 		3E33A9701DCBC96700313319 /* SPINTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E33A96F1DCBC96700313319 /* SPINTests.swift */; };
 		3E33A97B1DCBC96700313319 /* SPINUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E33A97A1DCBC96700313319 /* SPINUITests.swift */; };
 		3E37583B1E37B92500905F49 /* DressScreenEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E37583A1E37B92500905F49 /* DressScreenEditViewController.swift */; };
+		3E3ACC441EAD3AF1008F069C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E3ACC431EAD3AF1008F069C /* GoogleService-Info.plist */; };
 		3E440FC01E9BDC9A002F67DE /* MultipleDressScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E440FBF1E9BDC9A002F67DE /* MultipleDressScreenViewController.swift */; };
 		3E440FC41E9BE12F002F67DE /* MultipleDressCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E440FC31E9BE12F002F67DE /* MultipleDressCollectionView.swift */; };
 		3E4FB8EE1EABB2520071989B /* GetTopMostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4FB8ED1EABB2520071989B /* GetTopMostView.swift */; };
@@ -55,9 +93,7 @@
 		3EEF473F1EA97BD80073C56F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEF473E1EA97BD80073C56F /* NotificationService.swift */; };
 		3EEF47431EA97BD80073C56F /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3EEF473C1EA97BD80073C56F /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3EF0613E1DCCCC110005FE47 /* DescriptionArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF0613D1DCCCC110005FE47 /* DescriptionArea.swift */; };
-		3EF229451DECCBA20072E633 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3EF229441DECCBA20072E633 /* GoogleService-Info.plist */; };
-		7122F033070C4FF888D32F83 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B35EAA3EF0D18E3AAF0A0FB /* Pods_OneSignalNotificationServiceExtension.framework */; };
-		C4184889F4DB5BB830CE7A74 /* Pods_SPIN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F12BA6F8DB2C61B82AF9E7B /* Pods_SPIN.framework */; };
+		CBD79342755F5037D5CEC825 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18A29A63393D6018DB42999 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,9 +135,47 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		385659904A19294D2E40BD65 /* Pods_SPIN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SPIN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E08D6FA1E0C1F3300F46731 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		3E0DE2241EA50893002AC7E5 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		3E0DE2271EA5183A002AC7E5 /* IntroSubScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroSubScreenViewController.swift; sourceTree = "<group>"; };
+		3E17DD741EAD545000EC4F26 /* HeroAnimatorViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroAnimatorViewContext.swift; sourceTree = "<group>"; };
+		3E17DD751EAD545000EC4F26 /* HeroCoreAnimationViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroCoreAnimationViewContext.swift; sourceTree = "<group>"; };
+		3E17DD761EAD545000EC4F26 /* HeroDefaultAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroDefaultAnimator.swift; sourceTree = "<group>"; };
+		3E17DD771EAD545000EC4F26 /* HeroViewPropertyViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroViewPropertyViewContext.swift; sourceTree = "<group>"; };
+		3E17DD791EAD545000EC4F26 /* HeroDebugPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroDebugPlugin.swift; sourceTree = "<group>"; };
+		3E17DD7A1EAD545000EC4F26 /* HeroDebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroDebugView.swift; sourceTree = "<group>"; };
+		3E17DD7B1EAD545000EC4F26 /* DefaultAnimationPreprocessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAnimationPreprocessor.swift; sourceTree = "<group>"; };
+		3E17DD7D1EAD545000EC4F26 /* Array+HeroModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+HeroModifier.swift"; sourceTree = "<group>"; };
+		3E17DD7E1EAD545000EC4F26 /* CALayer+Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CALayer+Hero.swift"; sourceTree = "<group>"; };
+		3E17DD7F1EAD545000EC4F26 /* CAMediaTimingFunction+Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAMediaTimingFunction+Hero.swift"; sourceTree = "<group>"; };
+		3E17DD801EAD545000EC4F26 /* CG+Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CG+Hero.swift"; sourceTree = "<group>"; };
+		3E17DD811EAD545000EC4F26 /* DispatchQueue+Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Hero.swift"; sourceTree = "<group>"; };
+		3E17DD821EAD545000EC4F26 /* UIKit+Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit+Hero.swift"; sourceTree = "<group>"; };
+		3E17DD831EAD545000EC4F26 /* UIView+Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Hero.swift"; sourceTree = "<group>"; };
+		3E17DD841EAD545000EC4F26 /* UIViewController+Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Hero.swift"; sourceTree = "<group>"; };
+		3E17DD851EAD545000EC4F26 /* Hero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hero.h; sourceTree = "<group>"; };
+		3E17DD861EAD545000EC4F26 /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
+		3E17DD871EAD545000EC4F26 /* HeroBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroBaseController.swift; sourceTree = "<group>"; };
+		3E17DD881EAD545000EC4F26 /* HeroContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroContext.swift; sourceTree = "<group>"; };
+		3E17DD891EAD545000EC4F26 /* HeroIndependentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroIndependentController.swift; sourceTree = "<group>"; };
+		3E17DD8A1EAD545000EC4F26 /* HeroModifier+HeroStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HeroModifier+HeroStringConvertible.swift"; sourceTree = "<group>"; };
+		3E17DD8B1EAD545000EC4F26 /* HeroModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroModifier.swift; sourceTree = "<group>"; };
+		3E17DD8C1EAD545000EC4F26 /* HeroPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroPlugin.swift; sourceTree = "<group>"; };
+		3E17DD8D1EAD545000EC4F26 /* HeroStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroStringConvertible.swift; sourceTree = "<group>"; };
+		3E17DD8E1EAD545000EC4F26 /* HeroTargetState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroTargetState.swift; sourceTree = "<group>"; };
+		3E17DD8F1EAD545000EC4F26 /* HeroTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroTypes.swift; sourceTree = "<group>"; };
+		3E17DD901EAD545000EC4F26 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E17DD921EAD545000EC4F26 /* Lexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
+		3E17DD931EAD545000EC4F26 /* Nodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nodes.swift; sourceTree = "<group>"; };
+		3E17DD941EAD545000EC4F26 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		3E17DD951EAD545000EC4F26 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+		3E17DD971EAD545000EC4F26 /* BasePreprocessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePreprocessor.swift; sourceTree = "<group>"; };
+		3E17DD981EAD545000EC4F26 /* CascadePreprocessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CascadePreprocessor.swift; sourceTree = "<group>"; };
+		3E17DD991EAD545000EC4F26 /* DurationPreprocessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationPreprocessor.swift; sourceTree = "<group>"; };
+		3E17DD9A1EAD545000EC4F26 /* IgnoreSubviewModifiersPreprocessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnoreSubviewModifiersPreprocessor.swift; sourceTree = "<group>"; };
+		3E17DD9B1EAD545000EC4F26 /* MatchPreprocessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchPreprocessor.swift; sourceTree = "<group>"; };
+		3E17DD9C1EAD545000EC4F26 /* SourcePreprocessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourcePreprocessor.swift; sourceTree = "<group>"; };
 		3E3247E81DDA5FC500BC06F5 /* ProfileDressesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDressesCollectionView.swift; sourceTree = "<group>"; };
 		3E3247EA1DDA690700BC06F5 /* OwnDressesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnDressesCollectionViewCell.swift; sourceTree = "<group>"; };
 		3E33A9541DCBC96700313319 /* SPIN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPIN.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +193,7 @@
 		3E33A97A1DCBC96700313319 /* SPINUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPINUITests.swift; sourceTree = "<group>"; };
 		3E33A97C1DCBC96700313319 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E37583A1E37B92500905F49 /* DressScreenEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DressScreenEditViewController.swift; sourceTree = "<group>"; };
+		3E3ACC431EAD3AF1008F069C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3E440FBF1E9BDC9A002F67DE /* MultipleDressScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleDressScreenViewController.swift; sourceTree = "<group>"; };
 		3E440FC31E9BE12F002F67DE /* MultipleDressCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleDressCollectionView.swift; sourceTree = "<group>"; };
 		3E4BFE1C1EA97CF0003E505F /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
@@ -156,13 +231,11 @@
 		3EEF473E1EA97BD80073C56F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		3EEF47401EA97BD80073C56F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EF0613D1DCCCC110005FE47 /* DescriptionArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionArea.swift; sourceTree = "<group>"; };
-		3EF229441DECCBA20072E633 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		49B31F16E416F0BE5304AB63 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		774695F18D0637E4585117BA /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
-		8F12BA6F8DB2C61B82AF9E7B /* Pods_SPIN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SPIN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9B35EAA3EF0D18E3AAF0A0FB /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B392CBDF61B2D9434A855BEA /* Pods-SPIN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPIN.release.xcconfig"; path = "Pods/Target Support Files/Pods-SPIN/Pods-SPIN.release.xcconfig"; sourceTree = "<group>"; };
-		F700B3A60D73EBBAB688A744 /* Pods-SPIN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPIN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SPIN/Pods-SPIN.debug.xcconfig"; sourceTree = "<group>"; };
+		8DE1688D4A91BA69B54855AB /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		9A25BC7DF2798B177D3A8AA3 /* Pods-SPIN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPIN.release.xcconfig"; path = "Pods/Target Support Files/Pods-SPIN/Pods-SPIN.release.xcconfig"; sourceTree = "<group>"; };
+		A18A29A63393D6018DB42999 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6E6B50C3F491717553247D9 /* Pods-SPIN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPIN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SPIN/Pods-SPIN.debug.xcconfig"; sourceTree = "<group>"; };
+		CFE75ACE538F78D9171D7659 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,7 +243,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4184889F4DB5BB830CE7A74 /* Pods_SPIN.framework in Frameworks */,
+				20914FE1F5F739F05F074E9B /* Pods_SPIN.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,18 +265,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7122F033070C4FF888D32F83 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
+				CBD79342755F5037D5CEC825 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		23F5B8078A1FC7974A41567D /* Frameworks */ = {
+		0CA9F4FEBADE2C716B5062D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9B35EAA3EF0D18E3AAF0A0FB /* Pods_OneSignalNotificationServiceExtension.framework */,
-				8F12BA6F8DB2C61B82AF9E7B /* Pods_SPIN.framework */,
+				A18A29A63393D6018DB42999 /* Pods_OneSignalNotificationServiceExtension.framework */,
+				385659904A19294D2E40BD65 /* Pods_SPIN.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -218,6 +291,90 @@
 				3ECC3B4A1DFF410A008A69B5 /* LoginViewController.swift */,
 			);
 			name = Intro;
+			sourceTree = "<group>";
+		};
+		3E17DD721EAD545000EC4F26 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				3E17DD731EAD545000EC4F26 /* Animator */,
+				3E17DD781EAD545000EC4F26 /* Debug Plugin */,
+				3E17DD7B1EAD545000EC4F26 /* DefaultAnimationPreprocessor.swift */,
+				3E17DD7C1EAD545000EC4F26 /* Extensions */,
+				3E17DD851EAD545000EC4F26 /* Hero.h */,
+				3E17DD861EAD545000EC4F26 /* Hero.swift */,
+				3E17DD871EAD545000EC4F26 /* HeroBaseController.swift */,
+				3E17DD881EAD545000EC4F26 /* HeroContext.swift */,
+				3E17DD891EAD545000EC4F26 /* HeroIndependentController.swift */,
+				3E17DD8A1EAD545000EC4F26 /* HeroModifier+HeroStringConvertible.swift */,
+				3E17DD8B1EAD545000EC4F26 /* HeroModifier.swift */,
+				3E17DD8C1EAD545000EC4F26 /* HeroPlugin.swift */,
+				3E17DD8D1EAD545000EC4F26 /* HeroStringConvertible.swift */,
+				3E17DD8E1EAD545000EC4F26 /* HeroTargetState.swift */,
+				3E17DD8F1EAD545000EC4F26 /* HeroTypes.swift */,
+				3E17DD901EAD545000EC4F26 /* Info.plist */,
+				3E17DD911EAD545000EC4F26 /* Parser */,
+				3E17DD961EAD545000EC4F26 /* Preprocessors */,
+			);
+			path = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
+		3E17DD731EAD545000EC4F26 /* Animator */ = {
+			isa = PBXGroup;
+			children = (
+				3E17DD741EAD545000EC4F26 /* HeroAnimatorViewContext.swift */,
+				3E17DD751EAD545000EC4F26 /* HeroCoreAnimationViewContext.swift */,
+				3E17DD761EAD545000EC4F26 /* HeroDefaultAnimator.swift */,
+				3E17DD771EAD545000EC4F26 /* HeroViewPropertyViewContext.swift */,
+			);
+			path = Animator;
+			sourceTree = "<group>";
+		};
+		3E17DD781EAD545000EC4F26 /* Debug Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				3E17DD791EAD545000EC4F26 /* HeroDebugPlugin.swift */,
+				3E17DD7A1EAD545000EC4F26 /* HeroDebugView.swift */,
+			);
+			path = "Debug Plugin";
+			sourceTree = "<group>";
+		};
+		3E17DD7C1EAD545000EC4F26 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3E17DD7D1EAD545000EC4F26 /* Array+HeroModifier.swift */,
+				3E17DD7E1EAD545000EC4F26 /* CALayer+Hero.swift */,
+				3E17DD7F1EAD545000EC4F26 /* CAMediaTimingFunction+Hero.swift */,
+				3E17DD801EAD545000EC4F26 /* CG+Hero.swift */,
+				3E17DD811EAD545000EC4F26 /* DispatchQueue+Hero.swift */,
+				3E17DD821EAD545000EC4F26 /* UIKit+Hero.swift */,
+				3E17DD831EAD545000EC4F26 /* UIView+Hero.swift */,
+				3E17DD841EAD545000EC4F26 /* UIViewController+Hero.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3E17DD911EAD545000EC4F26 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				3E17DD921EAD545000EC4F26 /* Lexer.swift */,
+				3E17DD931EAD545000EC4F26 /* Nodes.swift */,
+				3E17DD941EAD545000EC4F26 /* Parser.swift */,
+				3E17DD951EAD545000EC4F26 /* Regex.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		3E17DD961EAD545000EC4F26 /* Preprocessors */ = {
+			isa = PBXGroup;
+			children = (
+				3E17DD971EAD545000EC4F26 /* BasePreprocessor.swift */,
+				3E17DD981EAD545000EC4F26 /* CascadePreprocessor.swift */,
+				3E17DD991EAD545000EC4F26 /* DurationPreprocessor.swift */,
+				3E17DD9A1EAD545000EC4F26 /* IgnoreSubviewModifiersPreprocessor.swift */,
+				3E17DD9B1EAD545000EC4F26 /* MatchPreprocessor.swift */,
+				3E17DD9C1EAD545000EC4F26 /* SourcePreprocessor.swift */,
+			);
+			path = Preprocessors;
 			sourceTree = "<group>";
 		};
 		3E3247E71DDA578600BC06F5 /* Profile */ = {
@@ -240,8 +397,8 @@
 				3E33A9791DCBC96700313319 /* SPINUITests */,
 				3EEF473D1EA97BD80073C56F /* OneSignalNotificationServiceExtension */,
 				3E33A9551DCBC96700313319 /* Products */,
-				90AEF64185E27410C34F09BE /* Pods */,
-				23F5B8078A1FC7974A41567D /* Frameworks */,
+				4E8F909B7D1D9F9D0C5392DB /* Pods */,
+				0CA9F4FEBADE2C716B5062D3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -276,8 +433,9 @@
 				3E33A9611DCBC96700313319 /* Assets.xcassets */,
 				3E33A9631DCBC96700313319 /* LaunchScreen.storyboard */,
 				3E33A9661DCBC96700313319 /* Info.plist */,
+				3E17DD721EAD545000EC4F26 /* Sources */,
+				3E3ACC431EAD3AF1008F069C /* GoogleService-Info.plist */,
 				3E33A95E1DCBC96700313319 /* SPIN.xcdatamodeld */,
-				3EF229441DECCBA20072E633 /* GoogleService-Info.plist */,
 			);
 			path = SPIN;
 			sourceTree = "<group>";
@@ -394,13 +552,13 @@
 			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
-		90AEF64185E27410C34F09BE /* Pods */ = {
+		4E8F909B7D1D9F9D0C5392DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				49B31F16E416F0BE5304AB63 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				774695F18D0637E4585117BA /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
-				F700B3A60D73EBBAB688A744 /* Pods-SPIN.debug.xcconfig */,
-				B392CBDF61B2D9434A855BEA /* Pods-SPIN.release.xcconfig */,
+				8DE1688D4A91BA69B54855AB /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				CFE75ACE538F78D9171D7659 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+				B6E6B50C3F491717553247D9 /* Pods-SPIN.debug.xcconfig */,
+				9A25BC7DF2798B177D3A8AA3 /* Pods-SPIN.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -412,14 +570,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3E33A97F1DCBC96700313319 /* Build configuration list for PBXNativeTarget "SPIN" */;
 			buildPhases = (
-				42437F1238D93AECD05A0624 /* [CP] Check Pods Manifest.lock */,
+				B1F4BA877DFC860E445C60FD /* [CP] Check Pods Manifest.lock */,
 				3E33A9501DCBC96700313319 /* Sources */,
 				3E33A9511DCBC96700313319 /* Frameworks */,
 				3E33A9521DCBC96700313319 /* Resources */,
 				3E2F32E11EA6304000E1575E /* ShellScript */,
 				3EEF47371EA97B360073C56F /* Embed App Extensions */,
-				59D36C4C178A8663BA2A87B4 /* [CP] Embed Pods Frameworks */,
-				B52089A754781374478B18A4 /* [CP] Copy Pods Resources */,
+				EB60DAEEB31F4DA321968AB0 /* [CP] Embed Pods Frameworks */,
+				CE6FE130C881A68270C0FF64 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -471,11 +629,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3EEF47441EA97BD80073C56F /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
 			buildPhases = (
-				B4814DB69644D9E0B4F920A6 /* [CP] Check Pods Manifest.lock */,
+				EFFDCF3A55B78B80B8A91835 /* [CP] Check Pods Manifest.lock */,
 				3EEF47381EA97BD80073C56F /* Sources */,
 				3EEF47391EA97BD80073C56F /* Frameworks */,
 				3EEF473A1EA97BD80073C56F /* Resources */,
-				BABBA291E1649881B132466D /* [CP] Copy Pods Resources */,
+				39848240D7A933CF13A06906 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -566,8 +724,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E33A9651DCBC96700313319 /* LaunchScreen.storyboard in Resources */,
-				3EF229451DECCBA20072E633 /* GoogleService-Info.plist in Resources */,
+				3E3ACC441EAD3AF1008F069C /* GoogleService-Info.plist in Resources */,
 				3E33A9621DCBC96700313319 /* Assets.xcassets in Resources */,
+				3E17DDB61EAD545000EC4F26 /* Info.plist in Resources */,
 				3E33A95D1DCBC96700313319 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -596,80 +755,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3E2F32E11EA6304000E1575E /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=1:942347882460:ios:abfb480dcd24d5c5\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"crashreporting.json\"";
-		};
-		42437F1238D93AECD05A0624 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		59D36C4C178A8663BA2A87B4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SPIN/Pods-SPIN-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B4814DB69644D9E0B4F920A6 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		B52089A754781374478B18A4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SPIN/Pods-SPIN-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BABBA291E1649881B132466D /* [CP] Copy Pods Resources */ = {
+		39848240D7A933CF13A06906 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -684,6 +770,79 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3E2F32E11EA6304000E1575E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=1:942347882460:ios:abfb480dcd24d5c5\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"crashreporting.json\"";
+		};
+		B1F4BA877DFC860E445C60FD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CE6FE130C881A68270C0FF64 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SPIN/Pods-SPIN-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EB60DAEEB31F4DA321968AB0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SPIN/Pods-SPIN-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EFFDCF3A55B78B80B8A91835 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -693,7 +852,9 @@
 			files = (
 				3E440FC01E9BDC9A002F67DE /* MultipleDressScreenViewController.swift in Sources */,
 				3E8EF5661DD56307004B35A5 /* Profile.swift in Sources */,
+				3E17DD9E1EAD545000EC4F26 /* HeroCoreAnimationViewContext.swift in Sources */,
 				3ED952B11DE50B92002E6EA9 /* UploadViewController.swift in Sources */,
+				3E17DDB71EAD545000EC4F26 /* Lexer.swift in Sources */,
 				3E95159F1DCCBC0200450867 /* DataLoader.swift in Sources */,
 				3E0DE2251EA50893002AC7E5 /* IntroViewController.swift in Sources */,
 				3EF0613E1DCCCC110005FE47 /* DescriptionArea.swift in Sources */,
@@ -702,36 +863,69 @@
 				3E37583B1E37B92500905F49 /* DressScreenEditViewController.swift in Sources */,
 				3E95D50F1E9BE38500C66814 /* MultipleDressCollectionViewCell.swift in Sources */,
 				3E3247E91DDA5FC500BC06F5 /* ProfileDressesCollectionView.swift in Sources */,
+				3E17DDA91EAD545000EC4F26 /* UIKit+Hero.swift in Sources */,
+				3E17DDA61EAD545000EC4F26 /* CAMediaTimingFunction+Hero.swift in Sources */,
+				3E17DDBF1EAD545000EC4F26 /* MatchPreprocessor.swift in Sources */,
+				3E17DDA11EAD545000EC4F26 /* HeroDebugPlugin.swift in Sources */,
+				3E17DDB41EAD545000EC4F26 /* HeroTargetState.swift in Sources */,
+				3E17DDA31EAD545000EC4F26 /* DefaultAnimationPreprocessor.swift in Sources */,
 				3E95159D1DCCBABF00450867 /* DressObject.swift in Sources */,
+				3E17DDB01EAD545000EC4F26 /* HeroModifier+HeroStringConvertible.swift in Sources */,
 				3E5A4C751E085868009C6810 /* PopViewController.swift in Sources */,
 				3E440FC41E9BE12F002F67DE /* MultipleDressCollectionView.swift in Sources */,
+				3E17DDB51EAD545000EC4F26 /* HeroTypes.swift in Sources */,
 				3E88F08D1DCBE32B001856EB /* TaskBarViewController.swift in Sources */,
 				3E88F08A1DCBE32B001856EB /* DraggableViewBackground.swift in Sources */,
 				3ECC3B4B1DFF410A008A69B5 /* LoginViewController.swift in Sources */,
 				3E58E07B1E089D6D006D020D /* MessageScreenTableViewController.swift in Sources */,
+				3E17DDB81EAD545000EC4F26 /* Nodes.swift in Sources */,
 				3E8EF5641DD56256004B35A5 /* ProfileViewController.swift in Sources */,
+				3E17DD9D1EAD545000EC4F26 /* HeroAnimatorViewContext.swift in Sources */,
 				3E72FA8B1E06F93100F0E03A /* genericControllerViewController.swift in Sources */,
+				3E17DDBD1EAD545000EC4F26 /* DurationPreprocessor.swift in Sources */,
+				3E17DDBA1EAD545000EC4F26 /* Regex.swift in Sources */,
+				3E17DD9F1EAD545000EC4F26 /* HeroDefaultAnimator.swift in Sources */,
 				3ED24FF71EAAA7C300B31815 /* UIBarButtonItemBadge.swift in Sources */,
+				3E17DDBE1EAD545000EC4F26 /* IgnoreSubviewModifiersPreprocessor.swift in Sources */,
 				3E9515941DCBFC7D00450867 /* MiniProfile.swift in Sources */,
+				3E17DDB21EAD545000EC4F26 /* HeroPlugin.swift in Sources */,
 				3E9F70A21DFF5C63006DCA1D /* InitialViewController.swift in Sources */,
+				3E17DDA41EAD545000EC4F26 /* Array+HeroModifier.swift in Sources */,
 				3E94D1221DD12D31006E3D9E /* SavedCollectionViewController.swift in Sources */,
+				3E17DDBB1EAD545000EC4F26 /* BasePreprocessor.swift in Sources */,
 				3E6C8E361E4904EA006A0CFF /* RequestsTableViewCell.swift in Sources */,
 				3E4FB8EE1EABB2520071989B /* GetTopMostView.swift in Sources */,
 				3E6C8E311E48F82A006A0CFF /* StartTradeViewController.swift in Sources */,
+				3E17DDAE1EAD545000EC4F26 /* HeroContext.swift in Sources */,
 				3E33A95A1DCBC96700313319 /* ViewController.swift in Sources */,
+				3E17DDA21EAD545000EC4F26 /* HeroDebugView.swift in Sources */,
+				3E17DDB91EAD545000EC4F26 /* Parser.swift in Sources */,
+				3E17DDAF1EAD545000EC4F26 /* HeroIndependentController.swift in Sources */,
 				3E50AD2E1DD38172000E767C /* DressScreenViewController.swift in Sources */,
+				3E17DDAD1EAD545000EC4F26 /* HeroBaseController.swift in Sources */,
 				3E33A9601DCBC96700313319 /* SPIN.xcdatamodeld in Sources */,
 				3E88F08C1DCBE32B001856EB /* OverlayView.swift in Sources */,
+				3E17DDC01EAD545000EC4F26 /* SourcePreprocessor.swift in Sources */,
 				3ED24FF91EAAA98600B31815 /* BadgeHandler.swift in Sources */,
 				3E95159A1DCC0FB400450867 /* TabViewController.swift in Sources */,
+				3E17DDA01EAD545000EC4F26 /* HeroViewPropertyViewContext.swift in Sources */,
 				3E3247EB1DDA690700BC06F5 /* OwnDressesCollectionViewCell.swift in Sources */,
+				3E17DDB11EAD545000EC4F26 /* HeroModifier.swift in Sources */,
+				3E17DDAC1EAD545000EC4F26 /* Hero.swift in Sources */,
+				3E17DDAB1EAD545000EC4F26 /* UIViewController+Hero.swift in Sources */,
 				3E58E07E1E089E5B006D020D /* ConversationTableViewCell.swift in Sources */,
+				3E17DDA81EAD545000EC4F26 /* DispatchQueue+Hero.swift in Sources */,
 				3E0DE2281EA5183A002AC7E5 /* IntroSubScreenViewController.swift in Sources */,
 				3E5A4C731E085624009C6810 /* DetailsViewController.swift in Sources */,
+				3E17DDBC1EAD545000EC4F26 /* CascadePreprocessor.swift in Sources */,
+				3E17DDB31EAD545000EC4F26 /* HeroStringConvertible.swift in Sources */,
 				3E88F08B1DCBE32B001856EB /* DraggableView.swift in Sources */,
 				3E6C8E341E490391006A0CFF /* RequestsTableViewController.swift in Sources */,
 				3E33A9581DCBC96700313319 /* AppDelegate.swift in Sources */,
 				3E08D6FB1E0C1F3300F46731 /* ChatViewController.swift in Sources */,
+				3E17DDAA1EAD545000EC4F26 /* UIView+Hero.swift in Sources */,
+				3E17DDA51EAD545000EC4F26 /* CALayer+Hero.swift in Sources */,
+				3E17DDA71EAD545000EC4F26 /* CG+Hero.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,7 +1090,7 @@
 		};
 		3E33A9801DCBC96700313319 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F700B3A60D73EBBAB688A744 /* Pods-SPIN.debug.xcconfig */;
+			baseConfigurationReference = B6E6B50C3F491717553247D9 /* Pods-SPIN.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -914,7 +1108,7 @@
 		};
 		3E33A9811DCBC96700313319 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B392CBDF61B2D9434A855BEA /* Pods-SPIN.release.xcconfig */;
+			baseConfigurationReference = 9A25BC7DF2798B177D3A8AA3 /* Pods-SPIN.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -990,7 +1184,7 @@
 		};
 		3EEF47451EA97BD80073C56F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 49B31F16E416F0BE5304AB63 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			baseConfigurationReference = 8DE1688D4A91BA69B54855AB /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				DEVELOPMENT_TEAM = 855C482DJ8;
@@ -1006,7 +1200,7 @@
 		};
 		3EEF47461EA97BD80073C56F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 774695F18D0637E4585117BA /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			baseConfigurationReference = CFE75ACE538F78D9171D7659 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				DEVELOPMENT_TEAM = 855C482DJ8;

@@ -95,12 +95,16 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        profilePhoto?.alpha = 0 //
+        
+        
+        
+        /*profilePhoto?.alpha = 0 //
         numberOfListings.alpha = 0 //
         numberOfExchanges.alpha = 0 //
         listingsLabel.alpha = 0 //
         exchangesLabel.alpha = 0 //
         locationLabel.alpha = 0 //
+        self.editButton.alpha =0
         if bioTextView != nil {
             bioTextView.alpha = 0 //
         }
@@ -111,6 +115,7 @@ class ProfileViewController: UIViewController {
             profileUsername.alpha = 0 //
         }
         locationPin.alpha = 0
+ */
         if BadgeHandler.messageBadgeNumber != 0 {
             self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
         } else {
@@ -120,6 +125,11 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        for cell in photosCollectionViewController.visibleCells {
+            cell.heroID = ""
+        }
+        
         downloadTextData()
         /*
         bioTextView.center.x -= view.bounds.width
@@ -132,6 +142,7 @@ class ProfileViewController: UIViewController {
         profilePhoto?.center.y -= 30
         locationPin.center.y += 30 */
         
+        /*
         UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseInOut], animations: {
             //self.profilePhoto?.center.y += 30
             self.profilePhoto?.alpha = 1
@@ -146,8 +157,9 @@ class ProfileViewController: UIViewController {
                 self.bioTextView.alpha = 1
                 self.photosCollectionViewController.alpha = 1
             }
+            self.editButton.alpha = 1
 
-        }, completion: nil)
+        }, completion: nil) */
         /*
         UIView.animate(withDuration: 0.2, delay: 0.1, options: [.curveEaseInOut], animations: {
             self.listingsLabel.center.y -= 30
@@ -323,6 +335,22 @@ class ProfileViewController: UIViewController {
             let dressSender = sender as! OwnDressesCollectionViewCell
             
             let _ = svc.view.description
+            
+            
+            svc.isHeroEnabled = true
+            self.isHeroEnabled = true
+            self.navigationController?.isHeroEnabled = true
+            
+            dressSender.heroID = "imageTapped"
+            svc.dressImagesCollectionView.heroID = "imageTapped"
+            svc.profileName.heroModifiers = [.fade, .scale(0.5)]
+            svc.locationLabel.heroModifiers = [.fade, .scale(0.5)]
+            svc.profileImage.heroModifiers = [.fade, .scale(0.5)]
+            svc.heroModalAnimationType = .auto
+            self.heroModalAnimationType = .auto
+            self.profilePhoto?.heroModifiers = [.fade]
+            self.bioTextView.heroModifiers = [.fade]
+            
             svc.refToLoad = dressSender.reference
             svc.uidToLoad = dressSender.uid
             svc.dressImagesCollectionView.currentPictures = []

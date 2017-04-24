@@ -60,7 +60,9 @@ class ChatViewController: JSQMessagesViewController {
         
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        navigationItem.title = name
+        UIView.animate(withDuration: 0.3, delay: 0.3, options: [], animations: {
+            self.navigationItem.title = self.name
+        }, completion: nil)
         
         // No avatars
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
@@ -117,9 +119,7 @@ class ChatViewController: JSQMessagesViewController {
             "senderName": senderDisplayName!,
             "text": text!]
         
-        print(1)
         itemRef.setValue(messageItem)
-        print(2)
         messageRef.child("timestamp").setValue((NSDate().timeIntervalSince1970) as NSNumber)
         print(3)
         print(uid)
@@ -127,15 +127,12 @@ class ChatViewController: JSQMessagesViewController {
         let unseenRef = FIRDatabase.database().reference().child("Users").child(uid).child("conversations").child(messageRef.key).child("unseen")
         print(4)
         unseenRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.value is NSNull { print(5)} else {
-                print(6)
+            if snapshot.value is NSNull { } else {
                 var counter = (snapshot.value)! as! Int
                 counter += 1
                 unseenRef.setValue(counter)
             }
         })
-        
-        print(notificationKey)
         
         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
         let pushToken = status.subscriptionStatus.pushToken
@@ -154,7 +151,7 @@ class ChatViewController: JSQMessagesViewController {
                 "ios_badgeType": "Increase",
                 "ios_badgeCount": 1
                 ] as [String : Any]
-            
+            print(notificationKey)
             OneSignal.postNotification(notificationContent)
         }
         

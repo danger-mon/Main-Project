@@ -10,24 +10,19 @@ import UIKit
 
 class ChatNavigationController: UINavigationController {
 
-    var logoView: UIImageView = UIImageView()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationBar.isTranslucent = false
         
-        self.navigationBar.barTintColor = UIColor(red: 41/255, green: 37/255, blue: 47/255, alpha: 1)
-        navigationBar.tintColor = UIColor.white
-        let logo = UIImage(named: "SPIN")
-        logoView = UIImageView(image: logo)
-        logoView.frame = CGRect(x: (Int(UIScreen.main.bounds.width/2) - 50), y: 0, width: 100, height: 50)
-        logoView.contentMode = .scaleAspectFit
+        self.navigationBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+        navigationBar.tintColor = UIColor.black
+        
         //self.navigationBar.addSubview(logoView)
         navigationBar.backIndicatorImage = #imageLiteral(resourceName: "left-arrow")
         navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "left-arrow")
         navigationBar.backItem?.title = ""
-        navigationBar.barStyle = UIBarStyle.black
-        navigationBar.tintColor = UIColor.white
         
         let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))

@@ -26,7 +26,6 @@ class BadgeHandler: NSObject {
     }
     static var messages: [String: Int] = [:] {
         didSet {
-            print("setting \(messages)")
             var count = 0
             for (_, value) in messages {
                 count += value
@@ -37,7 +36,6 @@ class BadgeHandler: NSObject {
     
     static var requestsNumber = 0 {
         didSet {
-            print("editing tags")
             let controller = UIApplication.shared.keyWindow!.rootViewController!.topMostViewController()
             controller.navigationController?.tabBarController?.viewControllers?[4].tabBarItem.badgeValue = "\(requestsNumber)"
         }

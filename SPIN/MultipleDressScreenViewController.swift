@@ -12,6 +12,7 @@ class MultipleDressScreenViewController: UIViewController {
     @IBOutlet weak var swipedRightNumberLabel: UILabel!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var requestTradeButton: UIButton!
+    @IBOutlet weak var swipedRightImage: UIImageView!
     
     var refToLoad: String! = ""
     var uidToLoad: String! = ""
@@ -21,6 +22,7 @@ class MultipleDressScreenViewController: UIViewController {
         //profileName.alpha = 0
         //locationLabel.alpha = 0
         //profileImage.alpha = 0
+        super.viewWillAppear(animated)
         if editButton != nil {
             editButton.alpha = 0
         }
@@ -38,7 +40,6 @@ class MultipleDressScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         profileName.text = "Loading..."
-        print(1)
         navigationItem.title = ""
         let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -46,7 +47,6 @@ class MultipleDressScreenViewController: UIViewController {
         button2.addTarget(self, action: #selector(messageScreen), for: .touchUpInside)
         let barButton2 = UIBarButtonItem(customView: button2)
         self.navigationItem.rightBarButtonItem = barButton2
-        print(2)
         
         if requestTradeButton != nil {
             requestTradeButton.layer.borderWidth = 1
@@ -60,8 +60,6 @@ class MultipleDressScreenViewController: UIViewController {
             self.editButton.isEnabled = false
             self.editButton.isHidden = true
         }
-        
-        print(3)
         
         /*let tap = UITapGestureRecognizer(target: self, action: #selector(self.touch(_:)))
          profileImage.addGestureRecognizer(tap)
@@ -91,12 +89,12 @@ class MultipleDressScreenViewController: UIViewController {
         dressImagesCollectionView.currentPictures = []
         //dressImagesCollectionView.reloadData()
         
-        print(4)
         
         locationLabel.textColor = UIColor(white: 0, alpha: 0.6)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if !dontDownload {
             downloadData()
         }
@@ -131,7 +129,21 @@ class MultipleDressScreenViewController: UIViewController {
         
         if (segue.identifier == "goToProfile") {
             
-            _ = segue.destination as! ProfileViewController
+            let svc = segue.destination as! ProfileViewController
+            _ = svc.view.description
+            
+            /*
+            svc.isHeroEnabled = true
+            self.isHeroEnabled = true
+            self.navigationController?.isHeroEnabled = true
+            svc.profilePhoto?.heroID = "profilePhoto"
+            self.profileImage.heroID = "profilePhoto"
+            svc.profileUsername.heroID = "profileLabel"
+            self.profileName.heroID = "profileLabel"
+            svc.locationLabel.heroID = "location"
+            self.locationLabel.heroID = "location"
+            */
+ 
             ProfileViewController.uidToLoad = self.uidToLoad
             
         } else if segue.identifier == "editScreen" {

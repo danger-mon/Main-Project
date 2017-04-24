@@ -1836,6 +1836,7 @@ hahaha</string>
                         <outlet property="profileImage" destination="xmy-Sc-DjG" id="k16-s8-gXS"/>
                         <outlet property="profileName" destination="XKU-Ih-vDA" id="Y1g-l1-7IM"/>
                         <outlet property="requestTradeButton" destination="QZp-yt-37t" id="rao-qY-Mjg"/>
+                        <outlet property="swipedRightImage" destination="K02-oT-3tm" id="cpV-dJ-qkN"/>
                         <outlet property="swipedRightNumberLabel" destination="mul-oc-E4R" id="2HJ-ED-boY"/>
                     </connections>
                 </viewController>
@@ -2021,6 +2022,7 @@ hahaha</string>
                         <outlet property="locationLabel" destination="XhP-cY-38Y" id="wLX-Ln-kdx"/>
                         <outlet property="profileImage" destination="Dea-a9-zfU" id="dj6-vU-wbT"/>
                         <outlet property="profileName" destination="Izv-wn-sV8" id="TT3-db-WCY"/>
+                        <outlet property="swipedRightImage" destination="FFb-Yx-zSZ" id="Rt6-q5-bev"/>
                         <outlet property="swipedRightNumberLabel" destination="wwn-UX-XJG" id="flI-Ch-zBD"/>
                     </connections>
                 </viewController>

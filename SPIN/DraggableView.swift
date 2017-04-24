@@ -63,14 +63,14 @@ class DraggableView: UIView {
         self.isUserInteractionEnabled = true
         
         self.bounds = CGRect(x: 0, y: 0, width: CARD_WIDTH, height: CARD_HEIGHT + 150)
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.lightGray.cgColor
-        /*self.layer.shadowColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 1).cgColor
+        //self.layer.borderWidth = 1
+        //self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.shadowColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 1).cgColor
         self.layer.shadowOpacity = 0.2
         self.layer.shadowRadius = 10
-        self.layer.shadowOffset = CGSize(width: 0, height: 0) */
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
         self.layer.cornerRadius = 10
-        self.clipsToBounds = true
+        self.clipsToBounds = false
         
         
         information = UILabel(frame: CGRect(x: 0, y: 40, width: self.frame.size.width, height: 200))
@@ -148,7 +148,6 @@ class DraggableView: UIView {
     
     func cardTapped(sender: UITapGestureRecognizer)
     {
-        print("Thsi one works")
         print(tapDelegate.debugDescription)
         tapDelegate?.cardHasBeenTappedOn(sender: sender)
     }

@@ -50,6 +50,7 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate {
     
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if freshLaunch == true {
             freshLaunch = false
             self.tabBarController?.selectedIndex = 2 // 3rd tab

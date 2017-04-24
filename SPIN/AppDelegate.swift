@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
             if notification?.payload.additionalData != nil {
                 if notification?.payload.additionalData["type"] != nil {
                     if notification?.payload.additionalData["type"] as! String == "request" {
-                        
+                        BadgeHandler.requestsNumber += 1
                     }
                 } else {
                     //Message Notification

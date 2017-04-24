@@ -78,7 +78,6 @@ class DataLoader {
                 
                 //Add image to an array of dresses (without images yet). Images get added once the data has been downloaded
                 self.reelDressArray.append(newDress)
-                print("one more dress")
             }
         })
     }

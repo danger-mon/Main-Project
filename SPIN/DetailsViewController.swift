@@ -103,7 +103,6 @@ class DetailsViewController: UIViewController {
     
     func uploadImageToDatabase(data: Data)
     {
-        print("uploading")
         let username = (FIRAuth.auth()?.currentUser?.uid)!
         let storageRef = FIRStorage.storage().reference().child("profileImages/\(username).jpg")
         let databaseRef = FIRDatabase.database().reference()// Bio, exchanges, location, photoURL, posts, username

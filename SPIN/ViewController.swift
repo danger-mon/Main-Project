@@ -33,7 +33,6 @@ class ViewController: UIViewController, TapDelegate3 {
         draggableBackground.delegate3 = self
         self.view.addSubview(draggableBackground)
         
-        
     }
     
     func changeBadge() {
@@ -46,11 +45,13 @@ class ViewController: UIViewController, TapDelegate3 {
     
     func messageScreen() {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "conversations")
+        
         let transition = CATransition()
-        transition.duration = 0.3
+        transition.duration = 0.2
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromRight
-        self.view.window!.layer.add(transition, forKey: kCATransition)
+        self.view.window!.layer.add(transition, forKey: kCATransition) 
+        
         self.present(vc!, animated: false, completion: nil)
     }
     
@@ -84,7 +85,24 @@ class ViewController: UIViewController, TapDelegate3 {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let nextViewController = storyboard.instantiateViewController(withIdentifier: "pictureViewer") as! MultipleDressScreenViewController
         
-        print(nextViewController.view.description)
+        let _ = nextViewController.view.description
+        
+        /*
+        nextViewController.isHeroEnabled = true
+        self.navigationController?.isHeroEnabled = true
+        
+        nextViewController.dressImagesCollectionView.heroID = "image"
+        cardHandled.heroID = "image"
+        cardHandled.profileView.profileName.heroID = "profileName"
+        nextViewController.profileName.heroID = "profileName"
+        cardHandled.profileView.location.heroID = "location"
+        nextViewController.locationLabel.heroID = "location"
+        cardHandled.profileView.profileCircle.heroID = "profileImage"
+        nextViewController.profileImage.heroID = "profileImage"
+        
+        nextViewController.swipedRightImage.heroModifiers = [.fade, .scale(0.5)]
+        nextViewController.swipedRightNumberLabel.heroModifiers = [.fade, .scale(0.5)]
+        nextViewController.heroModalAnimationType = .cover(direction: .up) */
         
         nextViewController.profileName.text = cardHandled.profileView.profileName.text
         nextViewController.profileImage.image = cardHandled.profileView.profileCircle.image
@@ -93,7 +111,9 @@ class ViewController: UIViewController, TapDelegate3 {
         nextViewController.dressTitle.text = cardHandled.dressName.text
         nextViewController.dressDescription.text = cardHandled.dressDescription.text
         nextViewController.refToLoad = cardHandled.reference
+
         //nextViewController.dontDownload = true
+        
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }

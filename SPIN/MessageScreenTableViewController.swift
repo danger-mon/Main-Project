@@ -25,18 +25,20 @@ class MessageScreenTableViewController: UITableViewController {
     }
     var conversations: [conversation] = []
     var ownUsername: String = ""
+    var logoView: UIImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         observeChannels()
-        var logoView: UIImageView = UIImageView()
-        let logo = UIImage(named: "SPIN")
-        logoView = UIImageView(image: logo)
-        logoView.frame = CGRect(x: (Int(UIScreen.main.bounds.width/2) - 50), y: 0, width: 100, height: 50)
-        logoView.contentMode = .scaleAspectFit
-        navigationItem.titleView = logoView
         
+        let logo = #imageLiteral(resourceName: "logoone")
+        logoView = UIImageView(image: logo)
+        logoView.frame = CGRect(x: (Int(UIScreen.main.bounds.width/2) - 35), y: Int(0.75 * ((self.navigationController?.navigationBar.bounds.height)! - 35)), width: 70, height: 35)
+        logoView.contentMode = .scaleAspectFit
+        self.navigationController?.navigationBar.addSubview(logoView)
+
+                
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button2.setImage( #imageLiteral(resourceName: "left-arrow"), for: .normal)
         button2.addTarget(self, action: #selector(goBack), for: .touchUpInside)
@@ -54,10 +56,22 @@ class MessageScreenTableViewController: UITableViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            self.logoView.alpha = 1
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            self.logoView.alpha = 0
+        }
+    }
+    
     func goBack() {
         
         let transition = CATransition()
-        transition.duration = 0.3
+        transition.duration = 0.2
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromLeft
         self.view.window!.layer.add(transition, forKey: kCATransition)
@@ -93,6 +107,7 @@ class MessageScreenTableViewController: UITableViewController {
         cell.ref = conversations[indexPath.row].id
         cell.photoURL = conversations[indexPath.row].url
         cell.uid = conversations[indexPath.row].uid
+        cell.selectionStyle = .none
         if conversations[indexPath.row].unseen != 0 {
             cell.unseenLabel.text = String(conversations[indexPath.row].unseen)
             cell.unseenLabel.isHidden = false
@@ -112,6 +127,7 @@ class MessageScreenTableViewController: UITableViewController {
             } else {
                 photoURL = downloadedDict["photoURL"] as! String
             }
+            
             self.conversations.append(conversation(id: downloadedDict["id"] as! String, timestamp: downloadedDict["timestamp"] as! NSNumber, name: downloadedDict["name"] as! String, url: photoURL, uid: downloadedDict["uid"] as! String, unseen: downloadedDict["unseen"] as! Int))
             
             self.tableView.reloadData()

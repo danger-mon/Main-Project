@@ -40,8 +40,6 @@ class SavedCollectionViewController: UICollectionViewController {
         
         let barButton2 = UIBarButtonItem(customView: button2)
         self.navigationItem.rightBarButtonItem = barButton2
-
-        
         
         paddingSpace = Int(sectionInsets.left) * 3 + 2
         availableWidth = Int(self.view.frame.width) - paddingSpace
@@ -70,6 +68,9 @@ class SavedCollectionViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        
+        
         if BadgeHandler.messageBadgeNumber != 0 {
             self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
         } else {
@@ -138,7 +139,7 @@ class SavedCollectionViewController: UICollectionViewController {
         cell.backgroundView = UIImageView(image: dress.image)
         let gestureRecogniser = UILongPressGestureRecognizer(target: self, action: #selector(showPopUpMessage))
         cell.addGestureRecognizer(gestureRecogniser)
-        cell.alpha = 0
+        cell.alpha = 1
         /*if( cell.subviews.count < 3)
         {
             let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
@@ -153,9 +154,9 @@ class SavedCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut], animations: {
+        /*UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut], animations: {
             (cell as! SavedCollectionViewCell).alpha = 1
-        }, completion: nil)
+        }, completion: nil) */
 
     }
     
@@ -271,6 +272,13 @@ class SavedCollectionViewController: UICollectionViewController {
             let svc = segue.destination as! MultipleDressScreenViewController;
             let dressSender = sender as! SavedCollectionViewCell
             let _ = svc.view.description
+            
+            svc.isHeroEnabled = true
+            self.navigationController?.isHeroEnabled = true
+            svc.dressImagesCollectionView.heroID = "image"
+            dressSender.heroID = "image"
+            self.isHeroEnabled = true
+            
             svc.refToLoad = dressSender.ref
             svc.dressImagesCollectionView.currentPictures = []
             svc.dressImagesCollectionView.currentPictures.append(dressSender.cellImage.image!)
@@ -280,6 +288,9 @@ class SavedCollectionViewController: UICollectionViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        for cell in (collectionView?.visibleCells)! {
+            cell.heroID = ""
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
