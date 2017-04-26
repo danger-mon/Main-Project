@@ -70,6 +70,8 @@
 		3E6C8E311E48F82A006A0CFF /* StartTradeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6C8E301E48F82A006A0CFF /* StartTradeViewController.swift */; };
 		3E6C8E341E490391006A0CFF /* RequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6C8E331E490391006A0CFF /* RequestsTableViewController.swift */; };
 		3E6C8E361E4904EA006A0CFF /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6C8E351E4904EA006A0CFF /* RequestsTableViewCell.swift */; };
+		3E6EB45B1EAED8910039D203 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB45A1EAED8910039D203 /* ChangePasswordViewController.swift */; };
+		3E6EB45D1EAEE2670039D203 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB45C1EAEE2670039D203 /* ReportViewController.swift */; };
 		3E72FA8B1E06F93100F0E03A /* genericControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E72FA8A1E06F93100F0E03A /* genericControllerViewController.swift */; };
 		3E88F08A1DCBE32B001856EB /* DraggableViewBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E88F0861DCBE32B001856EB /* DraggableViewBackground.swift */; };
 		3E88F08B1DCBE32B001856EB /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E88F0871DCBE32B001856EB /* DraggableView.swift */; };
@@ -85,6 +87,11 @@
 		3E95159F1DCCBC0200450867 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E95159E1DCCBC0200450867 /* DataLoader.swift */; };
 		3E95D50F1E9BE38500C66814 /* MultipleDressCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E95D50E1E9BE38500C66814 /* MultipleDressCollectionViewCell.swift */; };
 		3E9F70A21DFF5C63006DCA1D /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9F70A11DFF5C63006DCA1D /* InitialViewController.swift */; };
+		3EC3B0781EAE9D48007CA2D3 /* RegsiterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC3B0771EAE9D48007CA2D3 /* RegsiterViewController.swift */; };
+		3EC3B07B1EAEAD6A007CA2D3 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC3B07A1EAEAD6A007CA2D3 /* LoginScreenViewController.swift */; };
+		3EC3B07D1EAEC23F007CA2D3 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC3B07C1EAEC23F007CA2D3 /* SettingsTableViewController.swift */; };
+		3EC3B07F1EAEC26F007CA2D3 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC3B07E1EAEC26F007CA2D3 /* SettingsTableViewCell.swift */; };
+		3EC6929E1EB0C1C80061D166 /* BlockedUsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6929D1EB0C1C80061D166 /* BlockedUsersTableViewController.swift */; };
 		3ECC3B4B1DFF410A008A69B5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECC3B4A1DFF410A008A69B5 /* LoginViewController.swift */; };
 		3ED24FF71EAAA7C300B31815 /* UIBarButtonItemBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED24FF61EAAA7C300B31815 /* UIBarButtonItemBadge.swift */; };
 		3ED24FF91EAAA98600B31815 /* BadgeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED24FF81EAAA98600B31815 /* BadgeHandler.swift */; };
@@ -206,6 +213,8 @@
 		3E6C8E301E48F82A006A0CFF /* StartTradeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartTradeViewController.swift; sourceTree = "<group>"; };
 		3E6C8E331E490391006A0CFF /* RequestsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewController.swift; sourceTree = "<group>"; };
 		3E6C8E351E4904EA006A0CFF /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
+		3E6EB45A1EAED8910039D203 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		3E6EB45C1EAEE2670039D203 /* ReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		3E72FA8A1E06F93100F0E03A /* genericControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = genericControllerViewController.swift; sourceTree = "<group>"; };
 		3E88F0861DCBE32B001856EB /* DraggableViewBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableViewBackground.swift; sourceTree = "<group>"; };
 		3E88F0871DCBE32B001856EB /* DraggableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
@@ -222,6 +231,11 @@
 		3E95D50E1E9BE38500C66814 /* MultipleDressCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleDressCollectionViewCell.swift; sourceTree = "<group>"; };
 		3E9F70A11DFF5C63006DCA1D /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		3EA6C26D1DFF090A007B9EDC /* SPIN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SPIN.entitlements; sourceTree = "<group>"; };
+		3EC3B0771EAE9D48007CA2D3 /* RegsiterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegsiterViewController.swift; sourceTree = "<group>"; };
+		3EC3B07A1EAEAD6A007CA2D3 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
+		3EC3B07C1EAEC23F007CA2D3 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		3EC3B07E1EAEC26F007CA2D3 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		3EC6929D1EB0C1C80061D166 /* BlockedUsersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsersTableViewController.swift; sourceTree = "<group>"; };
 		3ECC3B4A1DFF410A008A69B5 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3ED24FF61EAAA7C300B31815 /* UIBarButtonItemBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemBadge.swift; sourceTree = "<group>"; };
 		3ED24FF81EAAA98600B31815 /* BadgeHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeHandler.swift; sourceTree = "<group>"; };
@@ -286,7 +300,6 @@
 			children = (
 				3E0DE2241EA50893002AC7E5 /* IntroViewController.swift */,
 				3E0DE2271EA5183A002AC7E5 /* IntroSubScreenViewController.swift */,
-				3E5A4C721E085624009C6810 /* DetailsViewController.swift */,
 				3E9F70A11DFF5C63006DCA1D /* InitialViewController.swift */,
 				3ECC3B4A1DFF410A008A69B5 /* LoginViewController.swift */,
 			);
@@ -418,6 +431,12 @@
 			children = (
 				3EA6C26D1DFF090A007B9EDC /* SPIN.entitlements */,
 				3E33A95B1DCBC96700313319 /* Main.storyboard */,
+				3E6EB45C1EAEE2670039D203 /* ReportViewController.swift */,
+				3E6EB45A1EAED8910039D203 /* ChangePasswordViewController.swift */,
+				3EC3B07C1EAEC23F007CA2D3 /* SettingsTableViewController.swift */,
+				3EC6929D1EB0C1C80061D166 /* BlockedUsersTableViewController.swift */,
+				3EC3B07E1EAEC26F007CA2D3 /* SettingsTableViewCell.swift */,
+				3EC3B0791EAE9D5C007CA2D3 /* Logins */,
 				3ED24FF61EAAA7C300B31815 /* UIBarButtonItemBadge.swift */,
 				3E0DE2261EA517D6002AC7E5 /* Intro */,
 				3E6C8E321E48F830006A0CFF /* Trading */,
@@ -532,6 +551,16 @@
 				3EF0613D1DCCCC110005FE47 /* DescriptionArea.swift */,
 			);
 			name = Extras;
+			sourceTree = "<group>";
+		};
+		3EC3B0791EAE9D5C007CA2D3 /* Logins */ = {
+			isa = PBXGroup;
+			children = (
+				3EC3B07A1EAEAD6A007CA2D3 /* LoginScreenViewController.swift */,
+				3EC3B0771EAE9D48007CA2D3 /* RegsiterViewController.swift */,
+				3E5A4C721E085624009C6810 /* DetailsViewController.swift */,
+			);
+			name = Logins;
 			sourceTree = "<group>";
 		};
 		3ED952B21DE50B99002E6EA9 /* Upload Screen */ = {
@@ -862,9 +891,11 @@
 				3E94D1261DD12D7B006E3D9E /* SavedCollectionViewCell.swift in Sources */,
 				3E37583B1E37B92500905F49 /* DressScreenEditViewController.swift in Sources */,
 				3E95D50F1E9BE38500C66814 /* MultipleDressCollectionViewCell.swift in Sources */,
+				3E6EB45B1EAED8910039D203 /* ChangePasswordViewController.swift in Sources */,
 				3E3247E91DDA5FC500BC06F5 /* ProfileDressesCollectionView.swift in Sources */,
 				3E17DDA91EAD545000EC4F26 /* UIKit+Hero.swift in Sources */,
 				3E17DDA61EAD545000EC4F26 /* CAMediaTimingFunction+Hero.swift in Sources */,
+				3E6EB45D1EAEE2670039D203 /* ReportViewController.swift in Sources */,
 				3E17DDBF1EAD545000EC4F26 /* MatchPreprocessor.swift in Sources */,
 				3E17DDA11EAD545000EC4F26 /* HeroDebugPlugin.swift in Sources */,
 				3E17DDB41EAD545000EC4F26 /* HeroTargetState.swift in Sources */,
@@ -890,8 +921,10 @@
 				3E9515941DCBFC7D00450867 /* MiniProfile.swift in Sources */,
 				3E17DDB21EAD545000EC4F26 /* HeroPlugin.swift in Sources */,
 				3E9F70A21DFF5C63006DCA1D /* InitialViewController.swift in Sources */,
+				3EC3B0781EAE9D48007CA2D3 /* RegsiterViewController.swift in Sources */,
 				3E17DDA41EAD545000EC4F26 /* Array+HeroModifier.swift in Sources */,
 				3E94D1221DD12D31006E3D9E /* SavedCollectionViewController.swift in Sources */,
+				3EC6929E1EB0C1C80061D166 /* BlockedUsersTableViewController.swift in Sources */,
 				3E17DDBB1EAD545000EC4F26 /* BasePreprocessor.swift in Sources */,
 				3E6C8E361E4904EA006A0CFF /* RequestsTableViewCell.swift in Sources */,
 				3E4FB8EE1EABB2520071989B /* GetTopMostView.swift in Sources */,
@@ -899,12 +932,15 @@
 				3E17DDAE1EAD545000EC4F26 /* HeroContext.swift in Sources */,
 				3E33A95A1DCBC96700313319 /* ViewController.swift in Sources */,
 				3E17DDA21EAD545000EC4F26 /* HeroDebugView.swift in Sources */,
+				3EC3B07B1EAEAD6A007CA2D3 /* LoginScreenViewController.swift in Sources */,
 				3E17DDB91EAD545000EC4F26 /* Parser.swift in Sources */,
 				3E17DDAF1EAD545000EC4F26 /* HeroIndependentController.swift in Sources */,
 				3E50AD2E1DD38172000E767C /* DressScreenViewController.swift in Sources */,
+				3EC3B07D1EAEC23F007CA2D3 /* SettingsTableViewController.swift in Sources */,
 				3E17DDAD1EAD545000EC4F26 /* HeroBaseController.swift in Sources */,
 				3E33A9601DCBC96700313319 /* SPIN.xcdatamodeld in Sources */,
 				3E88F08C1DCBE32B001856EB /* OverlayView.swift in Sources */,
+				3EC3B07F1EAEC26F007CA2D3 /* SettingsTableViewCell.swift in Sources */,
 				3E17DDC01EAD545000EC4F26 /* SourcePreprocessor.swift in Sources */,
 				3ED24FF91EAAA98600B31815 /* BadgeHandler.swift in Sources */,
 				3E95159A1DCC0FB400450867 /* TabViewController.swift in Sources */,

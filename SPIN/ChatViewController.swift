@@ -27,6 +27,7 @@ class ChatViewController: JSQMessagesViewController {
         }
     }
     var notificationKey: String = ""
+    var toUpload: Bool = false
     
     lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
     lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
@@ -57,6 +58,15 @@ class ChatViewController: JSQMessagesViewController {
         messageRef = FIRDatabase.database().reference().child("Conversations").child(refToLoad)
         userIsTypingRef = FIRDatabase.database().reference().child("Conversations").child(refToLoad).child("typingIndicator").child(self.senderId)
         
+        let image3: UIImage = #imageLiteral(resourceName: "addImage")
+        let button3: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        button3.setImage( image3, for: .normal)
+        button3.addTarget(self, action: #selector(options), for: .touchUpInside)
+        
+        let barButton3 = UIBarButtonItem(customView: button3)
+        self.navigationItem.rightBarButtonItem = barButton3
+        
+        self.navigationController?.navigationBar.topItem?.title = " "
         
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -85,6 +95,46 @@ class ChatViewController: JSQMessagesViewController {
         observeTyping()
     }
     
+    func options() {
+        let alert = UIAlertController(title: "More", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Block", style: .destructive, handler: { action in
+            
+            switch action.style{
+            case .default:
+                print("default")
+            case .cancel:
+                print("cancel")
+            case .destructive:
+                print("sendReport")
+                
+                let reference = FIRDatabase.database().reference().child("Users").child( (FIRAuth.auth()?.currentUser?.uid)! ).child("conversations").child(self.refToLoad).child("blocked")
+                
+                reference.setValue("true")
+                
+                let transition = CATransition()
+                transition.duration = 0.2
+                transition.type = kCATransitionPush
+                transition.subtype = kCATransitionFromLeft
+                self.view.window!.layer.add(transition, forKey: kCATransition)
+                self.navigationController?.dismiss(animated: false, completion: nil)
+                
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {action in
+            switch action.style{
+            case .cancel:
+                print("cancel")
+            default: break
+                
+            }
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    
     func getNotificationID() {
         FIRDatabase.database().reference().child("OneSignalIDs").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.value is NSNull {
@@ -99,19 +149,26 @@ class ChatViewController: JSQMessagesViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        let unseenRef = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(messageRef.key).child("unseen")
+        let unseenRef = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(refToLoad).child("unseen")
         unseenRef.setValue(0)
-        BadgeHandler.messages[uid] = 0
+        
+        if toUpload == false {
+            BadgeHandler.messages[uid] = 0
+        } else {
+            toUpload = false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let unseenRef = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(messageRef.key).child("unseen")
+        let unseenRef = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(refToLoad).child("unseen")
         unseenRef.setValue(0)
         BadgeHandler.messages[uid] = 0
     }
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
+        
+        print(1)
         
         let itemRef = messageRef.child("messages").childByAutoId()
         let messageItem = [
@@ -119,13 +176,12 @@ class ChatViewController: JSQMessagesViewController {
             "senderName": senderDisplayName!,
             "text": text!]
         
+        print(2)
+        
         itemRef.setValue(messageItem)
         messageRef.child("timestamp").setValue((NSDate().timeIntervalSince1970) as NSNumber)
         print(3)
-        print(uid)
-        print(messageRef.key)
-        let unseenRef = FIRDatabase.database().reference().child("Users").child(uid).child("conversations").child(messageRef.key).child("unseen")
-        print(4)
+        let unseenRef = FIRDatabase.database().reference().child("Users").child(uid).child("conversations").child(refToLoad).child("unseen")
         unseenRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.value is NSNull { } else {
                 var counter = (snapshot.value)! as! Int
@@ -133,17 +189,17 @@ class ChatViewController: JSQMessagesViewController {
                 unseenRef.setValue(counter)
             }
         })
-        
+        print(4)
         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
         let pushToken = status.subscriptionStatus.pushToken
         _ = status.subscriptionStatus.userId
-        
+        print(5)
         if pushToken != nil {
             let message = text!
             let notificationContent = [
                 "include_player_ids": [notificationKey],
-                "contents": ["en": message], // Required unless "content_available": true or "template_id" is set
-                "headings": ["en": "\(senderDisplayName!)"],
+                "contents": ["en": "\(senderDisplayName!): \(message)"],
+                
                 "data": ["senderUid": (senderId)],
                 // If want to open a url with in-app browser
                 //"url": "https://google.com",
@@ -172,6 +228,7 @@ class ChatViewController: JSQMessagesViewController {
         
         picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         picker.allowsEditing = true
+        toUpload = true
         
         present(picker, animated: true, completion:nil)
     }

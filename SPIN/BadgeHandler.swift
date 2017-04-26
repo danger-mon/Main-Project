@@ -16,14 +16,19 @@ class BadgeHandler: NSObject {
             let defaults = UserDefaults.standard
             defaults.set("\(messageBadgeNumber)", forKey: "messageBadgeNumber")
             if messageBadgeNumber == 0 {
-                UIApplication.shared.keyWindow!.rootViewController!.topMostViewController().navigationItem.rightBarButtonItem?.setBadge(text: "")
+                if UIApplication.shared.keyWindow!.rootViewController!.topMostViewController() != NSNull() {
+                    UIApplication.shared.keyWindow!.rootViewController!.topMostViewController().navigationItem.rightBarButtonItem?.setBadge(text: "")
+                }
             } else {
                 if UIApplication.shared.keyWindow != nil {
-                    UIApplication.shared.keyWindow!.rootViewController!.topMostViewController().navigationItem.rightBarButtonItem?.setBadge(text: "\(messageBadgeNumber)")
+                    if UIApplication.shared.keyWindow!.rootViewController!.topMostViewController() != NSNull() {
+                        UIApplication.shared.keyWindow!.rootViewController!.topMostViewController().navigationItem.rightBarButtonItem?.setBadge(text: "\(messageBadgeNumber)")
+                    }
                 }
             }
         }
     }
+    
     static var messages: [String: Int] = [:] {
         didSet {
             var count = 0

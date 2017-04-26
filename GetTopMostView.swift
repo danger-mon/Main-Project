@@ -12,6 +12,7 @@ extension UIViewController {
     func topMostViewController() -> UIViewController {
         // Handling Modal views
         if let presentedViewController = self.presentedViewController {
+            
             return presentedViewController.topMostViewController()
         }
             // Handling UIViewController's added as subviews to some other views.
@@ -39,6 +40,6 @@ extension UITabBarController {
 
 extension UINavigationController {
     override func topMostViewController() -> UIViewController {
-        return self.visibleViewController!.topMostViewController()
+            return self.visibleViewController!.topMostViewController()
     }
 }

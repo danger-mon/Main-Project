@@ -32,9 +32,12 @@ class ProfileDressesCollectionView: UICollectionView, UICollectionViewDelegateFl
         
         currentDresses = []   
         
+        print(self.bounds.width)
+        print(UIScreen.main.bounds.width)
         paddingSpace = Float(sectionInsets.left) * Float (4)
-        availableWidth = Float(self.bounds.width) - paddingSpace
+        availableWidth = Float(UIScreen.main.bounds.width) - paddingSpace
         widthPerItem = availableWidth / 3
+        print(widthPerItem)
         
         self.layer.shadowOpacity = 0
         
@@ -81,8 +84,14 @@ class ProfileDressesCollectionView: UICollectionView, UICollectionViewDelegateFl
         }
         
         cell.contentMode = .scaleAspectFill
+        var counting = Int(currentDresses.count / 3)
+        if currentDresses.count % 3 != 0 {
+            counting += 1
+        }
+        
+        delegate2?.updateSize(size: counting * Int(widthPerItem) + Int(contentInset.top))
  
-        self.sizeToFit()
+        //self.sizeToFit()
         return cell
     }
     
@@ -98,4 +107,5 @@ class ProfileDressesCollectionView: UICollectionView, UICollectionViewDelegateFl
 protocol LongPressDelegate: class {
     
     func didLongPressCell(sender: UIGestureRecognizer)
+    func updateSize(size: Int)
 }

@@ -14,6 +14,7 @@ import OneSignal
 
 class UploadViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
+    @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var dressNameField: UITextField!
     @IBOutlet weak var dressDescriptionField: UITextView!
     @IBOutlet weak var rentSellSegmentedControl: UISegmentedControl!
@@ -69,6 +70,12 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         actionButton.layer.borderWidth = 1
         actionButton.layer.cornerRadius = 7
         
+        if deleteButton != nil {
+            deleteButton.layer.borderColor = UIColor.red.cgColor
+            deleteButton.layer.borderWidth = 1
+            deleteButton.layer.cornerRadius = 7
+        }
+        
         dressNameField.delegate = self
         priceField.delegate = self
         actionButton.superview?.bringSubview(toFront: actionButton)
@@ -85,12 +92,15 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         uploadCollectionView.currentPictures = [#imageLiteral(resourceName: "placeholderImage"), #imageLiteral(resourceName: "placeholderImage"), #imageLiteral(resourceName: "placeholderImage"), #imageLiteral(resourceName: "placeholderImage")]
         uploadCollectionView.isItUpload = true
-        heightConstraint.constant = UIScreen.main.bounds.width / 4
+        if heightConstraint != nil {
+            heightConstraint.constant = UIScreen.main.bounds.width / 4
+        }
         uploadCollectionView.isPagingEnabled = false
         uploadCollectionView.isScrollEnabled = false
         //scrollView.contentSize.height = 1000
         //uploadCollectionView.bounds.height = UIScreen.main.bounds.width
         
+        //scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -99,6 +109,8 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         imagePicker.delegate = self
         
     }
+    
+
     
     func messageScreen() {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "conversations")
@@ -112,7 +124,11 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if BadgeHandler.messageBadgeNumber != 0 {
         self.navigationItem.rightBarButtonItem?.setBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+        } else {
+            self.navigationItem.rightBarButtonItem?.setBadge(text: "")
+        }
         /*
         nameTitle.isHidden = true
         dressNameField.isHidden = true
@@ -182,6 +198,95 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
  */
     }
     
+    @IBAction func deletePost(_ sender: Any) {
+        
+        let databaseRef = FIRDatabase.database().reference()
+        
+        databaseRef.child("Posts").child(self.refToLoad).child("numberOfImages").observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.value is NSNull {
+                //Remove from posts and remove from Posts Node
+                databaseRef.child("Posts").child(self.refToLoad).removeValue()
+                
+                //Remove from the users dressesPosted
+                databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("dressesPosted").child(self.refToLoad).removeValue()
+                
+            } else {
+                let numberToDelete = snapshot.value as! Int
+                
+                //Delete all images in post
+                for i in 0..<numberToDelete {
+                    print(i)
+                    FIRStorage.storage().reference().child("dressImages").child("\(self.refToLoad)").child("\(i+1).jpg").delete(completion: { (error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        } else {
+                            print("Success!")
+                        }
+                    })
+                }
+                
+                //Remove from posts and remove from Posts Node
+                databaseRef.child("Posts").child(self.refToLoad).removeValue()
+                
+                //Remove from the users dressesPosted
+                databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("dressesPosted").child(self.refToLoad).removeValue()
+
+            }})
+        
+        //Remove from savedDresses for everyone who liked it
+        databaseRef.child("PostData").child(self.refToLoad).child("swipedRight").observeSingleEvent(of: .value, with:
+            { (snapshot) in
+                
+                if snapshot.value is NSNull {
+                    
+                    
+                } else {
+                    let downloadArray = snapshot.value as! [String: NSNumber]
+                    
+                    for (user, _) in downloadArray {
+                        
+                        databaseRef.child("Users").child(user).child("savedDresses").child(self.refToLoad).removeValue()
+                        
+                    }
+                    databaseRef.child("PostData").child(self.refToLoad).removeValue()
+                }
+        })
+        
+        databaseRef.child("RequestData").child(self.refToLoad).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.value is NSNull {
+                print("no requests for this dress")
+            } else {
+                let downloadArray = snapshot.value as! [String: String]
+                for (user, _) in downloadArray {
+                    print("getting rid in users \(user)")
+                    let maquery = databaseRef.child("Users").child(user).child("outgoingRequests").queryOrdered(byChild: "dressReference").queryEqual(toValue: self.refToLoad)
+                    print(maquery)
+                    maquery.observeSingleEvent(of: .childAdded, with: { (snapshot) in
+                        
+                        databaseRef.child("Users").child(user).child("outgoingRequests").child(snapshot.key).removeValue()
+                    })
+                    
+                }
+            }
+        })
+        
+        let query1 = databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("incomingRequests").queryOrdered(byChild: "dressReference").queryEqual(toValue: self.refToLoad)
+        
+        print(query1.description)
+        
+        query1.observeSingleEvent(of: .childAdded, with: { (snapshot) in
+            print(snapshot.key)
+            databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("incomingRequests").child(snapshot.key).removeValue()
+            
+        })
+        
+        
+        //Decrease the "Posts" number by 1
+        
+    }
+
+    @IBOutlet weak var insideView: UIView!
+
     override func viewDidLayoutSubviews() {
         
         var recognisers: [UITapGestureRecognizer] = []
@@ -192,13 +297,23 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         uploadCollectionView.areCellsInteractable = true
         uploadCollectionView.tapRecognisers = recognisers
+        
+        if self.scrollView != nil {
+            self.scrollView.sizeToFit()
+            
+            
+        }
+        if insideView != nil {
+            insideView.sizeToFit()
+            scrollView.sizeToFit()
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
@@ -277,17 +392,14 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         } else { checker.2 = false }
         
         if checker.0 == false && checker.1 == false && checker.2 == false {
-            imageCountShadow = imageCount
-            updateItem()
-            dressNameField.text = ""
-            dressDescriptionField.text = "Tap to edit..."
-            priceField.text = ""
-            for i in 0..<uploadCollectionView.currentPictures.count {
-                uploadCollectionView.currentPictures[i] = #imageLiteral(resourceName: "placeholderImage")
+            imageCountShadow = 4//imageCount
+            for m in 0..<self.uploadCollectionView.currentPictures.count {
+                if self.uploadCollectionView.currentPictures[m] == #imageLiteral(resourceName: "placeholderImage"){
+                    imageCountShadow -= 1
+                }
             }
-            toWhatCell = 0
-            imageSelected = #imageLiteral(resourceName: "placeholderImage")
-            imageCount = 0
+            
+            updateItem()
             
             (tabBarController?.viewControllers?[2] as! UINavigationController).popToRootViewController(animated: true)
             tabBarController?.selectedIndex = 2
@@ -443,7 +555,7 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func updateItem() {
         //TODO: let them add more photos
-        imageCountShadow = uploadCollectionView.currentPictures.count
+        //imageCountShadow = uploadCollectionView.currentPictures.count
         let user = (FIRAuth.auth()?.currentUser?.uid)!
         let title = dressNameField.text
         let dressDescription = dressDescriptionField.text
@@ -478,6 +590,16 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
             let postRefKey = databaseRef.child("Posts").child(self.refToLoad)
             
             self.uploadImageToDatabse(data: imageDataArray, id: postRefKey, user: user, post: self.post)
+            
+            self.dressNameField.text = ""
+            self.dressDescriptionField.text = "Tap to edit..."
+            self.priceField.text = ""
+            for i in 0..<self.uploadCollectionView.currentPictures.count {
+                self.uploadCollectionView.currentPictures[i] = #imageLiteral(resourceName: "placeholderImage")
+            }
+            self.toWhatCell = 0
+            self.imageSelected = #imageLiteral(resourceName: "placeholderImage")
+            self.imageCount = 0
         })
         
     }

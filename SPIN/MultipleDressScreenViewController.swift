@@ -13,6 +13,9 @@ class MultipleDressScreenViewController: UIViewController {
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var requestTradeButton: UIButton!
     @IBOutlet weak var swipedRightImage: UIImageView!
+    @IBOutlet weak var moreButton: UIButton!
+    
+    @IBOutlet var profileGoTo: UITapGestureRecognizer!
     
     var refToLoad: String! = ""
     var uidToLoad: String! = ""
@@ -23,9 +26,23 @@ class MultipleDressScreenViewController: UIViewController {
         //locationLabel.alpha = 0
         //profileImage.alpha = 0
         super.viewWillAppear(animated)
-        if editButton != nil {
+        /*if editButton != nil {
             editButton.alpha = 0
+        } */
+        
+        if editButton != nil {
+            editButton.layer.cornerRadius = 7
+            editButton.layer.borderColor = UIColor.darkGray.cgColor
+            editButton.layer.borderWidth = 1
         }
+        if profileGoTo != nil {
+            profileGoTo.isEnabled = false
+        }
+        
+        if requestTradeButton != nil {
+            requestTradeButton.isEnabled = false
+        }
+        
         dressTitle.alpha = 0
         dressDescription.alpha = 0
         swipedRightNumberLabel.alpha = 0
@@ -130,7 +147,8 @@ class MultipleDressScreenViewController: UIViewController {
         if (segue.identifier == "goToProfile") {
             
             let svc = segue.destination as! ProfileViewController
-            _ = svc.view.description
+            
+            svc.isHeroEnabled = false
             
             /*
             svc.isHeroEnabled = true
@@ -150,7 +168,13 @@ class MultipleDressScreenViewController: UIViewController {
             let vc = segue.destination as! UploadViewController
             
             _ = vc.view.description
-            vc.uploadCollectionView.currentPictures = self.dressImagesCollectionView.currentPictures
+            var pictures = dressImagesCollectionView.currentPictures
+            
+            for _ in 0..<(4 - self.dressImagesCollectionView.currentPictures.count) {
+                pictures.append(#imageLiteral(resourceName: "placeholderImage"))
+            }
+            
+            vc.uploadCollectionView.currentPictures = pictures
             vc.dressNameField.text = self.dressTitle.text!
             vc.dressDescriptionField.text = self.dressDescription.text!
             vc.refToLoad = self.refToLoad
@@ -175,11 +199,11 @@ class MultipleDressScreenViewController: UIViewController {
             if snapshot.value is NSNull { } else {
                 let downloadedDictionary = snapshot.value as! [String: AnyObject]
                 
-                
+                // Set text variables
                     self.dressTitle.text = downloadedDictionary["title"] as? String
                     self.dressDescription.text = downloadedDictionary["description"] as! String
                     self.profileName.text = downloadedDictionary["username"] as? String
-                UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut], animations: {
+                UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseInOut], animations: {
                     self.dressTitle.alpha = 1
                     self.dressDescription.alpha = 1
                     self.profileName.alpha = 1
@@ -189,11 +213,13 @@ class MultipleDressScreenViewController: UIViewController {
                 
                 self.uidToLoad = downloadedDictionary["uid"] as! String
                 numberOfImages = Int(downloadedDictionary["numberOfImages"] as! NSNumber)
-                print(numberOfImages)
                 self.dressImagesCollectionView.currentPictures = []
                 for _ in 0..<numberOfImages {
                     self.dressImagesCollectionView.currentPictures.append(#imageLiteral(resourceName: "loading"))
                 }
+                
+                self.profileGoTo.isEnabled = true
+                self.requestTradeButton.isEnabled = true
                 
                 for i in 0..<numberOfImages {
                     let actual = i
@@ -207,9 +233,13 @@ class MultipleDressScreenViewController: UIViewController {
                                     self.dressImagesCollectionView.alpha = 1
                                 })
                             }
+                        }
+                        print("i \(i), number: \(numberOfImages - 1)")
+                        if i == numberOfImages - 1 {
                             
-                            if i == numberOfImages - 1 {
-                                if self.editButton != nil {
+                            if self.editButton != nil {
+                                print("enabling")
+                                if (FIRAuth.auth()?.currentUser?.uid)! == self.uidToLoad {
                                     self.editButton.isEnabled = true
                                     self.editButton.isHidden = false
                                 }
@@ -244,5 +274,38 @@ class MultipleDressScreenViewController: UIViewController {
                     self.swipedRightNumberLabel.alpha = 1
                 }, completion: nil)            }
         })
+    }
+    
+    @IBAction func moreButtonPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "More", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Report", style: .destructive, handler: { action in
+            
+            switch action.style{
+            case .default:
+                print("default")
+            case .cancel:
+                print("cancel")
+            case .destructive:
+                print("sendReport")
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let nextViewController = storyboard.instantiateViewController(withIdentifier: "report") as! ReportViewController
+                nextViewController.dressRef = self.refToLoad
+                nextViewController.ownerUid = self.uidToLoad
+                
+                self.navigationController?.pushViewController(nextViewController, animated: true)
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {action in
+            switch action.style{
+            case .cancel:
+                print("cancel")
+            default: break
+                
+            }
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }

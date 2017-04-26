@@ -108,8 +108,9 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
                     self.nextTimeSegmentKey = rest.key
                 }
             }
-            
-            self.currentTimeSegmentKey = databaseRef.child("timeSegments").child((FIRAuth.auth()?.currentUser?.uid)!).childByAutoId().key
+            if FIRAuth.auth()?.currentUser?.uid != nil {
+                self.currentTimeSegmentKey = databaseRef.child("timeSegments").child((FIRAuth.auth()?.currentUser?.uid)!).childByAutoId().key
+            }
             self.catchNextDress(count: 3)
         })
         
@@ -134,7 +135,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         
         loadingLabel = UILabel(frame: CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2 - 20, width: 100, height: 40))
         loadingLabel.center = self.center
-        loadingLabel.text = "No more Dresses"
+        loadingLabel.text = ""
         loadingLabel.isEnabled = false
         loadingLabel.isHidden = true
         loadingLabel.bounds = CGRect(x: UIScreen.main.bounds.width / 2, y: (UIScreen.main.bounds.height / 2) - (loadingLabel.bounds.width/2) , width: 100, height: 40)
@@ -144,11 +145,13 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         allCards = []
         cardsLoadedIndex = 0
         
-        if user?.displayName! != nil {
+        
+        if user?.displayName != nil {
             Profile.ownUsername = (user?.displayName)!
         }
-        self.loadingLabel.isEnabled = true
-        self.loadingLabel.isHidden = false
+        
+        self.loadingLabel.isEnabled = false
+        self.loadingLabel.isHidden = true
         //descriptionAreaView = DescriptionArea()
     }
     
@@ -256,10 +259,12 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         
             let databaseRef = FIRDatabase.database().reference()
             // Of the children between the current time and the nearest segment upper bound get the most recent
+            
             print("between:\(nextTimeSegment.0) and \(currentTimeSegment.1)")
-            let query = databaseRef.child("Posts").queryOrdered(byChild: "timestamp").queryStarting(atValue: nextTimeSegment.0).queryEnding(atValue: (currentTimeSegment.1 - 0.001)).queryLimited(toLast: 1)
+            
+            let query = databaseRef.child("Posts").queryOrdered(byChild: "timestamp").queryStarting(atValue: nextTimeSegment.0).queryEnding(atValue: (currentTimeSegment.1 - 0.01)).queryLimited(toLast: 1)
         
-            query.observe(.value, with: { (snapshot) in
+            query.observeSingleEvent(of: .value, with: { (snapshot) in
             
                 if snapshot.value is NSNull {
                     if self.nextTimeSegment.0 == 0 {
@@ -298,6 +303,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
                     } else {
                         self.insertSubview(self.loadedCards.last!, belowSubview: self.loadedCards[position - 1]) //Insert the 2nd to nth view behind the main one
                     }
+                    
                     self.currentTimeSegment.1 = Double(newDress.timestamp)
                     
                     if count > 1 {
@@ -308,8 +314,6 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         } else {
             endOfSegment = true
             print("endOfSegment = true")
-            /*
-             */
         }
     }
     

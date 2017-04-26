@@ -269,6 +269,7 @@ class SavedCollectionViewController: UICollectionViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         if (segue.identifier == "dressSegue") {
+            
             let svc = segue.destination as! MultipleDressScreenViewController;
             let dressSender = sender as! SavedCollectionViewCell
             let _ = svc.view.description

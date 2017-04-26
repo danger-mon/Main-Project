@@ -56,6 +56,7 @@ class InitialViewController: UIViewController {
                     else {
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting") as! TaskBarViewController
+                        
                         registered.set("Registered", forKey: (FIRAuth.auth()?.currentUser?.uid)!)
                         registered.synchronize()
                         nextViewController.modalTransitionStyle = .crossDissolve

@@ -25,15 +25,17 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var profileUsername: UILabel!
     @IBOutlet weak var locationPin: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var editNameField: UITextField!
+    @IBOutlet weak var editNameField: UILabel!
     @IBOutlet weak var editBioField: UITextView!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var messageButton: UIButton!
+    @IBOutlet weak var updateButton: UIButton!
     
     static var uidToLoad: String = "self"
     static var ownUsername: String = "defaultusr"
     
+    @IBOutlet weak var collectionHeightConstraint: NSLayoutConstraint!
     
     var doNotDownload = false
     
@@ -60,13 +62,20 @@ class ProfileViewController: UIViewController {
             messageButton.layer.borderWidth = 1
             messageButton.layer.borderColor = UIColor.darkGray.cgColor
             messageButton.layer.cornerRadius = 7
+            messageButton.isEnabled = false
         }
         if ProfileViewController.uidToLoad == (FIRAuth.auth()?.currentUser?.uid)! {
             messageButton.isHidden = true
             messageButton.isEnabled = false
         }
+        if updateButton != nil {
+            updateButton.layer.cornerRadius = 7
+            updateButton.layer.borderWidth = 1
+            updateButton.layer.borderColor = UIColor.darkGray.cgColor
+        }
         
         navigationItem.title = ""
+        
         
         let image2: UIImage = #imageLiteral(resourceName: "envelope")
         let button2: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -76,6 +85,17 @@ class ProfileViewController: UIViewController {
         let barButton2 = UIBarButtonItem(customView: button2)
         //barButton2.addBadge(text: "\(BadgeHandler.messageBadgeNumber)")
         self.navigationItem.rightBarButtonItem = barButton2
+        
+        let image3: UIImage = #imageLiteral(resourceName: "settings-5")
+        let button3: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        button3.setImage( image3, for: .normal)
+        button3.addTarget(self, action: #selector(settingsScreen), for: .touchUpInside)
+        
+        let barButton3 = UIBarButtonItem(customView: button3)
+        //barButton2.addBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+        self.navigationItem.leftBarButtonItem = barButton3
+
+        
         if photosCollectionViewController != nil {
             photosCollectionViewController.delegate2 = self
         }
@@ -92,6 +112,10 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    func settingsScreen() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "settings")
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -126,8 +150,12 @@ class ProfileViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        for cell in photosCollectionViewController.visibleCells {
-            cell.heroID = ""
+        if photosCollectionViewController != nil {
+            for cell in photosCollectionViewController.visibleCells {
+                if cell.heroID != nil {
+                    cell.heroID = ""
+                }
+            }
         }
         
         downloadTextData()
@@ -195,6 +223,7 @@ class ProfileViewController: UIViewController {
         downloadPendingDresses()
     }
     
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         /*var totalHeight = CGFloat(0)
@@ -211,20 +240,7 @@ class ProfileViewController: UIViewController {
     
     @IBAction func logOut(_ sender: Any) {
         
-        var fanoutObject: [String: Any] = [:]
-        fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/userData/oneSignalKey"] = NSNull()
-        fanoutObject["/OneSignalIDs/\((FIRAuth.auth()?.currentUser?.uid)!)"] = NSNull()
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let nextViewController = storyboard.instantiateViewController(withIdentifier: "login")
-        self.present(nextViewController, animated: true, completion: nil)
-        
-        let loginManager = LoginManager()
-        loginManager.logOut()
-        OneSignal.deleteTag("userID")
-        
-        FIRDatabase.database().reference().updateChildValues(fanoutObject)
-        
+                
     }
     
     @IBAction func update(_ sender: Any) {
@@ -320,7 +336,9 @@ class ProfileViewController: UIViewController {
                 transition.duration = 0.3
                 transition.type = kCATransitionPush
                 transition.subtype = kCATransitionFromRight
-                self.view.window!.layer.add(transition, forKey: kCATransition)
+                if self.view.window != nil {
+                    self.view.window!.layer.add(transition, forKey: kCATransition)
+                }
                 
                 
                 self.present(destinationNavigationController, animated: true, completion: nil)
@@ -406,9 +424,13 @@ class ProfileViewController: UIViewController {
             
             self.numberOfListings.text = downloadedDictionary["posts"] as? String
             self.numberOfExchanges.text = downloadedDictionary["exchanges"] as? String
-            self.bioTextView.text = downloadedDictionary["bio"] as? String
+            if self.bioTextView != nil {
+                self.bioTextView.text = downloadedDictionary["bio"] as? String
+            }
             self.locationLabel.text = downloadedDictionary["location"] as? String
-            self.profileUsername.text = downloadedDictionary["username"] as? String
+            if self.profileUsername != nil {
+                self.profileUsername.text = downloadedDictionary["username"] as? String
+            }
             let url = NSURL(string: downloadedDictionary["photoURL"] as! String)
             if let data = NSData(contentsOf: url! as URL) {
                 self.profilePhoto?.image = UIImage(data: data as Data)!
@@ -445,6 +467,9 @@ class ProfileViewController: UIViewController {
             let url = NSURL(string: downloadedDictionary["photoURL"] as! String)
             if let data = NSData(contentsOf: url! as URL) {
                 self.profilePhoto?.image = UIImage(data: data as Data)!
+                if self.messageButton != nil {
+                    self.messageButton.isEnabled = true
+                }
             }
 
         })
@@ -516,6 +541,14 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: LongPressDelegate {
+    
+    func updateSize(size: Int) {
+        
+            collectionHeightConstraint.constant = CGFloat(size)
+            scrollView.sizeToFit()
+        
+    }
+    
     func didLongPressCell(sender: UIGestureRecognizer) {
         
         let databaseRef = FIRDatabase.database().reference()
@@ -538,61 +571,101 @@ extension ProfileViewController: LongPressDelegate {
                     
                 case .destructive:
                     
-                    databaseRef.child("PostData").child(cell.reference).child("swipedRight").observeSingleEvent(of: .value, with:
-                    { (snapshot) in
-                        if snapshot.value is NSNull { } else {
-                        let downloadArray = snapshot.value as! [String: NSNumber]
-                        
-                            for (user, _) in downloadArray {
-                            
-                                databaseRef.child("Users").child(user).child("savedDresses").child(cell.reference).removeValue()
-                                databaseRef.child("Users").child(user).child("viewedDresses").child(cell.reference).removeValue()
+                    databaseRef.child("Posts").child(cell.reference).child("numberOfImages").observeSingleEvent(of: .value, with: { (snapshot) in
+                            if snapshot.value is NSNull {
+                                //Remove from posts and remove from Posts Node
+                                databaseRef.child("Posts").child(cell.reference).removeValue()
+                                
+                                //Remove from the users dressesPosted
+                                databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("dressesPosted").child(cell.reference).removeValue()
 
-                            }
-                        }
-                        databaseRef.child("Posts").child(cell.reference).child("numberOfImages").observeSingleEvent(of: .value, with: { (snapshot) in
-                            if snapshot.value is NSNull { } else {
+                            } else {
                                 let numberToDelete = snapshot.value as! Int
+                                
+                                //Delete all images in post
                                 for i in 0..<numberToDelete {
                                     print(i)
                                     FIRStorage.storage().reference().child("dressImages").child("\(cell.reference)").child("\(i+1).jpg").delete(completion: { (error) in
-                                        if let error = error {
-                                            print(error.localizedDescription)
-                                        } else {
-                                            print("Success!")
-                                        }
-                                    })
+                                            if let error = error {
+                                                print(error.localizedDescription)
+                                            } else {
+                                                print("Success!")
+                                            }
+                                        })
                                 }
+                                //Remove from posts and remove from Posts Node
                                 databaseRef.child("Posts").child(cell.reference).removeValue()
-                                databaseRef.child("PostData").child(cell.reference).removeValue()
+                                
+                                //Remove from the users dressesPosted
+                                databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("dressesPosted").child(cell.reference).removeValue()
+
+                        }})
+                                
+                        //Remove from savedDresses for everyone who liked it
+                        databaseRef.child("PostData").child(cell.reference).child("swipedRight").observeSingleEvent(of: .value, with:
+                            { (snapshot) in
+                                        
+                                if snapshot.value is NSNull {
+                                    self.photosCollectionViewController.currentDresses.remove(at: (self.photosCollectionViewController.indexPath(for: cell)?.row)!)
+                                    self.photosCollectionViewController.reloadData()
+
+                                } else {
+                                    let downloadArray = snapshot.value as! [String: NSNumber]
+                                    
+                                    for (user, _) in downloadArray {
+                                        
+                                        databaseRef.child("Users").child(user).child("savedDresses").child(cell.reference).removeValue()
+                                        
+                                    }
+                                    databaseRef.child("PostData").child(cell.reference).removeValue()
+                                    self.photosCollectionViewController.currentDresses.remove(at: (self.photosCollectionViewController.indexPath(for: cell)?.row)!)
+                                    self.photosCollectionViewController.reloadData()
+                                }
+                        })
+                            
+                        databaseRef.child("RequestData").child(cell.reference).observeSingleEvent(of: .value, with: { (snapshot) in
+                            if snapshot.value is NSNull {
+                                print("no requests for this dress")
+                            } else {
+                                let downloadArray = snapshot.value as! [String: String]
+                                for (user, _) in downloadArray {
+                                    print("getting rid in users \(user)")
+                                    let maquery = databaseRef.child("Users").child(user).child("outgoingRequests").queryOrdered(byChild: "dressReference").queryEqual(toValue: cell.reference)
+                                        print(maquery)
+                                        maquery.observeSingleEvent(of: .childAdded, with: { (snapshot) in
+                                            
+                                            databaseRef.child("Users").child(user).child("outgoingRequests").child(snapshot.key).removeValue()
+                                    })
+
+                                }
                             }
                         })
                         
+                        let query1 = databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("incomingRequests").queryOrdered(byChild: "dressReference").queryEqual(toValue: cell.reference)
                         
-                        databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("dressesPosted").child(cell.reference).removeValue()
+                            print(query1.description)
                         
-                        self.photosCollectionViewController.currentDresses.remove(at: (self.photosCollectionViewController.indexPath(for: cell)?.row)!)
-                        
-                        databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("posts").observeSingleEvent(of: .value, with: {
-                            (snapshot) in
-                            let numberOfListings = snapshot.value as! String
-                            var numberOfListingsInt = Int(numberOfListings)!
-                            numberOfListingsInt -= 1
-                            databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("posts").setValue(String(numberOfListingsInt))
+                            query1.observeSingleEvent(of: .childAdded, with: { (snapshot) in
+                            print(snapshot.key)
+                                databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("incomingRequests").child(snapshot.key).removeValue()
                             
-                            self.downloadTextData()
                         })
-
-                        self.photosCollectionViewController.reloadData()
-
-                    })
+                        
+                                
+                        //Decrease the "Posts" number by 1
+                        
+                        databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("posts").setValue(String(self.photosCollectionViewController.currentDresses.count - 1))
                     
+                    self.photosCollectionViewController.currentDresses.remove(at: (self.photosCollectionViewController.indexPath(for: cell)?.row)!)
+                    self.photosCollectionViewController.reloadData()
                 }
             }))
+                
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {action in
                 switch action.style{
                 case .cancel: break
+                    
                 default: break
                 }
             }))

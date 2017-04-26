@@ -46,6 +46,7 @@ class MessageScreenTableViewController: UITableViewController {
         let barButton2 = UIBarButtonItem(customView: button2)
         self.navigationItem.leftBarButtonItem = barButton2
         
+               
         
         databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as! [String: String]
@@ -68,6 +69,7 @@ class MessageScreenTableViewController: UITableViewController {
         }
     }
     
+        
     func goBack() {
         
         let transition = CATransition()
@@ -128,9 +130,21 @@ class MessageScreenTableViewController: UITableViewController {
                 photoURL = downloadedDict["photoURL"] as! String
             }
             
-            self.conversations.append(conversation(id: downloadedDict["id"] as! String, timestamp: downloadedDict["timestamp"] as! NSNumber, name: downloadedDict["name"] as! String, url: photoURL, uid: downloadedDict["uid"] as! String, unseen: downloadedDict["unseen"] as! Int))
             
-            self.tableView.reloadData()
+            let keyExists = (downloadedDict["blocked"] != nil)
+            
+            print(keyExists)
+            
+            if keyExists {
+                if downloadedDict["blocked"] as! String == "false" {
+                    self.conversations.append(conversation(id: downloadedDict["id"] as! String, timestamp: downloadedDict["timestamp"] as! NSNumber, name: downloadedDict["name"] as! String, url: photoURL, uid: downloadedDict["uid"] as! String, unseen: downloadedDict["unseen"] as! Int))
+                    self.tableView.reloadData()
+                }
+            } else {
+                self.conversations.append(conversation(id: downloadedDict["id"] as! String, timestamp: downloadedDict["timestamp"] as! NSNumber, name: downloadedDict["name"] as! String, url: photoURL, uid: downloadedDict["uid"] as! String, unseen: downloadedDict["unseen"] as! Int))
+                self.tableView.reloadData()
+
+            }
         })
     }
     
