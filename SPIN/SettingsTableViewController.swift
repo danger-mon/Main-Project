@@ -71,7 +71,7 @@ class SettingsTableViewController: UITableViewController {
         fanoutObject["/OneSignalIDs/\((FIRAuth.auth()?.currentUser?.uid)!)"] = NSNull()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let nextViewController = storyboard.instantiateViewController(withIdentifier: "login")
+        let nextViewController = storyboard.instantiateViewController(withIdentifier: "loginController")
         self.present(nextViewController, animated: true, completion: nil)
         
         

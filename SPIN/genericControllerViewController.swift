@@ -31,7 +31,7 @@ class genericControllerViewController: UINavigationController {
         
         navigationBar.backIndicatorImage = #imageLiteral(resourceName: "left-arrow")
         navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "left-arrow")
-        navigationBar.backItem?.title = ""
+        navigationBar.backItem?.title = " "
         navigationBar.tintColor = UIColor.black
         
         

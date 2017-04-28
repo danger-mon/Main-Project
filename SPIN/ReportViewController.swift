@@ -13,7 +13,7 @@ import FirebaseDatabase
 class ReportViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet weak var pickerView: UIPickerView!
-    var options = ["Impersonation", "Abusive Content", "Harassment", "Pornographic Content", "Illicit Content"]
+    var options = ["Impersonation", "Abusive Content", "Harassment", "Pornographic Content", "Illicit Content", "Other"]
     @IBOutlet weak var additionalComments: UITextView!
     var selected = ""
     @IBOutlet weak var submitButton: UIButton!

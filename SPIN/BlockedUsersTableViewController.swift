@@ -10,7 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-class BlockedUsersTableViewController: UITableViewController {
+class BlockedUsersTableViewController: UITableViewController, TapDelegateBlocked {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +19,12 @@ class BlockedUsersTableViewController: UITableViewController {
     
     var blockedUsers: [(String, String)] = []
     
-    
+    func didFinishUnblocking() {
+        print("unblocking")
+        blockedUsers = []
+        downloadBlockedUsers()
+        self.tableView.reloadData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -43,6 +48,7 @@ class BlockedUsersTableViewController: UITableViewController {
         cell.name.text = blockedUsers[indexPath.row].0
         cell.ref = blockedUsers[indexPath.row].1
         cell.parentTableViewController = self
+        cell.finishDelegate = self
         return cell
     }
     
@@ -51,7 +57,7 @@ class BlockedUsersTableViewController: UITableViewController {
         
         query.observeSingleEvent(of: .value, with: { (snapshot) in
             var dict: [String: [String: Any]] = [:]
-            if snapshot.value != nil {
+            if snapshot.value is NSNull { } else {
                 dict = snapshot.value as! [String : [String : Any]]
                 for dictionaryChild in dict {
                     self.blockedUsers.append((dictionaryChild.value["name"] as! String, dictionaryChild.key))

@@ -12,7 +12,7 @@ import FirebaseStorage
 import FirebaseDatabase
 import OneSignal
 
-class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var bioTextField: UITextView!
@@ -38,6 +38,15 @@ class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate,
         bioTextField.layer.borderColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1).cgColor
         bioTextField.layer.borderWidth = 1
         
+        usernameField.returnKeyType = UIReturnKeyType.done
+        usernameField.delegate = self
+        locationField.returnKeyType = UIReturnKeyType.done
+        locationField.delegate = self
+        emailField.returnKeyType = UIReturnKeyType.done
+        emailField.delegate = self
+        passwordField.returnKeyType = UIReturnKeyType.done
+        passwordField.delegate = self
+        
         submitButton.layer.cornerRadius = 7
         submitButton.layer.borderWidth = 1
         submitButton.layer.borderColor = UIColor.darkGray.cgColor
@@ -45,6 +54,13 @@ class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate,
         profileImageView.layer.borderColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1).cgColor
         profileImageView.layer.borderWidth = 1
         profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2
+        
+        let tapcontroller = UITapGestureRecognizer(target: self, action: #selector(didTapBackground))
+        self.view.addGestureRecognizer(tapcontroller)
+    }
+    
+    func didTapBackground() {
+        self.view.endEditing(true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,42 +103,65 @@ class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     @IBAction func submit(_ sender: Any) {
+        
+        let alert = UIAlertController(title: "Missing Field", message: "", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+            }
+        }))
+
+        
         var ready = [false, false, false, false, false]
         if usernameField.text == "" {
-            showPopUp(missingField: "a username")
+            alert.message = "Enter a username"
             ready[0] = false
         } else {
             ready[0] = true
         }
         if bioTextField.text == "" {
-            showPopUp(missingField: "your bio")
+            alert.message = "Enter your bio"
             ready[1] = false
         } else {
             ready[1] = true
         }
         if locationField.text == "" {
-            showPopUp(missingField: "your location")
+            alert.message = "Enter your location"
             ready[2] = false
         } else {
             ready[2] = true
         }
         if passwordField.text == "" {
-            showPopUp(missingField: "a password")
+            alert.message = "Enter a password"
             ready[4] = false
         } else {
             ready[4] = true
         }
         if emailField.text == "" {
-            showPopUp(missingField: "a valid email")
+            alert.message = "Enter a valid email"
             ready[3] = false
         } else {
             if isValidEmail(testStr: emailField.text!) {
                 ready[3] = true
+            } else {
+                alert.message = "Enter a valid email"
             }
         }
+        
+        
         if ready[0] == true && ready[1] == true && ready[2] == true && ready[3] == true && ready[4] == true {
-            print("123")
+            
             createUser(email: emailField.text!, password: passwordField.text!)
+        } else {
+            present(alert, animated: true, completion: nil)
         }
     }
     
@@ -134,19 +173,21 @@ class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate,
                 print("Success")
                 let changeRequest = user?.profileChangeRequest()
                 
+                
                 changeRequest?.displayName = self.usernameField.text!
                 changeRequest?.commitChanges { error in
                     if let error = error {
                         print("Error changin displayName")
                     } else {
                         self.uploadData(user: user!)
+                        FIRAuth.auth()?.currentUser?.sendEmailVerification(completion: nil)
                     }
                 }
             }
         })
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }

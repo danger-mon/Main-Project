@@ -168,7 +168,7 @@ class ChatViewController: JSQMessagesViewController {
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
-        print(1)
+        
         
         let itemRef = messageRef.child("messages").childByAutoId()
         let messageItem = [
@@ -176,11 +176,11 @@ class ChatViewController: JSQMessagesViewController {
             "senderName": senderDisplayName!,
             "text": text!]
         
-        print(2)
         
+        print(1)
         itemRef.setValue(messageItem)
         messageRef.child("timestamp").setValue((NSDate().timeIntervalSince1970) as NSNumber)
-        print(3)
+        print(uid)
         let unseenRef = FIRDatabase.database().reference().child("Users").child(uid).child("conversations").child(refToLoad).child("unseen")
         unseenRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.value is NSNull { } else {
@@ -189,25 +189,25 @@ class ChatViewController: JSQMessagesViewController {
                 unseenRef.setValue(counter)
             }
         })
-        print(4)
+        print(3)
         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
         let pushToken = status.subscriptionStatus.pushToken
         _ = status.subscriptionStatus.userId
-        print(5)
+        
         if pushToken != nil {
             let message = text!
             let notificationContent = [
                 "include_player_ids": [notificationKey],
                 "contents": ["en": "\(senderDisplayName!): \(message)"],
                 
-                "data": ["senderUid": (senderId)],
+                "data": ["senderUid": senderId!],
                 // If want to open a url with in-app browser
                 //"url": "https://google.com",
                 // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
                 "ios_badgeType": "Increase",
                 "ios_badgeCount": 1
                 ] as [String : Any]
-            print(notificationKey)
+            
             OneSignal.postNotification(notificationContent)
         }
         
@@ -376,6 +376,27 @@ class ChatViewController: JSQMessagesViewController {
             "photoURL": imageURLNotSetKey,
             "senderId": senderId!,
             ]
+        
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        let pushToken = status.subscriptionStatus.pushToken
+        _ = status.subscriptionStatus.userId
+        
+        if pushToken != nil {
+            
+            let notificationContent = [
+                "include_player_ids": [notificationKey],
+                "contents": ["en": "\(senderDisplayName!) sent you an image"],
+                
+                "data": ["senderUid": senderId!],
+                // If want to open a url with in-app browser
+                //"url": "https://google.com",
+                // If you want to deep link and pass a URL to your webview, use "data" parameter and use the key in the AppDelegate's notificationOpenedBlock
+                "ios_badgeType": "Increase",
+                "ios_badgeCount": 1
+                ] as [String : Any]
+            
+            OneSignal.postNotification(notificationContent)
+        }
         
         itemRef.setValue(messageItem)
         

@@ -39,14 +39,6 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func doneEditting(_ sender: Any) {
         dressDescriptionField.resignFirstResponder()
-        OneSignal.postNotification(["contents": ["en": "TestMessage"],
-                                    "tag": ["field": "tag",
-                                            "key": "userID",
-                                            "relation": "=",
-                                            "value": "OSjB7DRmkvQpeLCXXGc4AaEn2h12"]])
-        
-        OneSignal.postNotification(["contents": ["en": "TestMessage"],
-                                    "include_player_ids": "d6f5c199-e0d9-43bf-a886-d71562795654"])
         
     }
     
@@ -54,9 +46,15 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
     var lastKey: String = ""
     var post : [String: AnyObject] = [:]
     var photoURL = ""
+    var timestamp: Double = NSDate.timeIntervalSinceReferenceDate
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        actionButton.isEnabled = true
+        if deleteButton != nil {
+            deleteButton.isEnabled = true
+        }
         
         dressDescriptionField.delegate = self
         dressDescriptionField.text = "Tap to edit..."
@@ -401,9 +399,6 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
             
             updateItem()
             
-            (tabBarController?.viewControllers?[2] as! UINavigationController).popToRootViewController(animated: true)
-            tabBarController?.selectedIndex = 2
-            
         } else if checker.0 == true {
             alert.message = "Please enter a dress name"
             self.present(alert, animated: true, completion: nil)
@@ -459,9 +454,6 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
             toWhatCell = 0
             imageSelected = #imageLiteral(resourceName: "placeholderImage")
             imageCount = 0
-
-            (tabBarController?.viewControllers?[2] as! UINavigationController).popToRootViewController(animated: true)
-            tabBarController?.selectedIndex = 2
             
         } else if checker.0 == true {
             alert.message = "Please enter a dress name"
@@ -477,6 +469,9 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
 
     func postItem() {
+        
+        actionButton.isEnabled = false
+        deleteButton.isEnabled = true
         
         let user = (FIRAuth.auth()?.currentUser?.uid)!
         let title = dressNameField.text
@@ -511,12 +506,12 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
             
             let postRefKey = databaseRef.child("Posts").childByAutoId()
             
-            self.uploadImageToDatabse(data: imageDataArray, id: postRefKey, user: user, post: self.post)
+            self.uploadImageToDatabse(data: imageDataArray, id: postRefKey, user: user, post: self.post, changeTime: true)
         })
         
     }
     
-    func uploadImageToDatabse(data: [Data], id: FIRDatabaseReference, user: String, post: [String: AnyObject])
+    func uploadImageToDatabse(data: [Data], id: FIRDatabaseReference, user: String, post: [String: AnyObject], changeTime: Bool)
     {
         
         let storageRef = FIRStorage.storage().reference().child("dressImages/\(id.key)")
@@ -545,16 +540,25 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
                             numberOfListingsInt += 1
                             databaseRef.child("Posts").child(id.key).setValue(newPost)
                             databaseRef.child("Users").child(user).child("userData").child("posts").setValue(String(numberOfListingsInt))
+                            (self.tabBarController?.viewControllers?[1] as! UINavigationController).popToRootViewController(animated: true)
+                            self.tabBarController?.selectedIndex = 1
                         })
                     })
-                    databaseRef.child("Users").child(user).child("dressesPosted").child(id.key).setValue( Int32(NSDate.timeIntervalSinceReferenceDate))
+                    
+                    if changeTime {
+                        
+                        databaseRef.child("Users").child(user).child("dressesPosted").child(id.key).setValue( Int32(NSDate.timeIntervalSinceReferenceDate))
+                    }
                 }
             })
         }
     }
     
     func updateItem() {
-        //TODO: let them add more photos
+        
+        actionButton.isEnabled = false
+        deleteButton.isEnabled = false
+        
         //imageCountShadow = uploadCollectionView.currentPictures.count
         let user = (FIRAuth.auth()?.currentUser?.uid)!
         let title = dressNameField.text
@@ -585,11 +589,11 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
                          "username": Profile.ownUsername as AnyObject,
                          "uid": user as AnyObject,
                          "profilePhotoURL": self.photoURL as AnyObject,
-                         "timestamp": Int32(NSDate().timeIntervalSinceReferenceDate) as AnyObject]
+                         "timestamp": self.timestamp as AnyObject]
             
             let postRefKey = databaseRef.child("Posts").child(self.refToLoad)
             
-            self.uploadImageToDatabse(data: imageDataArray, id: postRefKey, user: user, post: self.post)
+            self.uploadImageToDatabse(data: imageDataArray, id: postRefKey, user: user, post: self.post, changeTime: false)
             
             self.dressNameField.text = ""
             self.dressDescriptionField.text = "Tap to edit..."
@@ -611,7 +615,9 @@ extension UploadViewController {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
             textView.textColor = UIColor.black
-            textView.text = ""
+            if textView.text == "Tap to edit..." {
+                textView.text = ""
+            }
         }
     }
     

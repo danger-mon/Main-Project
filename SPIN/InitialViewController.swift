@@ -67,7 +67,7 @@ class InitialViewController: UIViewController {
             }
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let nextViewController = storyboard.instantiateViewController(withIdentifier: "introScreen")
+            let nextViewController = storyboard.instantiateViewController(withIdentifier: "introScreenController")
             self.present(nextViewController, animated: true, completion: nil)
         }
     }

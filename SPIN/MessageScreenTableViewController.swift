@@ -99,9 +99,14 @@ class MessageScreenTableViewController: UITableViewController {
         cell.name.text = conversations[indexPath.row].name
         
         databaseRef.child("Users").child(conversations[indexPath.row].uid).child("userData").child("photoURL").observeSingleEvent(of: .value, with: { (snapshot) in
-            let url = NSURL(string: snapshot.value as! String)
-            if let data = NSData(contentsOf: url! as URL) {
-                cell.recipientImageView.image = UIImage(data: data as Data)!
+            if snapshot.value != nil
+            {
+                if let url = NSURL(string: snapshot.value as! String)
+                {
+                    if let data = NSData(contentsOf: url as URL) {
+                        cell.recipientImageView.image = UIImage(data: data as Data)!
+                    }
+                }
             }
         })
         cell.recipientImageView.clipsToBounds = true

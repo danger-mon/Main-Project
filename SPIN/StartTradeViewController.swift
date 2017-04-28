@@ -41,7 +41,7 @@ class StartTradeViewController: UIViewController {
     }
     
     @IBAction func beginTrade(_ sender: Any) {
-        print("requesting")
+        
         
         self.yesButton.isEnabled = false
         self.cancelButton.isEnabled = false
@@ -61,7 +61,9 @@ class StartTradeViewController: UIViewController {
         
         databaseRef.child("OneSignalIDs").child(ownerReference).observeSingleEvent(of: .value, with: { (snapshot) in
             
-            if snapshot.value is NSNull { } else {
+            if snapshot.value is NSNull {
+            } else {
+                
                 let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
                 let pushToken = status.subscriptionStatus.pushToken
                 _ = status.subscriptionStatus.userId
@@ -74,12 +76,13 @@ class StartTradeViewController: UIViewController {
                         "ios_badgeType": "Increase",
                         "ios_badgeCount": 1
                         ] as [String : Any]
-                    print(notificationContent)
+                    
                     OneSignal.postNotification(notificationContent)
                 }
             }
             
             var fanoutObject: [String: [String: Any]] = [:]
+            
             
             databaseRef.child("RequestData").child(self.dressReference).observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -90,18 +93,22 @@ class StartTradeViewController: UIViewController {
 
                 
                 if snapshot.value is NSNull {
+                    
                     var dict = [(FIRAuth.auth()?.currentUser?.uid)!: "true"]
                     fanoutObject["/RequestData/\(self.dressReference)"] = dict
                     databaseRef.updateChildValues(fanoutObject)
                     _ = self.navigationController?.popViewController(animated: true)
                     
                 } else {
+                    
                     var dict: [String: String] = snapshot.value as! [String : String]
                     dict[(FIRAuth.auth()?.currentUser?.uid)!] = "true"
                     fanoutObject["/RequestData/\(self.dressReference)"] = dict
                     
+                    
                     databaseRef.updateChildValues(fanoutObject)
                     _ = self.navigationController?.popViewController(animated: true)
+                    
                 }
             })
             

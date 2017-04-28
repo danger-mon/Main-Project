@@ -16,6 +16,7 @@ class SettingsTableViewCell: UITableViewCell {
     @IBOutlet weak var unblockButton: UIButton!
     var ref = ""
     var parentTableViewController: BlockedUsersTableViewController = BlockedUsersTableViewController()
+    weak var finishDelegate: TapDelegateBlocked?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,11 +25,21 @@ class SettingsTableViewCell: UITableViewCell {
     
     @IBAction func unblock(_ sender: Any) {
     
-        let reference = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(ref).child("blocked")
+        //let reference = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(ref).child("blocked")
         
-            reference.setValue(NSNull())
-        self.parentTableViewController.blockedUsers = []
-            self.parentTableViewController.downloadBlockedUsers()
+        let fanoutObject = ["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(ref)/blocked": NSNull()]
+        
+            //reference.setValue(NSNull())
+        
+        FIRDatabase.database().reference().updateChildValues(fanoutObject) { (error, ref) in
+            if error != nil {
+                print("error")
+            } else {
+                self.finishDelegate?.didFinishUnblocking()
+                self.parentTableViewController.blockedUsers = []
+                self.parentTableViewController.downloadBlockedUsers()
+            }
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -37,4 +48,8 @@ class SettingsTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+}
+
+protocol TapDelegateBlocked: class {
+    func didFinishUnblocking()
 }

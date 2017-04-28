@@ -73,6 +73,11 @@ class ProfileViewController: UIViewController {
             updateButton.layer.borderWidth = 1
             updateButton.layer.borderColor = UIColor.darkGray.cgColor
         }
+        if editBioField != nil {
+            editBioField.layer.borderColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1).cgColor
+            editBioField.layer.borderWidth = 1
+            self.setDoneOnKeyboard()
+        }
         
         navigationItem.title = ""
         
@@ -110,6 +115,19 @@ class ProfileViewController: UIViewController {
         if !doNotDownload {
             downloadProfile(ref: ProfileViewController.uidToLoad)
         }
+    }
+    
+    func setDoneOnKeyboard() {
+        let keyboardToolbar = UIToolbar()
+        keyboardToolbar.sizeToFit()
+        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
+        keyboardToolbar.items = [flexBarButton, doneBarButton]
+        self.editBioField.inputAccessoryView = keyboardToolbar
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     func settingsScreen() {

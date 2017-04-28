@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
         
         let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
             print("Received Notification: \(notification!.payload.body)")
+            print(notification?.payload.additionalData)
             
             if notification?.payload.additionalData != nil {
                 if notification?.payload.additionalData["type"] != nil {
@@ -35,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
                     }
                 } else {
                     //Message Notification
-                    if notification?.payload.additionalData["userID"] != nil {
-                        let incomingKey = notification?.payload.additionalData["userID"] as! String
+                    if notification?.payload.additionalData["senderUid"] != nil {
+                        let incomingKey = notification?.payload.additionalData["senderUid"] as! String
                         if BadgeHandler.messages[incomingKey] == nil {
                             BadgeHandler.messages[incomingKey] = 1
                         } else {

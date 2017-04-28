@@ -70,6 +70,7 @@ class IntroViewController: UIPageViewController, UIPageViewControllerDataSource 
     
     private func newViewController(name: String) -> UIViewController {
         if name != "login" {
+            
             let toReturn = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "intro1") as! IntroSubScreenViewController
             let _ = toReturn.view.description
             toReturn.imageView.contentMode = .scaleAspectFit

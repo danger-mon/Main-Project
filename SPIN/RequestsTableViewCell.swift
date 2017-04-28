@@ -16,10 +16,13 @@ class RequestsTableViewCell: UITableViewCell {
     @IBOutlet weak var rentBuyLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var messageButton: UIButton!
+    @IBOutlet weak var moreButton: UIButton!
     
     var uid: String = ""
     var dressReference: String = ""
+    var listingRef: String = ""
     weak var tapDelegate: RequestsTapDelegate?
+    var inOrOut = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,6 +35,10 @@ class RequestsTableViewCell: UITableViewCell {
         messageButton.layer.borderWidth = 1
         messageButton.layer.cornerRadius = 7
         
+        moreButton.layer.borderColor = UIColor.lightGray.cgColor
+        moreButton.layer.borderWidth = 1
+        moreButton.layer.cornerRadius = 7
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -41,6 +48,12 @@ class RequestsTableViewCell: UITableViewCell {
     }
     @IBAction func goToProfile(_ sender: Any) {
         tapDelegate?.message(uid: uid, name: userLabel.text!, username: "")
+    }
+    
+    @IBAction func more(_ sender: Any) {
+        
+        tapDelegate?.moreOptions(ref: listingRef, uid: uid, inOrOut: inOrOut, dressRef: dressReference)
+        
     }
     
     @IBAction func goToDress(_ sender: Any) {
@@ -53,4 +66,5 @@ class RequestsTableViewCell: UITableViewCell {
 protocol RequestsTapDelegate: class {
     func message(uid: String, name: String, username: String)
     func goToDress(ref: String)
+    func moreOptions(ref: String, uid: String, inOrOut: String, dressRef: String)
 }

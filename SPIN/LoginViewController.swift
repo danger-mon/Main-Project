@@ -85,6 +85,10 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         
+        registerButton.isEnabled = true
+        myLoginButton.isEnabled = true
+        emailLoginButton.isEnabled = true
+        
         /*
         let loginButton = LoginButton(readPermissions: [.publicProfile, .email])
         loginButton.center = view.center

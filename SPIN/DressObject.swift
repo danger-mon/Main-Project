@@ -51,8 +51,8 @@ class DressObject: NSObject, NSCoding {
     }
     
     init(snapshot: FIRDataSnapshot) {
-        key = (snapshot.value as! NSDictionary).allKeys.first as! String
-        let snapshotValue = (snapshot.value as! NSDictionary).allValues.first as! NSDictionary
+        key = snapshot.key //value //as! NSDictionary).allKeys.first as! String
+        let snapshotValue = snapshot.value as! NSDictionary //(snapshot.value as! NSDictionary).allValues.first as! NSDictionary
         
         //let snapshotValue = snapshotVal[0] as! NSDictionary
         name = snapshotValue["title"] as! String

@@ -14,12 +14,16 @@ class MultipleDressScreenViewController: UIViewController {
     @IBOutlet weak var requestTradeButton: UIButton!
     @IBOutlet weak var swipedRightImage: UIImageView!
     @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var rentSellLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
     
+
     @IBOutlet var profileGoTo: UITapGestureRecognizer!
     
     var refToLoad: String! = ""
     var uidToLoad: String! = ""
     var dontDownload = false
+    var timestamp: Double = 0
     
     override func viewWillAppear(_ animated: Bool) {
         //profileName.alpha = 0
@@ -34,13 +38,24 @@ class MultipleDressScreenViewController: UIViewController {
             editButton.layer.cornerRadius = 7
             editButton.layer.borderColor = UIColor.darkGray.cgColor
             editButton.layer.borderWidth = 1
+            if requestTradeButton != nil {
+                requestTradeButton.isEnabled = false
+                requestTradeButton.isHidden = true
+            }
         }
+        
+        if moreButton != nil {
+            moreButton.isHidden = true
+            moreButton.isEnabled = false
+        }
+        
         if profileGoTo != nil {
             profileGoTo.isEnabled = false
         }
         
         if requestTradeButton != nil {
             requestTradeButton.isEnabled = false
+            requestTradeButton.isHidden = true
         }
         
         dressTitle.alpha = 0
@@ -73,10 +88,13 @@ class MultipleDressScreenViewController: UIViewController {
         
         profileName.text = "Loading..."
         locationLabel.text = "Loading..."
+        
         if self.editButton != nil {
             self.editButton.isEnabled = false
             self.editButton.isHidden = true
         }
+        
+        self.navigationController?.navigationBar.topItem?.title = " "
         
         /*let tap = UITapGestureRecognizer(target: self, action: #selector(self.touch(_:)))
          profileImage.addGestureRecognizer(tap)
@@ -175,8 +193,20 @@ class MultipleDressScreenViewController: UIViewController {
             }
             
             vc.uploadCollectionView.currentPictures = pictures
+            print(self.timestamp)
+            vc.timestamp = self.timestamp
+            print(vc.timestamp)
             vc.dressNameField.text = self.dressTitle.text!
             vc.dressDescriptionField.text = self.dressDescription.text!
+            var string = self.priceLabel.text
+            string?.remove(at: (string?.startIndex)!)
+            vc.priceField.text = string
+            
+            if self.rentSellLabel.text == "rent:" {
+                vc.rentSellSegmentedControl.selectedSegmentIndex = 0
+            } else if rentSellLabel.text == "sell:" {
+                vc.rentSellSegmentedControl.selectedSegmentIndex = 1
+            }
             vc.refToLoad = self.refToLoad
             
         } else if segue.identifier == "tradeWarning" {
@@ -203,6 +233,9 @@ class MultipleDressScreenViewController: UIViewController {
                     self.dressTitle.text = downloadedDictionary["title"] as? String
                     self.dressDescription.text = downloadedDictionary["description"] as! String
                     self.profileName.text = downloadedDictionary["username"] as? String
+                self.rentSellLabel.text = "\(downloadedDictionary["rentSell"] as! String):"
+                self.priceLabel.text = "£\(downloadedDictionary["price"] as! String)"
+                
                 UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseInOut], animations: {
                     self.dressTitle.alpha = 1
                     self.dressDescription.alpha = 1
@@ -213,13 +246,19 @@ class MultipleDressScreenViewController: UIViewController {
                 
                 self.uidToLoad = downloadedDictionary["uid"] as! String
                 numberOfImages = Int(downloadedDictionary["numberOfImages"] as! NSNumber)
+                self.timestamp = downloadedDictionary["timestamp"] as! Double
+                print("downlaoded \(downloadedDictionary["timestamp"])")
                 self.dressImagesCollectionView.currentPictures = []
                 for _ in 0..<numberOfImages {
                     self.dressImagesCollectionView.currentPictures.append(#imageLiteral(resourceName: "loading"))
                 }
                 
-                self.profileGoTo.isEnabled = true
-                self.requestTradeButton.isEnabled = true
+                if self.profileGoTo != nil {
+                    self.profileGoTo.isEnabled = true
+                }
+                if self.requestTradeButton != nil {
+                    self.requestTradeButton.isEnabled = true
+                }
                 
                 for i in 0..<numberOfImages {
                     let actual = i
@@ -236,14 +275,38 @@ class MultipleDressScreenViewController: UIViewController {
                         }
                         print("i \(i), number: \(numberOfImages - 1)")
                         if i == numberOfImages - 1 {
-                            
+                            print("hey")
                             if self.editButton != nil {
                                 print("enabling")
                                 if (FIRAuth.auth()?.currentUser?.uid)! == self.uidToLoad {
-                                    self.editButton.isEnabled = true
-                                    self.editButton.isHidden = false
+                                    if self.editButton != nil {
+                                        self.editButton.isEnabled = true
+                                        self.editButton.isHidden = false
+                                    }
+                                } else {
+                                    print("yp")
+                                    if self.requestTradeButton != nil {
+                                        print("ho")
+                                        self.requestTradeButton.isEnabled = true
+                                        self.requestTradeButton.isHidden = false
+                                    }
+                                    if self.moreButton != nil {
+                                        self.moreButton.isEnabled = true
+                                        self.moreButton.isHidden = false
+                                    }
+                                }
+                            } else {
+                                
+                                if self.requestTradeButton != nil {
+                                    self.requestTradeButton.isEnabled = true
+                                    self.requestTradeButton.isHidden = false
+                                }
+                                if self.moreButton != nil {
+                                    self.moreButton.isEnabled = true
+                                    self.moreButton.isHidden = false
                                 }
                             }
+
                         }
                     })
                 }

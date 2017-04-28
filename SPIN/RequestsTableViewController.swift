@@ -19,6 +19,7 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
         var price: String
         var reference: String
         var uid: String
+        var listingRef: String
     }
     
     var incomingRequests: [request] = []
@@ -73,7 +74,7 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
             if snapshot.value is NSNull { } else {
                 let downloadDict = snapshot.value as! [String: Any]
                 
-                var newRequest = request(image: #imageLiteral(resourceName: "loading"), title: downloadDict["dressTitle"] as! String, user: downloadDict["requesterName"] as! String, rentBuy: downloadDict["rentBuy"] as! String, price: downloadDict["price"] as! String, reference: downloadDict["dressReference"] as! String, uid: downloadDict["requestUid"] as! String)
+                var newRequest = request(image: #imageLiteral(resourceName: "loading"), title: downloadDict["dressTitle"] as! String, user: downloadDict["requesterName"] as! String, rentBuy: downloadDict["rentBuy"] as! String, price: downloadDict["price"] as! String, reference: downloadDict["dressReference"] as! String, uid: downloadDict["requestUid"] as! String, listingRef: snapshot.key )
                 
                 storageRef.child("dressImages").child("\(downloadDict["dressReference"] as! String)/1.jpg").data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
                     if error != nil {
@@ -98,7 +99,7 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
             if snapshot.value is NSNull { } else {
                 let downloadDict = snapshot.value as! [String: Any]
                 
-                var newRequest = request(image: #imageLiteral(resourceName: "loading"), title: downloadDict["dressTitle"] as! String, user: downloadDict["ownerName"] as! String, rentBuy: downloadDict["rentBuy"] as! String, price: downloadDict["price"] as! String, reference: downloadDict["dressReference"] as! String, uid: downloadDict["ownerUid"] as! String)
+                var newRequest = request(image: #imageLiteral(resourceName: "loading"), title: downloadDict["dressTitle"] as! String, user: downloadDict["ownerName"] as! String, rentBuy: downloadDict["rentBuy"] as! String, price: downloadDict["price"] as! String, reference: downloadDict["dressReference"] as! String, uid: downloadDict["ownerUid"] as! String, listingRef: snapshot.key)
                 
                 storageRef.child("dressImages").child("\(downloadDict["dressReference"] as! String)/1.jpg").data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
                     if error != nil {
@@ -201,6 +202,8 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 cell.dressImageView.image = allRequests[0][indexPath.section - 1].image
                 cell.uid = allRequests[0][indexPath.section - 1].uid
                 cell.dressReference = allRequests[0][indexPath.section - 1].reference
+                cell.inOrOut = "in"
+                cell.listingRef = allRequests[0][indexPath.section - 1].listingRef
                 cell.isUserInteractionEnabled = true
                 cell.tapDelegate = self
             } else {
@@ -210,6 +213,8 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 cell.rentBuyLabel.text = allRequests[1][index].rentBuy
                 cell.priceLabel.text = allRequests[1][index].price
                 cell.dressImageView.image = allRequests[1][index].image
+                cell.listingRef = allRequests[1][index].listingRef
+                cell.inOrOut = "out"
                 cell.uid = allRequests[1][index].uid
                 cell.dressReference = allRequests[1][index].reference
                 cell.isUserInteractionEnabled = true
@@ -263,6 +268,153 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
         
         self.navigationController?.pushViewController(nextViewController, animated: true) */
  
+    }
+    
+    func moreOptions(ref: String, uid: String, inOrOut: String, dressRef: String) {
+        let alert = UIAlertController(title: "Options", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+            
+            switch action.style{
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                var fanoutObject: [String: Any] = [:]
+                if inOrOut == "in" {
+                    fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/incomingRequests/\(ref)"] = NSNull()
+                    //fanoutObject["/Users/\(uid)/outgoingRequests/\(ref)"] = NSNull()
+                } else {
+                    fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/outgoingRequests/\(ref)"] = NSNull()
+                    //fanoutObject["/Users/\(uid)/incomingRequests/\(ref)"] = NSNull()
+                }
+                
+                FIRDatabase.database().reference().updateChildValues(fanoutObject)
+                
+                self.incomingRequests = []
+                self.outgoingRequests = []
+                
+                self.catchIncomingRequests()
+                self.catchOutgoingRequests()
+                self.tableView.reloadData()
+
+            }
+            
+        }))
+        
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {action in
+            switch action.style{
+            case .cancel: break
+                
+            default: break
+            }
+        }))
+        
+       alert.addAction(UIAlertAction(title: "Confirm Exchange", style: .default, handler: {action in
+            switch action.style{
+            case .default:
+                var fanoutObject: [String: Any] = [:]
+                
+                if inOrOut == "in" {
+                    fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/incomingRequests/\(ref)"] = NSNull()
+                    
+                    fanoutObject["Trades/\(ref)/byOwner"] = ["dressRef": dressRef,
+                                                     "owner": (FIRAuth.auth()?.currentUser?.uid)!,
+                                                     "requester": uid,
+                                                     "timestamp": Int(NSDate.timeIntervalSinceReferenceDate)]
+                    
+                    FIRDatabase.database().reference().child("Trades").child(ref).child("byRequester").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if snapshot.value is NSNull {
+                            //Print alert
+                        } else {
+                            FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("exchanges").observeSingleEvent(of: .value, with: { (snapshot) in
+                                if snapshot.value is NSNull { }
+                                else {
+                                    var string = snapshot.value as! String
+                                    var number = Int(string)!
+                                    number += 1
+                                    string = String(number)
+                                    FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("exchanges").setValue(string)
+                                }
+                            })
+                            
+                            FIRDatabase.database().reference().child("Users").child(uid).child("userData").child("exchanges").observeSingleEvent(of: .value, with: { (snapshot) in
+                                if snapshot.value is NSNull { }
+                                else {
+                                    var string = snapshot.value as! String
+                                    var number = Int(string)!
+                                    number += 1
+                                    string = String(number)
+                                    FIRDatabase.database().reference().child("Users").child(uid).child("userData").child("exchanges").setValue(string)
+                                }
+                            })
+                            
+                        }
+                    })
+
+                    //fanoutObject["/Users/\(uid)/outgoingRequests/\(ref)"] = NSNull()
+                } else {
+                    fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/outgoingRequests/\(ref)"] = NSNull()
+                    fanoutObject["Trades/\(ref)/byRequester"] = ["dressRef": dressRef,
+                                                     "owner": uid,
+                                                     "requester": (FIRAuth.auth()?.currentUser?.uid)!,
+                                                     "timestamp": Int(NSDate.timeIntervalSinceReferenceDate)]
+                    //fanoutObject["/Users/\(uid)/incomingRequests/\(ref)"] = NSNull()
+                    
+                    FIRDatabase.database().reference().child("Trades").child(ref).child("byOwner").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if snapshot.value is NSNull {
+                            //Print alert
+                            print("alert")
+                        } else {
+                            FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("exchanges").observeSingleEvent(of: .value, with: { (snapshot) in
+                                if snapshot.value is NSNull { }
+                                 else {
+                                    var string = snapshot.value as! String
+                                    print(string)
+                                    var number = Int(string)!
+                                    number += 1
+                                    string = String(number)
+                                    print(string)
+                                    FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("exchanges").setValue(string)
+                                }
+                            })
+                            
+                            FIRDatabase.database().reference().child("Users").child(uid).child("userData").child("exchanges").observeSingleEvent(of: .value, with: { (snapshot) in
+                                if snapshot.value is NSNull { }
+                                else {
+                                    var string = snapshot.value as! String
+                                    var number = Int(string)!
+                                    number += 1
+                                    string = String(number)
+                                    FIRDatabase.database().reference().child("Users").child(uid).child("userData").child("exchanges").setValue(string)
+                                }
+                            })
+                            
+                        }
+                    })
+
+                }
+                
+                FIRDatabase.database().reference().updateChildValues(fanoutObject)
+                
+                self.incomingRequests = []
+                self.outgoingRequests = []
+                
+                self.catchIncomingRequests()
+                self.catchOutgoingRequests()
+                self.tableView.reloadData()
+                
+            case .cancel: break
+                
+            default: break
+            }
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func tapOnRequest(_ sender: Any) {
@@ -319,6 +471,7 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 destinationViewController.refToLoad = conversationReference
                 //TODO: Add URL image download
                 destinationViewController.name = name //self.profileUsername.text!
+                destinationViewController.uid = uid
                 
                 destinationNavigationController.pushViewController( destinationViewController, animated: true)
                 let transition = CATransition()
@@ -360,6 +513,7 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 destinationViewController.senderId = (FIRAuth.auth()?.currentUser?.uid)!
                 destinationViewController.refToLoad = id.key
                 destinationViewController.name = name
+                destinationViewController.uid = uid
                 destinationNavigationController.pushViewController( destinationViewController, animated: true)
                 
                 let transition = CATransition()

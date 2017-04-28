@@ -31,6 +31,24 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
     var reloadButton: UIButton!
     var loadingLabel: UILabel!
 
+    /*var toCome = 0 {
+        didSet {
+            if toCome == 1 {
+                if dressReel.count >= 2 {
+                    self.catchNextDress(count: 1)
+                }
+            } else if toCome == 2 {
+                if dressReel.count >= 1 {
+                    self.catchNextDress(count: 1)
+                }
+            } else if toCome == 3 {
+                if dressReel.count >= 0 {
+                    <#code#>
+                }
+            }
+        }
+    } */
+    
     let MAX_BUFFER_SIZE = 2
     let CARD_HEIGHT: CGFloat = UIScreen.main.bounds.width - 10 + 150
     let CARD_WIDTH: CGFloat = UIScreen.main.bounds.width - 10
@@ -111,7 +129,9 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
             if FIRAuth.auth()?.currentUser?.uid != nil {
                 self.currentTimeSegmentKey = databaseRef.child("timeSegments").child((FIRAuth.auth()?.currentUser?.uid)!).childByAutoId().key
             }
-            self.catchNextDress(count: 3)
+            //self.catchNextDress(count: 3)
+            //self.toCome = 3
+            self.catchNextDress(count: 1, time: self.currentTime, start: true)
         })
         
         FIRDatabase.database().reference().child("Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -252,69 +272,149 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
     }
     
     
-    func catchNextDress(count: Int) {
+    func catchNextDress(count: Int, time: Double, start: Bool) {
         
         // If the current time is between the time of launch and the time of first segment (newest unseen dresses)
-        if currentTimeSegment.1 > nextTimeSegment.0 {
+            
         
             let databaseRef = FIRDatabase.database().reference()
             // Of the children between the current time and the nearest segment upper bound get the most recent
             
-            print("between:\(nextTimeSegment.0) and \(currentTimeSegment.1)")
+            print("between:\(nextTimeSegment.0) and \(time)")
             
-            let query = databaseRef.child("Posts").queryOrdered(byChild: "timestamp").queryStarting(atValue: nextTimeSegment.0).queryEnding(atValue: (currentTimeSegment.1 - 0.01)).queryLimited(toLast: 1)
-        
+            let query = databaseRef.child("Posts").queryOrdered(byChild: "timestamp").queryStarting(atValue: nextTimeSegment.0).queryEnding(atValue: (time - 1)).queryLimited(toLast: 3)
+            
             query.observeSingleEvent(of: .value, with: { (snapshot) in
             
                 if snapshot.value is NSNull {
+                    
+                    self.updateSegments(joining: true)
+                    /*
                     if self.nextTimeSegment.0 == 0 {
-                        
+                        if count == 1 && self.dressReel.count == 0 {
+                            self.endOfSegment = true
+                            self.updateSegments(joining: true) // Not sure
+                        }
                     } else {
                         print("updateSegments joining: false")
-                        self.updateSegments(joining: true)
-                    }
+                        if self.nextTimeSegment.0 == 0 {
+                            if count == 1 && self.dressReel.count == 0 {
+                                self.endOfSegment = true
+                                self.updateSegments(joining: true) // Not sure
+                            }
+                        }
+                    }*/
                     
                 } else {
                     
-                    let item = snapshot
-                    let newDress = DressObject(snapshot: item)
-                    
-                    self.dressReel.append(newDress)
-                    
-                    //Create a Draggable Card with all the properties of the dress
-                    let position = self.loadedCards.count
-                    let newDraggableCard: DraggableView = self.createDraggableViewWithDataAtIndex(position)
-                    newDraggableCard.reference = newDress.ref!
-                    newDraggableCard.getOwnImage()
-                    newDraggableCard.dressName.text = newDress.name
-                    newDraggableCard.dressDescription.text = newDress.dressDescription
-                    newDraggableCard.profileView.profileName.text = newDress.profile
-                    newDraggableCard.profileView.location.text = newDress.location
-                    if let data = NSData(contentsOf: newDress.url as URL) {
-                        newDraggableCard.profileView.profileCircle.image = UIImage(data: data as Data)!
+                    var snapshots: [FIRDataSnapshot] = []
+                    for child in snapshot.children {
+                        snapshots.append(child as! FIRDataSnapshot)
                     }
-                    newDraggableCard.backgroundColor = UIColor.white
-                    newDraggableCard.tapDelegate = self
-                    self.loadedCards.append(newDraggableCard)
+                    var snapshots2: [FIRDataSnapshot] = []
+                    var count = snapshots.count
+                    while count > 0 {
+                        snapshots2.append(snapshots[count - 1])
+                        count -= 1
+                    }
                     
-                    // Insert the cards into the view
-                    if self.loadedCards.count == 1 {
-                        self.insertSubview(self.loadedCards.last!, at: 0)
+                    let dresses = self.dressReel.count
+                    
+                    if start {
+                        
+                    for i in dresses..<snapshots2.count {
+                    
+                        var seen = false
+                        for card in self.loadedCards {
+                            if snapshots2[i].key == card.reference {
+                                seen = true
+                            }
+                        }
+                        
+                        if !seen {
+                            let item = snapshots2[i]
+                            let newDress = DressObject(snapshot: item)
+                            
+                            self.dressReel.append(newDress)
+                            
+                            //Create a Draggable Card with all the properties of the dress
+                            let position = self.loadedCards.count
+                            let newDraggableCard: DraggableView = self.createDraggableViewWithDataAtIndex(position)
+                            newDraggableCard.reference = newDress.ref!
+                            newDraggableCard.getOwnImage()
+                            newDraggableCard.dressName.text = newDress.name
+                            newDraggableCard.dressDescription.text = newDress.dressDescription
+                            newDraggableCard.profileView.profileName.text = newDress.profile
+                            newDraggableCard.profileView.location.text = newDress.location
+                            if let data = NSData(contentsOf: newDress.url as URL) {
+                                newDraggableCard.profileView.profileCircle.image = UIImage(data: data as Data)!
+                            }
+                            newDraggableCard.backgroundColor = UIColor.white
+                            newDraggableCard.tapDelegate = self
+                            self.loadedCards.append(newDraggableCard)
+                            
+                            // Insert the cards into the view
+                            if self.loadedCards.count == 1 {
+                                self.insertSubview(self.loadedCards.last!, at: 0)
+                            } else {
+                                self.insertSubview(self.loadedCards.last!, belowSubview: self.loadedCards[position - 1]) //Insert the 2nd to nth view behind the main one
+                            }
+                            
+                            self.currentTimeSegment.1 = Double(newDress.timestamp)
+                        } else {
+                            
+                            self.endOfSegment = true
+                        }
+                    }
+                    
                     } else {
-                        self.insertSubview(self.loadedCards.last!, belowSubview: self.loadedCards[position - 1]) //Insert the 2nd to nth view behind the main one
+                        var seen = false
+                        for card in self.loadedCards {
+                            if snapshots[0].key == card.reference {
+                                seen = true
+                            }
+                        }
+                        if !seen {
+                            
+                            let item = snapshots[0]
+                            let newDress = DressObject(snapshot: item)
+                            
+                            self.dressReel.append(newDress)
+                            
+                            //Create a Draggable Card with all the properties of the dress
+                            let position = self.loadedCards.count
+                            let newDraggableCard: DraggableView = self.createDraggableViewWithDataAtIndex(position)
+                            newDraggableCard.reference = newDress.ref!
+                            newDraggableCard.getOwnImage()
+                            newDraggableCard.dressName.text = newDress.name
+                            newDraggableCard.dressDescription.text = newDress.dressDescription
+                            newDraggableCard.profileView.profileName.text = newDress.profile
+                            newDraggableCard.profileView.location.text = newDress.location
+                            if let data = NSData(contentsOf: newDress.url as URL) {
+                                newDraggableCard.profileView.profileCircle.image = UIImage(data: data as Data)!
+                            }
+                            newDraggableCard.backgroundColor = UIColor.white
+                            newDraggableCard.tapDelegate = self
+                            self.loadedCards.append(newDraggableCard)
+                            
+                            // Insert the cards into the view
+                            if self.loadedCards.count == 1 {
+                                self.insertSubview(self.loadedCards.last!, at: 0)
+                            } else {
+                                self.insertSubview(self.loadedCards.last!, belowSubview: self.loadedCards[position - 1]) //Insert the 2nd to nth view behind the main one
+                            }
+                            
+                            self.currentTimeSegment.1 = Double(newDress.timestamp)
+                        } else {
+                            self.endOfSegment = true
+                        }
                     }
                     
-                    self.currentTimeSegment.1 = Double(newDress.timestamp)
-                    
-                    if count > 1 {
-                        self.catchNextDress(count: count - 1)
-                    }
+                }
+                if count > 1 {
+                    //self.catchNextDress(count: count - 1)
                 }
             })
-        } else {
-            endOfSegment = true
-            print("endOfSegment = true")
-        }
     }
     
     func updateSegments(joining: Bool) {
@@ -376,7 +476,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
                             self.nextTimeSegmentKey = secondSnapshot.key
                             print("Getting New Segments!")
                             self.endOfSegment = false
-                            self.catchNextDress(count: 3)
+                            self.catchNextDress(count: 1, time: self.currentTimeSegment.1, start: true)
                         //}
                     }
                 })
@@ -401,16 +501,20 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         saveViewdDressRef()
         
         currentDressIndex = currentDressIndex + 1
+        catchNextDress(count: 1, time: dressReel[0].timestamp, start: false)
         dressReel.remove(at: 0)
         
+        /*
         if endOfSegment != true {
+            currentTimeSegment.1 -= 1
             catchNextDress(count: 1)
         } else {
             if dressReel.count == 0 {
                 print("In card swiped left")
                 updateSegments(joining: true)
             }
-        }
+        } */
+        //toCome += 1
     }
     
     func cardSwipedRight(_ card: UIView) -> Void {
@@ -422,16 +526,21 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         saveDressRef()
         
         currentDressIndex = currentDressIndex + 1
+        catchNextDress(count: 1, time: dressReel[0].timestamp, start: false)
         dressReel.remove(at: 0)
         
+        
+        /*
         if endOfSegment != true {
+            currentTimeSegment.1 -= 1
             catchNextDress(count: 1)
         } else {
             if dressReel.count == 0 {
-                print("In card swiped right")
+                print("In card swiped left")
                 updateSegments(joining: true)
             }
-        }
+        } */
+        //toCome += 1
     }
 
     func swipeRight() -> Void {
@@ -468,10 +577,11 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         var fanoutObject: [String: AnyObject] = [:]
         fanoutObject["/Users/\(userIdentifier!)/savedDresses/\(dressReel[0].ref!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
         fanoutObject["/PostData/\(dressReel[0].ref!)/swipedRight/\(userIdentifier!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
-        if dressReel[0].timestamp < currentTimeSegment.1 {
+        
+        if dressReel[0].timestamp > currentTimeSegment.1 {
             fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/lower"] = dressReel[0].timestamp as AnyObject
+            fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/upper"] = currentTimeSegment.0 as AnyObject
         }
-        fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/upper"] = currentTimeSegment.0 as AnyObject
         
         databaseRef.updateChildValues(fanoutObject)
     }
@@ -483,10 +593,11 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         
         var fanoutObject: [String: AnyObject] = [:]
         fanoutObject["/PostData/\(dressReel[0].ref!)/swipedLeft/\(userIdentifier!)"] = Int32(NSDate.timeIntervalSinceReferenceDate) as AnyObject
-        if dressReel[0].timestamp < currentTimeSegment.1 {
+        
+        if dressReel[0].timestamp > currentTimeSegment.1 {
             fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/lower"] = dressReel[0].timestamp as AnyObject
+            fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/upper"] = currentTimeSegment.0 as AnyObject
         }
-        fanoutObject["/timeSegments/\(userIdentifier!)/\(currentTimeSegmentKey)/upper"] = currentTimeSegment.0 as AnyObject
         
         databaseRef.updateChildValues(fanoutObject)
     }
