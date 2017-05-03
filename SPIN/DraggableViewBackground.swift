@@ -424,8 +424,12 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         if joining {
             var fanoutObject: [String: AnyObject] = [:]
             let topValue = currentTimeSegment.0
-            fanoutObject["/timeSegments/\((user?.uid)!)/\(currentTimeSegmentKey)"] = NSNull()
-            fanoutObject["/timeSegments/\((user?.uid)!)/\(nextTimeSegmentKey)/upper"] = topValue as AnyObject
+            if currentTimeSegmentKey != "" {
+                fanoutObject["/timeSegments/\((user?.uid)!)/\(currentTimeSegmentKey)"] = NSNull()
+            }
+            if nextTimeSegmentKey != "" {
+                fanoutObject["/timeSegments/\((user?.uid)!)/\(nextTimeSegmentKey)/upper"] = topValue as AnyObject
+            }
             FIRDatabase.database().reference().updateChildValues(fanoutObject)
             print("Buckets Joined")
         }
@@ -438,6 +442,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
             if snapshot.value is NSNull {
                 print("We've got a problem")
             } else {
+                
                 let enumerator = snapshot.children
                 var firstSnapshot: FIRDataSnapshot = FIRDataSnapshot()
                 while let rest = enumerator.nextObject() as? FIRDataSnapshot {

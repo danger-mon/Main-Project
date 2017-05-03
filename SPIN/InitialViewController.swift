@@ -27,23 +27,6 @@ class InitialViewController: UIViewController {
         if AccessToken.current != nil {
             
             let registered = UserDefaults.standard
-            
-            if (registered.string(forKey: (FIRAuth.auth()?.currentUser?.uid)!) != nil) {
-                
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting") as! TaskBarViewController
-
-                nextViewController.modalTransitionStyle = .crossDissolve
-                //self.tabViewController = nextViewController.topViewController as? TabViewController
-
-                
-                FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("photoURL").setValue(FIRAuth.auth()?.currentUser?.photoURL?.absoluteString)
-                
-                self.present(nextViewController, animated: true, completion: nil)
-                
-                
-            } // Present the main screen
-            else {
                 
                 let databaseRef = FIRDatabase.database().reference()
                 databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -52,19 +35,24 @@ class InitialViewController: UIViewController {
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let nextViewController = storyboard.instantiateViewController(withIdentifier: "details")
                         self.present(nextViewController, animated: true, completion: nil)
-                    } //Take to the entering details screen
-                    else {
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting") as! TaskBarViewController
-                        
-                        registered.set("Registered", forKey: (FIRAuth.auth()?.currentUser?.uid)!)
-                        registered.synchronize()
-                        nextViewController.modalTransitionStyle = .crossDissolve
-                       //self.tabViewController = nextViewController.topViewController as? TabViewController
-                        self.present(nextViewController, animated: true, completion: nil)
-                    } //Register Key for user and present main screen
+                    } else {
+                        let dict = snapshot.value as! [String: Any]
+                        if dict.count > 5 {
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting")
+                            registered.set("Registered", forKey: (FIRAuth.auth()?.currentUser?.uid)!)
+                            registered.synchronize()
+                            nextViewController.modalTransitionStyle = .crossDissolve
+                            //self.tabViewController = nextViewController.topViewController as? TabViewController
+                            self.present(nextViewController, animated: true, completion: nil)
+
+                        } else {
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            let nextViewController = storyboard.instantiateViewController(withIdentifier: "details")
+                            self.present(nextViewController, animated: true, completion: nil)
+                        }
+                    }
                 })
-            }
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let nextViewController = storyboard.instantiateViewController(withIdentifier: "introScreenController")

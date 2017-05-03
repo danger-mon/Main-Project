@@ -114,7 +114,6 @@ class DetailsViewController: UIViewController {
     
     func uploadData() {
         
-        print((FIRAuth.auth()?.currentUser?.photoURL?.absoluteString)!)
         
         var profileImage = UIImage()
         if let data = NSData(contentsOf: NSURL(string: (FIRAuth.auth()?.currentUser?.photoURL?.absoluteString)!)! as URL) {

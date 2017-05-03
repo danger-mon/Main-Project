@@ -22,6 +22,7 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var uploadCollectionView: MultipleDressCollectionView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cancelButton: UIButton!
     
     //NOT USED:
     @IBOutlet weak var nameTitle: UILabel!
@@ -74,6 +75,12 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
             deleteButton.layer.cornerRadius = 7
         }
         
+        if cancelButton != nil {
+            cancelButton.layer.borderColor = UIColor.lightGray.cgColor
+            cancelButton.layer.borderWidth = 1
+            cancelButton.layer.cornerRadius = 7
+        }
+        
         dressNameField.delegate = self
         priceField.delegate = self
         actionButton.superview?.bringSubview(toFront: actionButton)
@@ -108,6 +115,20 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
+    @IBAction func cancel(_ sender: Any) {
+        dressNameField.text = ""
+        dressDescriptionField.text = ""
+        priceField.text = ""
+        for i in 0..<uploadCollectionView.currentPictures.count {
+            uploadCollectionView.currentPictures[i] = #imageLiteral(resourceName: "placeholderImage")
+        }
+        uploadCollectionView.reloadData()
+        
+        toWhatCell = 0
+        imageSelected = #imageLiteral(resourceName: "placeholderImage")
+        imageCount = 0
+        imageCountShadow = 0
+    }
 
     
     func messageScreen() {
