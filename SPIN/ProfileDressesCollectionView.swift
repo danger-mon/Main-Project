@@ -91,6 +91,7 @@ class ProfileDressesCollectionView: UICollectionView, UICollectionViewDelegateFl
         
         delegate2?.updateSize(size: counting * Int(widthPerItem) + Int(contentInset.top))
  
+        delegate2?.updateListings()
         //self.sizeToFit()
         return cell
     }
@@ -108,4 +109,5 @@ protocol LongPressDelegate: class {
     
     func didLongPressCell(sender: UIGestureRecognizer)
     func updateSize(size: Int)
+    func updateListings()
 }

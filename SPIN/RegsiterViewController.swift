@@ -168,7 +168,7 @@ class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate,
     func createUser(email: String, password: String) {
         FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
             if error != nil {
-                print(error?.localizedDescription)
+                
             } else {
                 print("Success")
                 let changeRequest = user?.profileChangeRequest()
@@ -176,7 +176,7 @@ class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate,
                 
                 changeRequest?.displayName = self.usernameField.text!
                 changeRequest?.commitChanges { error in
-                    if let error = error {
+                    if error != nil {
                         print("Error changin displayName")
                     } else {
                         self.uploadData(user: user!)
@@ -241,7 +241,7 @@ class RegsiterViewController: UIViewController, UIImagePickerControllerDelegate,
         let uploadMetadata = FIRStorageMetadata()
         uploadMetadata.contentType = "image/jpeg"
         
-        var imageData = UIImageJPEGRepresentation(profileImageView.image!, 0.5)
+        let imageData = UIImageJPEGRepresentation(profileImageView.image!, 0.5)
         
         storageRef.put(imageData!, metadata: uploadMetadata, completion: {
             (metadata, error) in

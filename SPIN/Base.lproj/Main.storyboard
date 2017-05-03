@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AbF-5T-GHe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AbF-5T-GHe">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -306,8 +305,8 @@
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Enter text..." translatesAutoresizingMaskIntoConstraints="NO" id="0i3-yV-bqF">
-                                        <rect key="frame" x="20" y="116" width="353" height="95"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0i3-yV-bqF">
+                                        <rect key="frame" x="24" y="116" width="343" height="95"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="95" id="D9x-TV-w9j"/>
@@ -322,8 +321,11 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zGR-zX-7eF">
-                                        <rect key="frame" x="168.5" y="286" width="54" height="36"/>
+                                        <rect key="frame" x="148" y="286" width="94" height="36"/>
                                         <color key="backgroundColor" red="0.91558047279792742" green="0.91558047279792742" blue="0.91558047279792742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="94" id="M2g-he-tp2"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                         <state key="normal" title="Submit">
                                             <color key="titleColor" red="0.11785987192699134" green="0.114190106939505" blue="0.26044365284974091" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -341,7 +343,7 @@
                                     <constraint firstItem="9rx-c5-GNc" firstAttribute="top" secondItem="paA-sH-GN1" secondAttribute="top" constant="20" id="FOm-Cm-oh9"/>
                                     <constraint firstItem="R25-st-Xue" firstAttribute="top" secondItem="p76-gF-X5G" secondAttribute="bottom" constant="8" symbolic="YES" id="OTY-jY-EMn"/>
                                     <constraint firstAttribute="trailing" secondItem="Y8r-Pc-3IX" secondAttribute="trailing" constant="26" id="OgP-n5-P5C"/>
-                                    <constraint firstAttribute="trailing" secondItem="0i3-yV-bqF" secondAttribute="trailing" constant="20" id="Pkc-cc-g2Z"/>
+                                    <constraint firstAttribute="trailing" secondItem="0i3-yV-bqF" secondAttribute="trailing" constant="26" id="Pkc-cc-g2Z"/>
                                     <constraint firstItem="p76-gF-X5G" firstAttribute="top" secondItem="0i3-yV-bqF" secondAttribute="bottom" constant="8" symbolic="YES" id="Qb7-Zk-WGQ"/>
                                     <constraint firstItem="Y8r-Pc-3IX" firstAttribute="leading" secondItem="8Hc-Wq-jBb" secondAttribute="leading" id="SjQ-bQ-F5p"/>
                                     <constraint firstItem="8Hc-Wq-jBb" firstAttribute="leading" secondItem="p76-gF-X5G" secondAttribute="leading" id="WJm-3S-Imb"/>
@@ -351,8 +353,8 @@
                                     <constraint firstItem="Y8r-Pc-3IX" firstAttribute="top" secondItem="9rx-c5-GNc" secondAttribute="bottom" constant="8" symbolic="YES" id="jDO-YM-o1c"/>
                                     <constraint firstItem="Y8r-Pc-3IX" firstAttribute="trailing" secondItem="R25-st-Xue" secondAttribute="trailing" id="jXG-ye-p5d"/>
                                     <constraint firstItem="zGR-zX-7eF" firstAttribute="top" secondItem="R25-st-Xue" secondAttribute="bottom" constant="8" symbolic="YES" id="pEy-tW-l3p"/>
-                                    <constraint firstItem="0i3-yV-bqF" firstAttribute="leading" secondItem="paA-sH-GN1" secondAttribute="leading" constant="20" id="qS5-TT-IkM"/>
-                                    <constraint firstItem="0i3-yV-bqF" firstAttribute="centerX" secondItem="paA-sH-GN1" secondAttribute="centerX" id="vAF-pi-ad6"/>
+                                    <constraint firstItem="0i3-yV-bqF" firstAttribute="leading" secondItem="paA-sH-GN1" secondAttribute="leading" constant="24" id="qS5-TT-IkM"/>
+                                    <constraint firstItem="0i3-yV-bqF" firstAttribute="centerX" secondItem="paA-sH-GN1" secondAttribute="centerX" constant="-1" id="vAF-pi-ad6"/>
                                     <constraint firstItem="p76-gF-X5G" firstAttribute="leading" secondItem="R25-st-Xue" secondAttribute="leading" id="x3F-fx-Mvk"/>
                                 </constraints>
                             </scrollView>
@@ -374,7 +376,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bGB-Ox-2SQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="144" y="-224"/>
+            <point key="canvasLocation" x="143.19999999999999" y="-224.4377811094453"/>
         </scene>
         <!--starting-->
         <scene sceneID="8dk-b3-mch">
@@ -1507,7 +1509,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="request" rowHeight="76" id="896-Cg-CUe" customClass="RequestsTableViewCell" customModule="SPIN" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="request" rowHeight="76" id="896-Cg-CUe" customClass="RequestsTableViewCell" customModule="SPIN" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="76"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="896-Cg-CUe" id="KYg-y4-eKJ">
@@ -1606,7 +1608,6 @@
                                     <outlet property="rentBuyLabel" destination="2cF-Rm-wE6" id="MaB-Mi-6Bj"/>
                                     <outlet property="titleLabel" destination="3n8-76-bgz" id="9Dl-AE-L9l"/>
                                     <outlet property="userLabel" destination="Ss5-pH-9ry" id="qPn-QV-1at"/>
-                                    <outletCollection property="gestureRecognizers" destination="juZ-nZ-DvR" appends="YES" id="lCq-gm-ub2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1618,11 +1619,6 @@
                     <navigationItem key="navigationItem" id="dG7-zC-c3U"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5SN-rW-BqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="juZ-nZ-DvR" userLabel="tapOnRequest">
-                    <connections>
-                        <action selector="tapOnRequest:" destination="Vt9-S0-7ZN" id="Mx0-ca-wxQ"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1588" y="2268.2158920539732"/>
         </scene>
@@ -2495,24 +2491,6 @@
             </objects>
             <point key="canvasLocation" x="-1974.375" y="1563.3802816901409"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="JB4-3d-lJ9">
-            <objects>
-                <viewController id="UrO-Ea-4QQ" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Z5y-YP-RrM"/>
-                        <viewControllerLayoutGuide type="bottom" id="SOM-4K-0KL"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="cI8-7T-e6f">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SyB-UA-6rx" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1329" y="1190"/>
-        </scene>
         <!--Register-->
         <scene sceneID="vkH-aS-ItO">
             <objects>
@@ -3102,7 +3080,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="zqP-Yc-FAe"/>
-        <segue reference="eMv-IM-DIH"/>
+        <segue reference="hzA-HK-Exc"/>
         <segue reference="OSc-6h-eIH"/>
     </inferredMetricsTieBreakers>
 </document>

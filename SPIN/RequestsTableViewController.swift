@@ -74,7 +74,7 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
             if snapshot.value is NSNull { } else {
                 let downloadDict = snapshot.value as! [String: Any]
                 
-                var newRequest = request(image: #imageLiteral(resourceName: "loading"), title: downloadDict["dressTitle"] as! String, user: downloadDict["requesterName"] as! String, rentBuy: downloadDict["rentBuy"] as! String, price: downloadDict["price"] as! String, reference: downloadDict["dressReference"] as! String, uid: downloadDict["requestUid"] as! String, listingRef: snapshot.key )
+                var newRequest = request(image: #imageLiteral(resourceName: "loading"), title: downloadDict["dressTitle"] as! String, user: downloadDict["requesterName"] as! String, rentBuy: downloadDict["rentBuy"] as! String, price: downloadDict["price"] as! String, reference: downloadDict["dressReference"] as! String, uid: downloadDict["requestUid"] as! String, listingRef: snapshot.key)
                 
                 storageRef.child("dressImages").child("\(downloadDict["dressReference"] as! String)/1.jpg").data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
                     if error != nil {
@@ -88,6 +88,27 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
 
             }
         })
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print(1)
+        let tappedView = tableView.cellForRow(at: indexPath) as! RequestsTableViewCell
+        let ref = tappedView.dressReference
+        print(2)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let nextViewController = storyboard.instantiateViewController(withIdentifier: "pictureViewer") as! MultipleDressScreenViewController
+        print(3)
+        if nextViewController.requestTradeButton != nil {
+            nextViewController.requestTradeButton.isEnabled = false
+            nextViewController.requestTradeButton.isHidden = true
+        }
+        print(4)
+        nextViewController.refToLoad = ref
+        nextViewController.downloadData()
+        print(5)
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+
     }
     
     func catchOutgoingRequests() {
@@ -204,7 +225,6 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 cell.dressReference = allRequests[0][indexPath.section - 1].reference
                 cell.inOrOut = "in"
                 cell.listingRef = allRequests[0][indexPath.section - 1].listingRef
-                cell.isUserInteractionEnabled = true
                 cell.tapDelegate = self
             } else {
                 let index = indexPath.section - incomingRequests.count - 2
@@ -217,10 +237,10 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 cell.inOrOut = "out"
                 cell.uid = allRequests[1][index].uid
                 cell.dressReference = allRequests[1][index].reference
-                cell.isUserInteractionEnabled = true
                 cell.tapDelegate = self
             }
-            
+            cell.isUserInteractionEnabled = true
+            cell.parentViewController = self
             cell.titleLabel.alpha = 0
             cell.userLabel.alpha = 0
             cell.priceLabel.alpha = 0
@@ -255,23 +275,35 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
     
     func goToDress(ref: String) {
         
-        /*
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let nextViewController = storyboard.instantiateViewController(withIdentifier: "pictureViewer") as! MultipleDressScreenViewController
         
-        print(nextViewController.view.description)
+        
         nextViewController.requestTradeButton.isEnabled = false
         nextViewController.requestTradeButton.isHidden = true
         
         nextViewController.refToLoad = ref
         nextViewController.downloadData()
         
-        self.navigationController?.pushViewController(nextViewController, animated: true) */
+        self.navigationController?.pushViewController(nextViewController, animated: true)
  
     }
     
     func moreOptions(ref: String, uid: String, inOrOut: String, dressRef: String) {
         let alert = UIAlertController(title: "Options", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Go To Profile", style: .default, handler: {action in
+            switch action.style{
+            case .default:
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let nextViewController = storyboard.instantiateViewController(withIdentifier: "profileViewer") as! ProfileViewController
+                ProfileViewController.uidToLoad = uid
+                nextViewController.noSettings = true
+                self.navigationController?.pushViewController(nextViewController, animated: true)
+                
+            default: break
+            }
+        }))
         
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
             
@@ -417,7 +449,8 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func tapOnRequest(_ sender: Any) {
+    /*@IBAction func tapOnRequest(_ sender: Any) {
+        
         let tapped = sender as! UITapGestureRecognizer
         let tappedView = tapped.view as! RequestsTableViewCell
         let ref = tappedView.dressReference
@@ -435,9 +468,9 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
         self.navigationController?.pushViewController(nextViewController, animated: true)
 
         
-    }
+    }*/
     
-    func message(uid: String, name: String, username: String) {
+    func messageNah(uid: String, name: String, username: String) {
         
         let theReference = FIRDatabase.database().reference()
         var alreadyThere = false
@@ -486,22 +519,25 @@ class RequestsTableViewController: UITableViewController, RequestsTapDelegate {
                 
                 print("creatingConversation")
                 let id = FIRDatabase.database().reference().child("Conversations").childByAutoId()
+                
                 id.child("timestamp").setValue(Int32(NSDate.timeIntervalSinceReferenceDate))
                 
                 let postOwn = ["id": id.key,
                             "uid": uid,
                             "name": name,
-                            "timestamp": Int32(NSDate.timeIntervalSinceReferenceDate)] as [String : Any]
+                            "timestamp": Int32(NSDate.timeIntervalSinceReferenceDate),
+                            "unseen": 0] as [String : AnyObject]
                 
                 var postOther = postOwn
-                postOther["name"] = Profile.ownUsername
-                postOther["uid"] = (FIRAuth.auth()?.currentUser?.uid)!
+                postOther["name"] = Profile.ownUsername as AnyObject
+                postOther["uid"] = (FIRAuth.auth()?.currentUser?.uid)! as AnyObject
                 
-                let fanoutObject = ["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)": postOwn,
-                                    "/Users/\(uid)/conversations/\(id.key)": postOther,
-                                    "/Conversations/\(id.key)/timestamp": Int32(NSDate.timeIntervalSinceReferenceDate),
-                                    "/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)/unseen": 0,
-                                    "/Users/\(ProfileViewController.uidToLoad)/conversations/\(id.key)/unseen": 0] as [String : Any]
+                var fanoutObject: [String: Any] = [:]
+                fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)"] =  postOwn
+                fanoutObject["/Users/\(uid)/conversations/\(id.key)"] = postOther
+                fanoutObject["/Conversations/\(id.key)/timestamp"] = Int(NSDate.timeIntervalSinceReferenceDate)
+                
+                print(fanoutObject)
                 
                 FIRDatabase.database().reference().updateChildValues(fanoutObject)
                 

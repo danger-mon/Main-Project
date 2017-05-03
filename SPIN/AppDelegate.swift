@@ -6,7 +6,6 @@
 //  Copyright © 2016 Pelayo Martinez. All rights reserved.
 //
 
-
 import UIKit
 import Firebase
 import FacebookCore
@@ -27,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
         
         let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
             print("Received Notification: \(notification!.payload.body)")
-            print(notification?.payload.additionalData)
             
             if notification?.payload.additionalData != nil {
                 if notification?.payload.additionalData["type"] != nil {

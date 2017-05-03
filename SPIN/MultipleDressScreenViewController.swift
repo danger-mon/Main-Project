@@ -165,7 +165,7 @@ class MultipleDressScreenViewController: UIViewController {
         if (segue.identifier == "goToProfile") {
             
             let svc = segue.destination as! ProfileViewController
-            
+            svc.noSettings = true
             svc.isHeroEnabled = false
             
             /*
@@ -247,7 +247,6 @@ class MultipleDressScreenViewController: UIViewController {
                 self.uidToLoad = downloadedDictionary["uid"] as! String
                 numberOfImages = Int(downloadedDictionary["numberOfImages"] as! NSNumber)
                 self.timestamp = downloadedDictionary["timestamp"] as! Double
-                print("downlaoded \(downloadedDictionary["timestamp"])")
                 self.dressImagesCollectionView.currentPictures = []
                 for _ in 0..<numberOfImages {
                     self.dressImagesCollectionView.currentPictures.append(#imageLiteral(resourceName: "loading"))

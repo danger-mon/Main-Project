@@ -42,6 +42,7 @@ class ProfileViewController: UIViewController {
     var profileToLoad: String! = "Pelayo Martinez"
     var photosRequiringLoading: [String] = []
     var previousController: ProfileViewController? = nil
+    var noSettings = false
     
     override func viewDidLoad() {
         
@@ -63,6 +64,7 @@ class ProfileViewController: UIViewController {
             messageButton.layer.borderColor = UIColor.darkGray.cgColor
             messageButton.layer.cornerRadius = 7
             messageButton.isEnabled = false
+            messageButton.isHidden = true
         }
         if ProfileViewController.uidToLoad == (FIRAuth.auth()?.currentUser?.uid)! {
             messageButton.isHidden = true
@@ -91,14 +93,19 @@ class ProfileViewController: UIViewController {
         //barButton2.addBadge(text: "\(BadgeHandler.messageBadgeNumber)")
         self.navigationItem.rightBarButtonItem = barButton2
         
-        let image3: UIImage = #imageLiteral(resourceName: "settings-5")
-        let button3: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        button3.setImage( image3, for: .normal)
-        button3.addTarget(self, action: #selector(settingsScreen), for: .touchUpInside)
+        print(ProfileViewController.uidToLoad)
+        print((FIRAuth.auth()?.currentUser?.uid)!)
         
-        let barButton3 = UIBarButtonItem(customView: button3)
-        //barButton2.addBadge(text: "\(BadgeHandler.messageBadgeNumber)")
-        self.navigationItem.leftBarButtonItem = barButton3
+        if !noSettings {
+            let image3: UIImage = #imageLiteral(resourceName: "settings-5")
+            let button3: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            button3.setImage( image3, for: .normal)
+            button3.addTarget(self, action: #selector(settingsScreen), for: .touchUpInside)
+            
+            let barButton3 = UIBarButtonItem(customView: button3)
+            //barButton2.addBadge(text: "\(BadgeHandler.messageBadgeNumber)")
+            self.navigationItem.leftBarButtonItem = barButton3
+        }
 
         
         if photosCollectionViewController != nil {
@@ -114,6 +121,11 @@ class ProfileViewController: UIViewController {
         
         if !doNotDownload {
             downloadProfile(ref: ProfileViewController.uidToLoad)
+        } else {
+            if messageButton != nil {
+                messageButton.isEnabled = true
+                messageButton.isHidden = false
+            }
         }
     }
     
@@ -280,6 +292,12 @@ class ProfileViewController: UIViewController {
         
         print("passed")
         
+        if messageButton != nil {
+            messageButton.backgroundColor = UIColor.darkGray
+            messageButton.setTitleColor(UIColor.white, for: .normal)
+            messageButton.isEnabled = false
+        }
+        
         theReference.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").observeSingleEvent(of: .value, with: { (snapshot) in
             
             var conversationReference = ""
@@ -308,6 +326,7 @@ class ProfileViewController: UIViewController {
                 //TODO: Add URL image download
                 destinationViewController.photoURL = "https://www.circuitlab.com/assets/images/gravatar_empty_50.png"
                 destinationViewController.name = self.profileUsername.text!
+                destinationViewController.uid = ProfileViewController.uidToLoad
                 
                 destinationNavigationController.pushViewController( destinationViewController, animated: true)
                 let transition = CATransition()
@@ -323,6 +342,7 @@ class ProfileViewController: UIViewController {
                 print("creatingConversation")
                 
                 let id = FIRDatabase.database().reference().child("Conversations").childByAutoId()
+                id.child("timestamp").setValue(Int32(NSDate.timeIntervalSinceReferenceDate))
                 
                 let postOwn = ["id": id.key,
                             "uid": ProfileViewController.uidToLoad,
@@ -334,11 +354,16 @@ class ProfileViewController: UIViewController {
                 postOther["name"] = Profile.ownUsername
                 postOther["uid"] = (FIRAuth.auth()?.currentUser?.uid)!
                 
-               let fanoutObject = ["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)": postOwn,
-                                    "/Users/\(ProfileViewController.uidToLoad)/conversations/\(id.key)": postOther,
-                                    "/Conversations/\(id.key)/timestamp": Int32(NSDate.timeIntervalSinceReferenceDate)] as [String : Any]
+                var fanoutObject: [String: Any] = [:]
+                fanoutObject["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(id.key)"] =  postOwn
+                fanoutObject["/Users/\(ProfileViewController.uidToLoad)/conversations/\(id.key)"] = postOther
+                fanoutObject["/Conversations/\(id.key)/timestamp"] = Int(NSDate.timeIntervalSinceReferenceDate)
+                
+                print(fanoutObject)
                 
                 FIRDatabase.database().reference().updateChildValues(fanoutObject)
+                
+                
                 
                 let destinationNavigationController = self.storyboard?.instantiateViewController(withIdentifier: "conversations") as! ChatNavigationController
                 let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "chat") as! ChatViewController
@@ -360,6 +385,13 @@ class ProfileViewController: UIViewController {
                 
                 
                 self.present(destinationNavigationController, animated: true, completion: nil)
+                
+                if self.messageButton != nil {
+                    self.messageButton.backgroundColor = UIColor.white
+                    self.messageButton.setTitleColor(UIColor.black, for: .normal)
+                    self.messageButton.isEnabled = true
+                    self.messageButton.isHidden = false
+                }
             }
         })
     }
@@ -440,7 +472,9 @@ class ProfileViewController: UIViewController {
             snapshot in
             let downloadedDictionary = snapshot.value as! NSDictionary
             
-            self.numberOfListings.text = downloadedDictionary["posts"] as? String
+            if self.photosCollectionViewController != nil {
+                self.numberOfListings.text = "\(self.photosCollectionViewController.currentDresses.count)"
+            } //downloadedDictionary["posts"] as? String
             self.numberOfExchanges.text = downloadedDictionary["exchanges"] as? String
             if self.bioTextView != nil {
                 self.bioTextView.text = downloadedDictionary["bio"] as? String
@@ -449,9 +483,17 @@ class ProfileViewController: UIViewController {
             if self.profileUsername != nil {
                 self.profileUsername.text = downloadedDictionary["username"] as? String
             }
-            let url = NSURL(string: downloadedDictionary["photoURL"] as! String)
-            if let data = NSData(contentsOf: url! as URL) {
-                self.profilePhoto?.image = UIImage(data: data as Data)!
+            
+            if downloadedDictionary["photoURL"] != nil {
+                if let url = NSURL(string: downloadedDictionary["photoURL"] as! String) {
+                    if let data = NSData(contentsOf: url as URL) {
+                        self.profilePhoto?.image = UIImage(data: data as Data)!
+                    }
+                }
+            }
+            if self.messageButton != nil {
+                self.messageButton.isEnabled = true
+                self.messageButton.isHidden = false
             }
             
         })
@@ -475,18 +517,28 @@ class ProfileViewController: UIViewController {
         
         databaseRef.child("Users").child(currentUser).child("userData").observeSingleEvent(of: .value, with: {
             snapshot in
-            let downloadedDictionary = snapshot.value as! NSDictionary
-            
-            self.numberOfListings.text = downloadedDictionary["posts"] as? String
-            self.numberOfExchanges.text = downloadedDictionary["exchanges"] as? String
-            self.bioTextView.text = downloadedDictionary["bio"] as? String
-            self.locationLabel.text = downloadedDictionary["location"] as? String
-            self.profileUsername.text = downloadedDictionary["username"] as? String
-            let url = NSURL(string: downloadedDictionary["photoURL"] as! String)
-            if let data = NSData(contentsOf: url! as URL) {
-                self.profilePhoto?.image = UIImage(data: data as Data)!
+            if snapshot.value != nil {
+                let downloadedDictionary = snapshot.value as! NSDictionary
+                print(currentUser)
+                
+                if self.photosCollectionViewController != nil {
+                    self.numberOfListings.text = "\(self.photosCollectionViewController.currentDresses.count)"
+                }
+                self.numberOfExchanges.text = downloadedDictionary["exchanges"] as? String
+                self.bioTextView.text = downloadedDictionary["bio"] as? String
+                self.locationLabel.text = downloadedDictionary["location"] as? String
+                self.profileUsername.text = downloadedDictionary["username"] as? String
+                
+                if downloadedDictionary["photoURL"] != nil {
+                if let url = NSURL(string: downloadedDictionary["photoURL"] as! String) {
+                        if let data = NSData(contentsOf: url as URL) {
+                            self.profilePhoto?.image = UIImage(data: data as Data)!
+                        }
+                    }
+                }
                 if self.messageButton != nil {
                     self.messageButton.isEnabled = true
+                    self.messageButton.isHidden = false
                 }
             }
 
@@ -552,10 +604,17 @@ class ProfileViewController: UIViewController {
                         }
                     }
                 }
+                if self.photosCollectionViewController != nil {
+                    self.numberOfListings.text = "\(self.photosCollectionViewController.currentDresses.count)"
+                }
             })
         }
         photosRequiringLoading = toMaintainUnloaded
+        if self.photosCollectionViewController != nil {
+            self.numberOfListings.text = "\(self.photosCollectionViewController.currentDresses.count)"
+        }
     }
+    
 }
 
 extension ProfileViewController: LongPressDelegate {
@@ -565,6 +624,12 @@ extension ProfileViewController: LongPressDelegate {
             collectionHeightConstraint.constant = CGFloat(size)
             scrollView.sizeToFit()
         
+    }
+    
+    func updateListings() {
+        if self.photosCollectionViewController != nil {
+            self.numberOfListings.text = "\(self.photosCollectionViewController.currentDresses.count)"
+        }
     }
     
     func didLongPressCell(sender: UIGestureRecognizer) {
@@ -637,6 +702,7 @@ extension ProfileViewController: LongPressDelegate {
                                     }
                                     databaseRef.child("PostData").child(cell.reference).removeValue()
                                     self.photosCollectionViewController.currentDresses.remove(at: (self.photosCollectionViewController.indexPath(for: cell)?.row)!)
+                                    
                                     self.photosCollectionViewController.reloadData()
                                 }
                         })
@@ -674,7 +740,6 @@ extension ProfileViewController: LongPressDelegate {
                         
                         databaseRef.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("userData").child("posts").setValue(String(self.photosCollectionViewController.currentDresses.count - 1))
                     
-                    self.photosCollectionViewController.currentDresses.remove(at: (self.photosCollectionViewController.indexPath(for: cell)?.row)!)
                     self.photosCollectionViewController.reloadData()
                 }
             }))

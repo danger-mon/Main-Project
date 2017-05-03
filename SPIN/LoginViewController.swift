@@ -130,12 +130,22 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
         registerButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 14)
         registerButton.layer.cornerRadius = 20
         
+        let textView2 = UITextView(frame: CGRect(x: 0, y: 0, width: 180, height: 50))
+        textView2.text = "By pressing 'Login with Facebook' or 'Register' you agree to the Terms & Conditions that can be found at www.youngandvalley.com/terms"
+        textView2.font = UIFont(name: "Avenir-Light", size: 8)
+        textView2.isEditable = false
+        textView2.isScrollEnabled = false
+        textView2.textAlignment = .justified
+        textView2.center = CGPoint(x: self.view.center.x, y: self.view.center.y + 150)
+        
+        
         // Handle clicks on the button
         myLoginButton.addTarget(self, action: #selector(self.loginButtonClicked), for: .touchUpInside)
         
         // Add the button to the view
         view.addSubview(myLoginButton)
         view.addSubview(textView)
+        view.addSubview(textView2)
         
         //view.addSubview(loginButton)
     }
@@ -148,7 +158,7 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
                 print(error)
             case .cancelled:
                 print("User cancelled login.")
-            case .success(let _, let declinedPermissions, let _):
+            case .success( _, _, _):
                 self.myLoginButton.isHidden = true
                 let credential = FIRFacebookAuthProvider.credential(withAccessToken: (AccessToken.current?.authenticationToken)!)
                 self.emailLoginButton.isEnabled = false
@@ -185,9 +195,17 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
                             self.present(nextViewController, animated: true, completion: nil)
                             
                         } else {
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting")
-                            self.present(nextViewController, animated: true, completion: nil)
+                            let dict = snapshot.value as! [String: Any]
+                            print(dict.count)
+                            if dict.count > 5 {
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting")
+                                self.present(nextViewController, animated: true, completion: nil)
+                            } else {
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                let nextViewController = storyboard.instantiateViewController(withIdentifier: "details")
+                                self.present(nextViewController, animated: true, completion: nil)
+                            }
                         }
                     })
                     return

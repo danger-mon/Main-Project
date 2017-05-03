@@ -89,6 +89,7 @@ class IntroViewController: UIPageViewController, UIPageViewControllerDataSource 
                 toReturn.imageView.image = nil
                 toReturn.textView.text = "S P I N"
                 toReturn.textView.font = UIFont(name: "Avenir-Light", size: 36)
+                toReturn.textView.textAlignment = .center
             } else if name == "spin1" {
                 var newFrame = toReturn.view.frame
                 newFrame.origin.y += 30

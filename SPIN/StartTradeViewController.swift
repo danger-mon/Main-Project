@@ -53,7 +53,7 @@ class StartTradeViewController: UIViewController {
                      "requestUid" : (FIRAuth.auth()?.currentUser?.uid)!,
                      "ownerUid" : ownerReference,
                      "ownerName": ownerName,
-                     "requesterName": ProfileViewController.ownUsername,
+                     "requesterName": (FIRAuth.auth()?.currentUser?.displayName)!,
                      "timestamp" : NSDate.timeIntervalSinceReferenceDate,
                      "rentBuy" : "rent",
                      "price" : "£15"] as [String : Any]
@@ -94,7 +94,7 @@ class StartTradeViewController: UIViewController {
                 
                 if snapshot.value is NSNull {
                     
-                    var dict = [(FIRAuth.auth()?.currentUser?.uid)!: "true"]
+                    let dict = [(FIRAuth.auth()?.currentUser?.uid)!: "true"]
                     fanoutObject["/RequestData/\(self.dressReference)"] = dict
                     databaseRef.updateChildValues(fanoutObject)
                     _ = self.navigationController?.popViewController(animated: true)

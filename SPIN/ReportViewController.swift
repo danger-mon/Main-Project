@@ -53,7 +53,7 @@ class ReportViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     @IBAction func submit(_ sender: Any) {
         let post = ["user": (FIRAuth.auth()?.currentUser?.uid)!,
-                    "username": ProfileViewController.ownUsername,
+                    "username": (FIRAuth.auth()?.currentUser?.displayName)!,
                     "dressRef": dressRef,
                     "ownerUid": ownerUid,
                     "reason": selected,

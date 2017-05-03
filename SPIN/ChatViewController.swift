@@ -55,6 +55,7 @@ class ChatViewController: JSQMessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         messageRef = FIRDatabase.database().reference().child("Conversations").child(refToLoad)
         userIsTypingRef = FIRDatabase.database().reference().child("Conversations").child(refToLoad).child("typingIndicator").child(self.senderId)
         
@@ -168,7 +169,7 @@ class ChatViewController: JSQMessagesViewController {
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
-        
+        print(1)
         
         let itemRef = messageRef.child("messages").childByAutoId()
         let messageItem = [
@@ -176,23 +177,32 @@ class ChatViewController: JSQMessagesViewController {
             "senderName": senderDisplayName!,
             "text": text!]
         
+        print(2)
         
-        print(1)
         itemRef.setValue(messageItem)
         messageRef.child("timestamp").setValue((NSDate().timeIntervalSince1970) as NSNumber)
+        
         print(uid)
+        print(refToLoad)
         let unseenRef = FIRDatabase.database().reference().child("Users").child(uid).child("conversations").child(refToLoad).child("unseen")
+        
+        print("yyy")
         unseenRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.value is NSNull { } else {
+            if snapshot.value is NSNull {
+            } else {
                 var counter = (snapshot.value)! as! Int
                 counter += 1
                 unseenRef.setValue(counter)
             }
         })
-        print(3)
+        
+        print(4)
+        
         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
         let pushToken = status.subscriptionStatus.pushToken
         _ = status.subscriptionStatus.userId
+        
+        print(5)
         
         if pushToken != nil {
             let message = text!
@@ -207,18 +217,16 @@ class ChatViewController: JSQMessagesViewController {
                 "ios_badgeType": "Increase",
                 "ios_badgeCount": 1
                 ] as [String : Any]
-            
+            print(6)
             OneSignal.postNotification(notificationContent)
         }
-        
-        
-        
-        
-        
+        print(7)
         JSQSystemSoundPlayer.jsq_playMessageSentSound() // 4
-        
+        print(8)
         finishSendingMessage() // 5
+        print(9)
         isTyping = false
+        print(10)
     }
     
     override func didPressAccessoryButton(_ sender: UIButton) {

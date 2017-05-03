@@ -18,10 +18,17 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
+    
+    var onesignalkey = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isTranslucent = false
+        
+        bioTextView.text = ""
+        
+        bioTextView.layer.borderColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1).cgColor
+        bioTextView.layer.borderWidth = 1
 
         // Do any additional setup after loading the view.
         
@@ -137,34 +144,58 @@ class DetailsViewController: UIViewController {
         let uploadMetadata = FIRStorageMetadata()
         uploadMetadata.contentType = "image/jpeg"
         
-        storageRef.put(data, metadata: uploadMetadata, completion: {
-            (metadata, error) in
-            if(error != nil) {
-                print("Enconuntered an error \(String(describing: error?.localizedDescription))")
+        databaseRef.child("Users").child(username).child("userData").observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.value is NSNull {
+                
+            } else {
+                if (snapshot.value as! [String: Any])["oneSignalKey"] != nil {
+                    self.onesignalkey = (snapshot.value as! [String: Any])["oneSignalKey"] as! String
+                    print(self.onesignalkey)
+                } else {
+                    self.onesignalkey = ""
+                }
             }
-            else {
-                print("Upload Complete")
-                
-                let url = (metadata?.downloadURL())!
-                let newDict = ["bio": self.bioTextView.text! as String,
-                               "exchanges": "0",
-                               "location": self.locationTextField.text! as String,
-                               "photoURL": url.absoluteString as String,
-                               "posts": "0",
-                               "username": self.usernameTextField.text! as String]
-                
-                OneSignal.sendTag("userID", value: username)
+            storageRef.put(data, metadata: uploadMetadata, completion: {
+                (metadata, error) in
+                if(error != nil) {
+                    print("Enconuntered an error \(String(describing: error?.localizedDescription))")
+                }
+                else {
+                    print("Upload Complete")
+                    let url = (metadata?.downloadURL())!
+                    
+                    var newDict: [String: String] = [:]
+                    if self.onesignalkey == "" {
+                        newDict = ["bio": self.bioTextView.text! as String,
+                                       "exchanges": "0",
+                                       "location": self.locationTextField.text! as String,
+                                       "photoURL": url.absoluteString as String,
+                                       "posts": "0",
+                                       "username": self.usernameTextField.text! as String]
 
-                databaseRef.child("Users").child(username).child("userData").setValue(newDict)
-                
-                databaseRef.child("Users").child(username).child("userData").observeSingleEvent(of: .value, with: { (snapshot) in
-                    if snapshot.value is NSNull {   } else {
-                        let registered = UserDefaults.standard
-                        registered.setValue("Registered", forKey: username)
-                        registered.synchronize()
+                    } else {
+                        newDict = ["bio": self.bioTextView.text! as String,
+                                       "exchanges": "0",
+                                       "location": self.locationTextField.text! as String,
+                                       "photoURL": url.absoluteString as String,
+                                       "posts": "0",
+                                       "oneSignalKey": self.onesignalkey,
+                                       "username": self.usernameTextField.text! as String]
                     }
-                })
-            }
+                    
+                    OneSignal.sendTag("userID", value: username)
+
+                    databaseRef.child("Users").child(username).child("userData").setValue(newDict)
+                    
+                    databaseRef.child("Users").child(username).child("userData").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if snapshot.value is NSNull {   } else {
+                            let registered = UserDefaults.standard
+                            registered.setValue("Registered", forKey: username)
+                            registered.synchronize()
+                        }
+                    })
+                }
+            })
         })
     }
 }

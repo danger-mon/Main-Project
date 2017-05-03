@@ -470,8 +470,12 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
 
     func postItem() {
         
-        actionButton.isEnabled = false
-        deleteButton.isEnabled = true
+        if actionButton != nil {
+            actionButton.isEnabled = false
+        }
+        if deleteButton != nil {
+            deleteButton.isEnabled = true
+        }
         
         let user = (FIRAuth.auth()?.currentUser?.uid)!
         let title = dressNameField.text
@@ -507,6 +511,10 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
             let postRefKey = databaseRef.child("Posts").childByAutoId()
             
             self.uploadImageToDatabse(data: imageDataArray, id: postRefKey, user: user, post: self.post, changeTime: true)
+            self.actionButton.isEnabled = true
+            (self.tabBarController?.viewControllers?[1] as! UINavigationController).popToRootViewController(animated: true)
+            self.tabBarController?.selectedIndex = 1
+
         })
         
     }
@@ -540,8 +548,6 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
                             numberOfListingsInt += 1
                             databaseRef.child("Posts").child(id.key).setValue(newPost)
                             databaseRef.child("Users").child(user).child("userData").child("posts").setValue(String(numberOfListingsInt))
-                            (self.tabBarController?.viewControllers?[1] as! UINavigationController).popToRootViewController(animated: true)
-                            self.tabBarController?.selectedIndex = 1
                         })
                     })
                     
@@ -594,6 +600,19 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
             let postRefKey = databaseRef.child("Posts").child(self.refToLoad)
             
             self.uploadImageToDatabse(data: imageDataArray, id: postRefKey, user: user, post: self.post, changeTime: false)
+            
+            (self.tabBarController?.viewControllers?[1] as! UINavigationController).popToRootViewController(animated: true)
+            self.tabBarController?.selectedIndex = 1
+            
+            if self.actionButton != nil {
+                self.actionButton.isEnabled = true
+                self.actionButton.isHidden = false
+            }
+            
+            if self.deleteButton != nil {
+                self.deleteButton.isEnabled = true
+                self.deleteButton.isHidden = false
+            }
             
             self.dressNameField.text = ""
             self.dressDescriptionField.text = "Tap to edit..."

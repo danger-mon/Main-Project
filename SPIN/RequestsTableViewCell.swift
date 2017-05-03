@@ -23,6 +23,7 @@ class RequestsTableViewCell: UITableViewCell {
     var listingRef: String = ""
     weak var tapDelegate: RequestsTapDelegate?
     var inOrOut = ""
+    var parentViewController: RequestsTableViewController?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,14 +41,10 @@ class RequestsTableViewCell: UITableViewCell {
         moreButton.layer.cornerRadius = 7
         
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+    
     @IBAction func goToProfile(_ sender: Any) {
-        tapDelegate?.message(uid: uid, name: userLabel.text!, username: "")
+        print("goToProfile")
+        tapDelegate?.messageNah(uid: uid, name: userLabel.text!, username: "")
     }
     
     @IBAction func more(_ sender: Any) {
@@ -56,15 +53,29 @@ class RequestsTableViewCell: UITableViewCell {
         
     }
     
+    /*
     @IBAction func goToDress(_ sender: Any) {
         print(tapDelegate.debugDescription)
-        tapDelegate?.goToDress(ref: dressReference)
-    }
+        //tapDelegate?.goToDress(ref: dressReference)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let nextViewController = storyboard.instantiateViewController(withIdentifier: "pictureViewer") as! MultipleDressScreenViewController
+        
+        
+        nextViewController.requestTradeButton.isEnabled = false
+        nextViewController.requestTradeButton.isHidden = true
+        
+        nextViewController.refToLoad = dressReference
+        nextViewController.downloadData()
+        
+        self.parentViewController?.navigationController?.pushViewController(nextViewController, animated: true)
+
+    } */
     
 }
 
 protocol RequestsTapDelegate: class {
-    func message(uid: String, name: String, username: String)
+    func messageNah(uid: String, name: String, username: String)
     func goToDress(ref: String)
     func moreOptions(ref: String, uid: String, inOrOut: String, dressRef: String)
 }
