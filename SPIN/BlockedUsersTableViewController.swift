@@ -20,6 +20,7 @@ class BlockedUsersTableViewController: UITableViewController, TapDelegateBlocked
     var blockedUsers: [(String, String)] = []
     
     func didFinishUnblocking() {
+        // Refresh the Page so that the person that has just been unblocked no longer shows up
         print("unblocking")
         blockedUsers = []
         downloadBlockedUsers()
@@ -34,15 +35,16 @@ class BlockedUsersTableViewController: UITableViewController, TapDelegateBlocked
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        
         return blockedUsers.count
     }
     
+    // Populate the rows with the names and references of blocked users
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "blockedUser") as! SettingsTableViewCell
         cell.name.text = blockedUsers[indexPath.row].0
@@ -52,11 +54,13 @@ class BlockedUsersTableViewController: UITableViewController, TapDelegateBlocked
         return cell
     }
     
+    // Download Blocked User list from Firebase
     func downloadBlockedUsers() {
         let query = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").queryOrdered(byChild: "blocked").queryEqual(toValue: "true")
         
         query.observeSingleEvent(of: .value, with: { (snapshot) in
             var dict: [String: [String: Any]] = [:]
+            // If no blocked users, do nothing, else cycle through array of blocked users and add to self.blockedUsers array.
             if snapshot.value is NSNull { } else {
                 dict = snapshot.value as! [String : [String : Any]]
                 for dictionaryChild in dict {

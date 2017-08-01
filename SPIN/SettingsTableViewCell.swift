@@ -27,6 +27,7 @@ class SettingsTableViewCell: UITableViewCell {
     
         //let reference = FIRDatabase.database().reference().child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("conversations").child(ref).child("blocked")
         
+        // Get rid of blocked = true on the conversations so that they show up again after unblocking.
         let fanoutObject = ["/Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations/\(ref)/blocked": NSNull()]
         
             //reference.setValue(NSNull())
@@ -35,6 +36,7 @@ class SettingsTableViewCell: UITableViewCell {
             if error != nil {
                 print("error")
             } else {
+                // If succesful, refresh list of unblocked
                 self.finishDelegate?.didFinishUnblocking()
                 self.parentTableViewController.blockedUsers = []
                 self.parentTableViewController.downloadBlockedUsers()

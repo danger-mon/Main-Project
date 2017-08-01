@@ -15,6 +15,9 @@ pod 'FacebookLogin'
 pod 'Firebase/Crash'
 pod 'JSQMessagesViewController'
 pod "MIBadgeButton-Swift", :git => 'https://github.com/mustafaibrahim989/MIBadgeButton-Swift.git', :branch => 'master'
+pod 'GoogleMaps'
+pod 'GooglePlaces'
+pod 'Stripe'
 
 end
 

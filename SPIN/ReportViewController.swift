@@ -10,6 +10,8 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
+// Screen where reports are sent to us.
+
 class ReportViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet weak var pickerView: UIPickerView!

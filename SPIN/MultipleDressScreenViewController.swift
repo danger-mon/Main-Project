@@ -216,6 +216,8 @@ class MultipleDressScreenViewController: UIViewController {
             vc.ownerReference = self.uidToLoad
             vc.ownerName = self.profileName.text!
             vc.dressTitle = self.dressTitle.text!
+            vc.rentBuy = self.rentSellLabel.text!
+            vc.price = self.priceLabel.text!
         }
     }
     func downloadData() {

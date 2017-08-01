@@ -30,6 +30,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
     
     var reloadButton: UIButton!
     var loadingLabel: UILabel!
+    var updates = false
 
     /*var toCome = 0 {
         didSet {
@@ -112,6 +113,8 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
         query.observeSingleEvent(of: .value, with: { (snapshot) in
             // If there isn't one set one to (0,0)
             if snapshot.value is NSNull {
+                
+        
                 let newDict = ["upper": 0,
                                "lower": 0]
                 databaseRef.child("timeSegments").child((FIRAuth.auth()?.currentUser?.uid)!).childByAutoId().setValue(newDict)
@@ -132,6 +135,7 @@ class DraggableViewBackground: UIView, DraggableViewDelegate, UIGestureRecognize
             //self.catchNextDress(count: 3)
             //self.toCome = 3
             self.catchNextDress(count: 1, time: self.currentTime, start: true)
+            self.updates = true
         })
         
         FIRDatabase.database().reference().child("Users/\((FIRAuth.auth()?.currentUser?.uid)!)/conversations").observeSingleEvent(of: .value, with: { (snapshot) in

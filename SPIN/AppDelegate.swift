@@ -11,6 +11,8 @@ import Firebase
 import FacebookCore
 import FacebookLogin
 import OneSignal
+import GoogleMaps
+import Stripe
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSSubscriptionObserver {
@@ -18,11 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSPermissionObserver, OSS
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        // Configure Firebase
         FIRApp.configure()
         
-        /*if UserDefaults.standard.string(forKey: "messageBadgeNumber") != nil {
-            BadgeHandler.messageBadgeNumber = Int(UserDefaults.standard.string(forKey: "messageBadgeNumber")!)!
-        }*/
+        // Configure Notifications
+        GMSServices.provideAPIKey("AIzaSyAqAfdwIrd2p3HvIwQrMx2iqA9lbmLIzP4")
+        
+        // Configure Stripe
+        STPPaymentConfiguration.shared().publishableKey = "pk_test_BHfObu9WD1VJHZ5I76bfF6pw"
         
         let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
             print("Received Notification: \(notification!.payload.body)")

@@ -17,7 +17,7 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        
         let tapcontroller = UITapGestureRecognizer(target: self, action: #selector(didTapBackground))
         self.view.addGestureRecognizer(tapcontroller)
         usernameField.delegate = self
@@ -35,12 +35,15 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    // So that return gets rid of the keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 
+    // To reset password
     @IBAction func resetPassword(_ sender: Any) {
+        
         let alert = UIAlertController(title: "Missing Field", message: "", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
@@ -56,12 +59,16 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate {
             }
         }))
 
+        // If username field isn't empty
         if usernameField.text != "" {
+            // Send password reset email
             FIRAuth.auth()?.sendPasswordReset(withEmail: self.usernameField.text!, completion: { (error) in
                 if error != nil {
+                    // Present alert with the error description if unsuccesful
                     alert.message = error?.localizedDescription
                     self.present(alert, animated: true, completion: nil)
                 } else {
+                    // Present success message otherwise
                     alert.message = "Password Reset Link Sent"
                     alert.title = "Success!"
                     self.present(alert, animated: true, completion: nil)
@@ -69,6 +76,7 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate {
                 }
             })
         } else {
+            // If the user didn;t enter their email, prompt them to do so.
             alert.message = "Please enter your email."
             self.present(alert, animated: true, completion: nil)
         }
@@ -96,12 +104,16 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate {
             }
         }))
         
+        // If username field not empty
         if usernameField.text != "" {
             
+            //If password field not empty
             if passwordField.text != "" {
                 
+                // Sign in with email.
                 FIRAuth.auth()?.signIn(withEmail: usernameField.text!, password: passwordField.text!, completion: { (user, error) in
                     if error != nil {
+                        // If error, re-enable and undo greying out of the fields
                         alert.message = "Error authenticating. Check your details or try again later."
                         self.present(alert, animated: true, completion: nil)
                         self.usernameField.textColor = UIColor.black
@@ -109,6 +121,7 @@ class LoginScreenViewController: UIViewController, UITextFieldDelegate {
                         self.usernameField.isEnabled = true
                         self.passwordField.isEnabled = true
                     } else {
+                        // If succesful take to main screen.
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let nextViewController = storyboard.instantiateViewController(withIdentifier: "starting")
                         self.present(nextViewController, animated: true, completion: nil)

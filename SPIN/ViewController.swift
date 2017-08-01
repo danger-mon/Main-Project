@@ -69,6 +69,9 @@ class ViewController: UIViewController, TapDelegate3 {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         changeBadge()
+        if self.draggableBackground.updates == true {
+            //self.draggableBackground.catchNextDress(count: <#T##Int#>, time: <#T##Double#>, start: <#T##Bool#>)
+        }
     }
     
     override func setNeedsFocusUpdate() {

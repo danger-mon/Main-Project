@@ -16,6 +16,9 @@ class StartTradeViewController: UIViewController {
     var ownerReference: String = ""
     var ownerName: String = ""
     var dressTitle: String = ""
+    var price: String = ""
+    var rentBuy: String = ""
+    
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     
@@ -55,8 +58,8 @@ class StartTradeViewController: UIViewController {
                      "ownerName": ownerName,
                      "requesterName": (FIRAuth.auth()?.currentUser?.displayName)!,
                      "timestamp" : NSDate.timeIntervalSinceReferenceDate,
-                     "rentBuy" : "rent",
-                     "price" : "£15"] as [String : Any]
+                     "rentBuy" : rentBuy,
+                     "price" : price] as [String : Any]
         
         
         databaseRef.child("OneSignalIDs").child(ownerReference).observeSingleEvent(of: .value, with: { (snapshot) in

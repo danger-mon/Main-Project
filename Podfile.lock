@@ -62,6 +62,13 @@ PODS:
     - GTMSessionFetcher/Core (~> 1.1)
   - GoogleInterchangeUtilities (1.2.2):
     - GoogleSymbolUtilities (~> 1.1)
+  - GoogleMaps (2.2.0):
+    - GoogleMaps/Maps (= 2.2.0)
+  - GoogleMaps/Base (2.2.0)
+  - GoogleMaps/Maps (2.2.0):
+    - GoogleMaps/Base
+  - GooglePlaces (2.2.0):
+    - GoogleMaps/Base (= 2.2.0)
   - GoogleSymbolUtilities (1.1.2)
   - GoogleToolboxForMac/DebugUtils (2.1.0):
     - GoogleToolboxForMac/Defines (= 2.1.0)
@@ -81,6 +88,7 @@ PODS:
   - JSQSystemSoundPlayer (2.0.1)
   - MIBadgeButton-Swift (0.5)
   - OneSignal (2.5.2)
+  - Stripe (10.0.1)
 
 DEPENDENCIES:
   - FacebookLogin
@@ -89,9 +97,12 @@ DEPENDENCIES:
   - Firebase/Crash
   - Firebase/Database
   - Firebase/Storage
+  - GoogleMaps
+  - GooglePlaces
   - JSQMessagesViewController
   - MIBadgeButton-Swift (from `https://github.com/mustafaibrahim989/MIBadgeButton-Swift.git`, branch `master`)
   - OneSignal (< 3.0, >= 2.5.2)
+  - Stripe
 
 EXTERNAL SOURCES:
   MIBadgeButton-Swift:
@@ -118,6 +129,8 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
   FirebaseStorage: 5738284835edb57f0e81d4ae5832bb17c1e4b5fa
   GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
+  GoogleMaps: 104c418d61ab8a05dff06ed0784c25ea9d37da45
+  GooglePlaces: bca867d5e9da15384c794b945e4226848bc6e9d9
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
@@ -125,7 +138,8 @@ SPEC CHECKSUMS:
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   MIBadgeButton-Swift: 9e57309b00b168d75ca8fecb45bc75124a8ffddf
   OneSignal: 66d08b6b1e3c3858cbf28207ed20f1fa865ab2a2
+  Stripe: dd6df0e2c6a8463e2f1ca9b15dc246e5ae1eee64
 
-PODFILE CHECKSUM: 9f82808b7846133dfde899489c7c6313ecf91cd6
+PODFILE CHECKSUM: f7393b41cf61065b648676a543f25959c05c4c0f
 
 COCOAPODS: 1.2.1
